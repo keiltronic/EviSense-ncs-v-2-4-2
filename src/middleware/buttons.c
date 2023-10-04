@@ -18,9 +18,15 @@
 struct gpio_dt_spec button0 = GPIO_DT_SPEC_GET(BTN0_NODE, gpios);
 struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(BTN1_NODE, gpios);
 
+struct gpio_callback button0_cb_data;
+struct gpio_callback button1_cb_data;
+
 void init_button(void){
   
-    int16_t ret = 0;
+     int16_t ret = 0;
+
+ret = gpio_pin_interrupt_configure_dt(&button0, GPIO_INT_EDGE_TO_ACTIVE);
+ret = gpio_pin_interrupt_configure_dt(&button1, GPIO_INT_EDGE_TO_ACTIVE);
 
   /* Button 0 */
     if (!device_is_ready(button0.port)) {
@@ -42,6 +48,24 @@ void init_button(void){
     printk("Button 1 not ready!\r\n");
     return;
   }
+
+
+  gpio_init_callback(&button0_cb_data, button0_pressed, BIT(button0.pin)); 	
+  gpio_init_callback(&button1_cb_data, button1_pressed, BIT(button1.pin)); 	
+
+  gpio_add_callback(button0.port, &button0_cb_data);
+gpio_add_callback(button1.port, &button1_cb_data);
+}
+
+
+void button0_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+   
+}
+
+void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+   gpio_pin_toggle_dt(&led);    
 }
 
 // uint8_t btn1_pressed = false;

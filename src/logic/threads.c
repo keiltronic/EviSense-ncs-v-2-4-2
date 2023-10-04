@@ -394,10 +394,12 @@ void button_thread(void *dummy1, void *dummy2, void *dummy3)
     //   button_monitor();
     // }
 
-    val0 = gpio_pin_get_dt(&button0);
-    val1 = gpio_pin_get_dt(&button1);
     
-    gpio_pin_set_dt(&led,val1);
+
+    // val0 = gpio_pin_get_dt(&button0);
+    // val1 = gpio_pin_get_dt(&button1);
+    
+    // gpio_pin_set_dt(&led,val1);
 
    k_msleep(1);
   }
