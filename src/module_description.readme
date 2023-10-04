@@ -1,0 +1,40 @@
+HIGH LEVEL MODULES (logic)
+==========================
+main.c			Initialize the system (parameters) and peripheral modules (flash, acceleromter, battery Gauge, etc..)
+states.c		Manages device states (Idle (sleep), Moving, Mopping and Mop Installation)
+mobbing.c		Computes analatic and statistic data.
+hmi.c			Manages humane-maschine-interaction (e-ink, led, button and buzzer events)
+cellular.c		Manages data transfer to and from the cloud (RESTApi)
+commands.c		Manages available shell commands 
+threads.c		Manages all time relvant activities (task and thread management)
+
+LOW LEVEL MODULES (middleware)
+==============================
+imu.c			Initialize 9-axis IMU	
+rfid.c			Handles write and readout of the RFID module (including UART)
+flash.c 		Handles write and readout of the external flash memory
+imu.c			Handles initialization and readout of the accelerometer, gyro and magnetometer
+battery_gauge.c	Handles initialization and readout of the battery gauge (including I2C)
+charge.c		Monitors battery charge status
+io_expander.c	Handles IO-expanded GPIOs (including the ISR calls)
+buzzer.c		Handles buzzer functions (including PWM)
+led.c			Handles led functions (including PWM)
+button.c		Handles button presses (press duration measurement and ISR calls)
+temperature.c	Monitors the pcb temperature	
+i2c.c			Initialize physical I2C bus
+spi.c			Initialize physical SPI bus
+gpio.c			Initialize physical GPIO pins and interrupts
+stepdetection	Measures steps and controlls step sequence detection
+
+NON VOLITALE MEMORIES (external flash)
+======================================
+datalog_mem.c	Manages specificed pages within the external non volitale memory for data storing.
+device_mem.c	Manages specificed pages within the external non volitale memory for device specific data.
+error_mem.c		Manages specificed pages within the external non volitale memory for error logging.
+parameter_mem.c	Manages specificed pages within the external non volitale memory for parameter storing.
+system_mem.c	Represents global variables.
+
+THIRD PARTY DRIVERS
+===================
+bmi160.c		Bosch driver for BMX160 acceleromter and gyrometer
+bmm150.c		Bosch driver for BMX160 for magnetometer
