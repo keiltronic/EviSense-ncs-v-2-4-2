@@ -1,0 +1,15 @@
+# Thingy:91 nRF9160 board configuration
+#
+# Copyright (c) 2019 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+
+if SOC_NRF9160_SICA
+
+config BOARD_EVISENSE_V_2_3
+	bool "EviSense v2.3"
+
+config BOARD_EVISENSE_V_2_3_NS
+	bool "EviSense v2.3 non-secure"
+
+endif # SOC_NRF9160_SICA

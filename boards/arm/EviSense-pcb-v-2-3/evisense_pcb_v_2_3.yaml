@@ -1,0 +1,11 @@
+identifier: evisense_v_2_3
+name: EviSense-v-2-3
+type: mcu
+arch: arm
+toolchain:
+  - gnuarmemb
+  - zephyr
+ram: 64
+flash: 256
+supported:
+  - i2c
