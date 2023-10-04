@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
  */
 
- #include "evisense_pcb_v_2_3_common-pinctrl.dtsi"
+#include "evisense_pcb_v_2_3_common-pinctrl.dtsi"
 
 / {
 	model = "EviSense v-2-3";
@@ -14,6 +14,18 @@
 		zephyr,console = &uart0;
 		zephyr,shell-uart = &uart0;
 		zephyr,uart-mcumgr = &uart0;
+	};
+
+	leds{
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
+			label = "Dev LED";
+		};
+	};
+
+	aliases{
+		led0 = &led0;
 	};
 };
 
@@ -59,7 +71,7 @@
 		reg = <0x68>;
 		int-gpios = <&gpio0 15 0>, <&gpio0 16 0>;
 	};
-	
+
 };
 
 &spi3 {
@@ -69,7 +81,7 @@
 	pinctrl-0 = <&spi3_default>;
 	pinctrl-1 = <&spi3_sleep>;
 	pinctrl-names = "default", "sleep";
-/* 
+	/*
 	mt25ql256: mt25ql256@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
@@ -85,7 +97,7 @@
 		size = <268435456>;
 		spi-max-frequency = <8000000>;
 	};
-*/
+	 */
 };
 
 &timer0 {
@@ -104,8 +116,8 @@
 	compatible = "nordic,nrf-uarte";
 	current-speed = <115200>;
 	status = "okay";
-    pinctrl-0 = <&uart0_default>;
-    pinctrl-1 = <&uart0_sleep>;
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-1 = <&uart0_sleep>;
 	pinctrl-names = "default", "sleep";
 };
 
@@ -113,8 +125,8 @@
 	compatible = "nordic,nrf-uarte";
 	current-speed = <38400>;
 	status = "okay";
-    pinctrl-0 = <&uart1_default>;
-    pinctrl-1 = <&uart1_sleep>;
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-1 = <&uart1_sleep>;
 	pinctrl-names = "default", "sleep";
 };
 
