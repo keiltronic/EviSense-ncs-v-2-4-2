@@ -68,7 +68,6 @@ enum mode
     FLASHING
 };
 
-extern RGB_LED led;
 extern uint8_t led_next_state;
 extern uint32_t flash_repeat_counter;
 
