@@ -283,57 +283,57 @@ void datalog_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   wdt_reset(); // blocks watchdog activation
+  while (1)
+  {
+    // wdt_reset(); // blocks watchdog activation
 
-  //   /* Update step detection */
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     step_sequence_detection();
-  //     motion_detection();
-  //   }
+    // /* Update step detection */
+    // if (datalog_ReadOutisActive == false)
+    // {
+    //   step_sequence_detection();
+    //   motion_detection();
+    // }
 
-  //   /* Clear the last seen room ids after some time */
-  //   if (last_seen_array_auto_clear_timer >= Parameter.last_seen_locations_auto_reset_time)
-  //   {
-  //     clear_last_seen_room_id_array(EPC_LAST_SEEN_COUNT);
-  //     last_seen_array_auto_clear_timer = 0;
-  //   }
-  //   else
-  //   {
-  //     last_seen_array_auto_clear_timer++;
-  //   }
+    // /* Clear the last seen room ids after some time */
+    // if (last_seen_array_auto_clear_timer >= Parameter.last_seen_locations_auto_reset_time)
+    // {
+    //   clear_last_seen_room_id_array(EPC_LAST_SEEN_COUNT);
+    //   last_seen_array_auto_clear_timer = 0;
+    // }
+    // else
+    // {
+    //   last_seen_array_auto_clear_timer++;
+    // }
 
-  //   /* Clear the last seen mop ids after some time */
-  //   if (last_seen_mop_auto_clear_timer >= Parameter.last_seen_mop_array_auto_reset_time)
-  //   {
-  //     Mop_ClearLastSeenArray();
-  //     last_seen_mop_auto_clear_timer = 0;
-  //   }
-  //   else
-  //   {
-  //     last_seen_mop_auto_clear_timer++;
-  //   }
+    // /* Clear the last seen mop ids after some time */
+    // if (last_seen_mop_auto_clear_timer >= Parameter.last_seen_mop_array_auto_reset_time)
+    // {
+    //   Mop_ClearLastSeenArray();
+    //   last_seen_mop_auto_clear_timer = 0;
+    // }
+    // else
+    // {
+    //   last_seen_mop_auto_clear_timer++;
+    // }
 
-  //   /* Update timer */
-  //   if (initial_time_update == true)
-  //   {
-  //     coap_last_transmission_timer++;
-  //   }
+    // /* Update timer */
+    // if (initial_time_update == true)
+    // {
+    //   coap_last_transmission_timer++;
+    // }
 
-  //   /* Sequence for notification demo */
-  //   if (Parameter.notification_test == true)
-  //   {
-  //     update_notification_demo();
-  //   }
+    // /* Sequence for notification demo */
+    // if (Parameter.notification_test == true)
+    // {
+    //   update_notification_demo();
+    // }
 
-  //   k_msleep(1000);
-  // }
+    k_msleep(1000);
+  }
 }
 
 void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -379,18 +379,18 @@ void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void button_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     button_monitor();
-  //   }
-  //   k_msleep(1);
-  // }
+  while (1)
+  {
+    // if (datalog_ReadOutisActive == false)
+    // {
+    //   button_monitor();
+    // }
+    // k_msleep(1);
+  }
 }
 
 void battery_thread(void *dummy1, void *dummy2, void *dummy3)

@@ -25,8 +25,6 @@ volatile uint16_t btn2_press_counter = 0;
 
 /*!
  *  @brief This is the function description
-
-
  */
 void button_monitor(void)
 {

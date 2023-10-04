@@ -269,8 +269,8 @@ void main(void)
 {
 	// int16_t err = 0;
 
-	// init_gpio();
-	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
+	 init_gpio();
+	 gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
 
 	// Event_ClearArray();
 
@@ -293,7 +293,7 @@ void main(void)
 	 printk("VILEDA PROFESSIONAL - EviSense\r\n");
 
 //	 rtc_print_debug_timestamp();
-	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
+//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
 	 //shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - %s\n" CONFIG_BOARD);
 //	 rtc_print_debug_timestamp();
 //	 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "====================================\n");
@@ -402,7 +402,7 @@ void main(void)
 
 	// /* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
 	// wdt_reset();
-	// init_threads();
+	 init_threads();
 
 	// k_msleep(100);
 

@@ -22,7 +22,8 @@ void init_gpio(void)
 
   if (gpio_dev == NULL)
   {
-    shell_print(shell_backend_uart_get_ptr(), "Could not get GPIO_O device");
+    //shell_print(shell_backend_uart_get_ptr(), "Could not get GPIO_O device");
+   printk("Could not get GPIO_O device");
     return;
   }
 
