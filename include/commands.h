@@ -45,7 +45,7 @@ extern bool trace_acc_switch;
 extern bool trace_flash;
 extern struct device *gpio_dev;
 
-extern void init_commands(void);
+extern void command_init(void);
 extern void factorysettings(void);
 
 #endif

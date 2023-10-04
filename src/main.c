@@ -379,7 +379,7 @@ void main(void)
 	// init_battery_gauge();
 	// init_led();
 	// init_imu();
-	// init_commands();
+	command_init();
 	// init_algorithms();
 	// wdt_reset();
 
