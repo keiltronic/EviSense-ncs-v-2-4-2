@@ -43,7 +43,7 @@
 
 extern struct device *gpio_dev;
 
-extern void init_gpio(void);
+extern void gpio_init(void);
 extern struct gpio_dt_spec led;
 
 #endif

@@ -5,11 +5,6 @@
  * @brief This file contains functions to communicate with the pheripherals
  * @version 1.0.0
  */
-
-/*!
- * @defgroup Peripherals
- * @brief This file contains functions to communicate with the pheripherals
- * @{*/
 #include "gpio.h"
 
 /* The device tree node idedntify for the "led0" alias*/
@@ -17,7 +12,11 @@
 
 struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
-void init_gpio(void){
+/*!
+ * @brief tbd
+ * @details tbd
+ */
+void gpio_init(void){
 
   if (!device_is_ready(led.port)) {
       return;

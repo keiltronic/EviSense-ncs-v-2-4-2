@@ -17,7 +17,6 @@ K_THREAD_STACK_DEFINE(imu_stack_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(rfid_stack_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(epc_stack_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(datalog_stack_area, STACKSIZE_LARGE);
-K_THREAD_STACK_DEFINE(button_stack_area, STACKSIZE_SMALL);
 K_THREAD_STACK_DEFINE(battery_area, STACKSIZE_SMALL);
 K_THREAD_STACK_DEFINE(lte_and_cloud_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(aws_fota_area, STACKSIZE_LARGE);
@@ -33,7 +32,6 @@ static struct k_thread imu_data;
 static struct k_thread rfid_data;
 static struct k_thread epc_data;
 static struct k_thread datalog_data;
-static struct k_thread button_data;
 static struct k_thread battery_data;
 static struct k_thread lte_and_cloud_data;
 static struct k_thread aws_fota_data;
@@ -377,34 +375,6 @@ void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
   // }
 }
 
-void button_thread(void *dummy1, void *dummy2, void *dummy3)
-{
-  ARG_UNUSED(dummy1);
-  ARG_UNUSED(dummy2);
-  ARG_UNUSED(dummy3);
-
-
- // bool val0 = false;
- //  bool val1 = false;
-
-  while (1)
-  {
-    // if (datalog_ReadOutisActive == false)
-    // {
-    //   button_monitor();
-    // }
-
-
-
-    // val0 = gpio_pin_get_dt(&button0);
-    // val1 = gpio_pin_get_dt(&button1);
-    
-    // gpio_pin_set_dt(&led,val1);
-
-   k_msleep(1);
-  }
-}
-
 void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 {
   // ARG_UNUSED(dummy1);
@@ -637,9 +607,6 @@ void init_threads(void)
 
   tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
   k_thread_name_set(tid, "datalog");
-
-  tid = k_thread_create(&button_data, button_stack_area, STACKSIZE_SMALL, button_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "button");
 
   tid = k_thread_create(&battery_data, battery_area, STACKSIZE_SMALL, battery_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_NO_WAIT);
   k_thread_name_set(tid, "battery");

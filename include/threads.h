@@ -17,7 +17,6 @@
 #include "rfid.h"
 #include "datalog_mem.h"
 #include "stepdetection.h"
-#include "buttons.h"
 #include "notification.h"
 #include "battery_gauge.h"
 #include "uart.h"
