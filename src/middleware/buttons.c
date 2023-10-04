@@ -15,6 +15,9 @@
 #define BTN0_NODE	DT_ALIAS(btn0) 
 #define BTN1_NODE	DT_ALIAS(btn1) 
 
+bool btn0_status = false;
+bool btn1_status = false;
+
 struct gpio_dt_spec button0 = GPIO_DT_SPEC_GET(BTN0_NODE, gpios);
 struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(BTN1_NODE, gpios);
 
@@ -25,8 +28,8 @@ void init_button(void){
   
      int16_t ret = 0;
 
-ret = gpio_pin_interrupt_configure_dt(&button0, GPIO_INT_EDGE_TO_ACTIVE);
-ret = gpio_pin_interrupt_configure_dt(&button1, GPIO_INT_EDGE_TO_ACTIVE);
+    ret = gpio_pin_interrupt_configure_dt(&button0, GPIO_INT_EDGE_BOTH);
+    ret = gpio_pin_interrupt_configure_dt(&button1, GPIO_INT_EDGE_BOTH);
 
   /* Button 0 */
     if (!device_is_ready(button0.port)) {
@@ -49,7 +52,6 @@ ret = gpio_pin_interrupt_configure_dt(&button1, GPIO_INT_EDGE_TO_ACTIVE);
     return;
   }
 
-
   gpio_init_callback(&button0_cb_data, button0_pressed, BIT(button0.pin)); 	
   gpio_init_callback(&button1_cb_data, button1_pressed, BIT(button1.pin)); 	
 
@@ -60,11 +62,15 @@ gpio_add_callback(button1.port, &button1_cb_data);
 
 void button0_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-   
+    btn0_status = (bool) gpio_pin_get_dt(&button0); 
+    printk("btn0: %d\r\n", btn0_status);
 }
 
 void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+    btn1_status = (bool) gpio_pin_get_dt(&button1); 
+    printk("btn1: %d\r\n", btn1_status);
+   
    gpio_pin_toggle_dt(&led);    
 }
 
