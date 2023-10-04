@@ -20,25 +20,30 @@
 #include "events.h"
 #include "hibernate.h"
 
-// #include <gpio.h>
-// #include <hal/nrf_regulators.h>
-// #include <hal/nrf_gpio.h>
-// #include <hal/nrf_power.h>
-// #include <modem/lte_lc.h>
-// #include <bsd.h>
+// // #include <gpio.h>
+// // #include <hal/nrf_regulators.h>
+// // #include <hal/nrf_gpio.h>
+// // #include <hal/nrf_power.h>
+// // #include <modem/lte_lc.h>
+// // #include <bsd.h>
 
-#define BATTERY_LEVEL_TIME 1000 // ms
-#define BATTERY_LEVEL_TIME 1000 // ms
-#define HIBERNATE_TIME 5000      // ms
+// #define BATTERY_LEVEL_TIME 1000 // ms
+// #define BATTERY_LEVEL_TIME 1000 // ms
+// #define HIBERNATE_TIME 5000      // ms
 
-extern uint16_t btn1_press_timer;
-extern uint16_t btn2_press_timer;
-extern uint8_t btn1_pressed;
-extern uint8_t btn2_pressed;
-extern uint8_t btn1_beep;
-extern uint8_t btn2_beep;
-extern volatile uint16_t btn1_press_counter;
-extern volatile uint16_t btn2_press_counter;
-extern void button_monitor(void);
+// extern uint16_t btn1_press_timer;
+// extern uint16_t btn2_press_timer;
+// extern uint8_t btn1_pressed;
+// extern uint8_t btn2_pressed;
+// extern uint8_t btn1_beep;
+// extern uint8_t btn2_beep;
+// extern volatile uint16_t btn1_press_counter;
+// extern volatile uint16_t btn2_press_counter;
+// extern void button_monitor(void);
+
+extern struct gpio_dt_spec button0;
+extern struct gpio_dt_spec button1;
+
+extern void init_button(void);
 
 #endif

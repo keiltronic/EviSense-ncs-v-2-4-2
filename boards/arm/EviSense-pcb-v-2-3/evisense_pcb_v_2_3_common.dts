@@ -16,7 +16,7 @@
 		zephyr,uart-mcumgr = &uart0;
 	};
 
-	leds{
+	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
 			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
@@ -24,8 +24,23 @@
 		};
 	};
 
+	buttons {
+		compatible = "gpio-keys";
+		button0: button_0 { 
+			gpios = <&gpio0 18 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "Internal button";
+		};
+		button1: button_1 {
+			gpios = <&gpio0 19 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "User button";
+		};
+	};
+	
+
 	aliases{
 		led0 = &led0;
+		btn0 = &button0;
+		btn1 = &button1;
 	};
 };
 

@@ -70,7 +70,7 @@
 #include "flash.h"
 #include "gpio.h"
 #include "i2c.h"
-// #include "led.h"
+#include "led.h"
 // #include "modem.h"
 // #include "notification.h"
 // #include "parameter_mem.h"
@@ -262,8 +262,6 @@ void factorysettings(void)
 /* The device tree node idedntify for the "led0" alias*/
 #define LED0_NODE DT_ALIAS(led0)
 
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-
 /*!
  * @brief This main function is the initial starting point of the application after Zephyr OS booted up.
  * @details The purpose of this main function is to initialize all pheriperals and finally to start all threads.
@@ -274,6 +272,7 @@ void main(void)
 {
 	// int16_t err = 0;
 	 init_gpio();
+	 init_button();
 	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
 
 	// Event_ClearArray();

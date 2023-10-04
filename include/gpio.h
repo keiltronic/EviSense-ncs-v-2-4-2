@@ -44,5 +44,6 @@
 extern struct device *gpio_dev;
 
 extern void init_gpio(void);
+extern struct gpio_dt_spec led;
 
 #endif

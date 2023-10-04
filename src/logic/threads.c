@@ -383,13 +383,23 @@ void button_thread(void *dummy1, void *dummy2, void *dummy3)
   ARG_UNUSED(dummy2);
   ARG_UNUSED(dummy3);
 
+
+  bool val0 = false;
+   bool val1 = false;
+
   while (1)
   {
     // if (datalog_ReadOutisActive == false)
     // {
     //   button_monitor();
     // }
-    // k_msleep(1);
+
+    val0 = gpio_pin_get_dt(&button0);
+    val1 = gpio_pin_get_dt(&button1);
+    
+    gpio_pin_set_dt(&led,val1);
+
+   k_msleep(1);
   }
 }
 

@@ -15,7 +15,7 @@
 /* The device tree node idedntify for the "led0" alias*/
 #define LED0_NODE DT_ALIAS(led0)
 
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
 void init_gpio(void){
 
@@ -23,14 +23,14 @@ void init_gpio(void){
       return;
   }
 
-  int ret;
+  int16_t ret = 0;
+
   ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
   if (ret < 0) {
       return;
   }
 
   gpio_pin_set_dt(&led, GPIO_ACTIVE_LOW);
-
 }
 
 
