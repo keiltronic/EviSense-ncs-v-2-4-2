@@ -141,20 +141,20 @@ void safety_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void notification_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     notification_update();
-  //     led_update();
-  //     buzzer_update(&buzzer);
-  //   }
-  //   k_msleep(1);
-  // }
+  while (1)
+  {
+    if (datalog_ReadOutisActive == false)
+    {
+      notification_update();
+      led_update();
+      buzzer_update(&buzzer);
+    }
+    k_msleep(1);
+  }
 }
 
 static void imu_thread(void *dummy1, void *dummy2, void *dummy3)

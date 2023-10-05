@@ -1,33 +1,33 @@
-// /**
-//  * @file test.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 10 Sep 2022
-//  * @brief This files provides functions for pcb self test and optinally an API for automated testing
-//  * @version 1.0.0
-//  */
+/**
+ * @file test.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 05 Oct 2023
+ * @brief This files provides functions for pcb self test and optinally an API for automated testing
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup Test
-//  * @brief This files provides functions for pcb self test and optinally an API for automated testing
-//  * @{*/
-// #include "test.h"
+/*!
+ * @defgroup Test
+ * @brief This files provides functions for pcb self test and optinally an API for automated testing
+ * @{*/
+#include "test.h"
 
-// uint8_t suppress_rfid_command_charcaters = false;
+uint8_t suppress_rfid_command_charcaters = false;
 
-// /* Test result flags*/
-// uint8_t pcb_test_is_running = false;
-// uint8_t battery_ok = false;
-// uint8_t usb_ok = false;
-// uint8_t button_ok = false;
-// uint8_t sim_ok = false;
-// uint8_t connectivity_ok = false;
-// uint8_t rfid_ok = false;
-// uint8_t imu_ok = false;
-// uint8_t mag_ok = false;
-// uint8_t i2c_ok = false;
+/* Test result flags*/
+uint8_t pcb_test_is_running = false;
+uint8_t battery_ok = false;
+uint8_t usb_ok = false;
+uint8_t button_ok = false;
+uint8_t sim_ok = false;
+uint8_t connectivity_ok = false;
+uint8_t rfid_ok = false;
+uint8_t imu_ok = false;
+uint8_t mag_ok = false;
+uint8_t i2c_ok = false;
 
-// uint8_t test_pcb(void)
-// {
+uint8_t test_pcb(void)
+{
 //     pcb_test_is_running = true;
 //     char device_imei[16];
 //     char iccid[50];
@@ -97,41 +97,41 @@
 //     buzzer.burst_repeat_cycles = 1;
 //     set_buzzer(&buzzer);
 
-//     led.blink_on_time = 500;
-//     led.blink_off_time = 500;
-//     led.pos_slope = 0;
-//     led.neg_slope = 0;
-//     led.repeats = 1;
-//     led.red_value = 0;
-//     led.green_value = 255;
-//     led.blue_value = 0;
-//     led.brightness_value = 255;
+//     rgb_led.blink_on_time = 500;
+//     rgb_led.blink_off_time = 500;
+//     rgb_led.pos_slope = 0;
+//     rgb_led.neg_slope = 0;
+//     rgb_led.repeats = 1;
+//     rgb_led.red_value = 0;
+//     rgb_led.green_value = 255;
+//     rgb_led.blue_value = 0;
+//     rgb_led.brightness_value = 255;
 //     led_next_state = FLASH;
 
 //     k_msleep(1000);
 
-//     led.blink_on_time = 500;
-//     led.blink_off_time = 500;
-//     led.pos_slope = 0;
-//     led.neg_slope = 0;
-//     led.repeats = 1;
-//     led.red_value = 255;
-//     led.green_value = 0;
-//     led.blue_value = 0;
-//     led.brightness_value = 255;
+//     rgb_led.blink_on_time = 500;
+//     rgb_led.blink_off_time = 500;
+//     rgb_led.pos_slope = 0;
+//     rgb_led.neg_slope = 0;
+//     rgb_led.repeats = 1;
+//     rgb_led.red_value = 255;
+//     rgb_led.green_value = 0;
+//     rgb_led.blue_value = 0;
+//     rgb_led.brightness_value = 255;
 //     led_next_state = FLASH;
 
 //     k_msleep(1000);
 
-//     led.blink_on_time = 500;
-//     led.blink_off_time = 500;
-//     led.pos_slope = 0;
-//     led.neg_slope = 0;
-//     led.repeats = 1;
-//     led.red_value = 0;
-//     led.green_value = 0;
-//     led.blue_value = 255;
-//     led.brightness_value = 255;
+//     rgb_led.blink_on_time = 500;
+//     rgb_led.blink_off_time = 500;
+//     rgb_led.pos_slope = 0;
+//     rgb_led.neg_slope = 0;
+//     rgb_led.repeats = 1;
+//     rgb_led.red_value = 0;
+//     rgb_led.green_value = 0;
+//     rgb_led.blue_value = 255;
+//     rgb_led.brightness_value = 255;
 //     led_next_state = FLASH;
 
 //     k_msleep(1000);
@@ -430,4 +430,4 @@
 //     pcb_test_is_running = false;
 //     factorysettings();
 //     return 0;
-// }
+ }

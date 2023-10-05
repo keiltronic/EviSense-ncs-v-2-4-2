@@ -19,6 +19,7 @@
 
 /* The device tree node idedntify for the "led0" alias*/
 #define LED0_NODE DT_ALIAS(led0)
+#define LP5009_EN_NODE DT_ALIAS(lp5009enable)
 #define I2C2_NODE DT_NODELABEL(lp5009)
 
 #define DEVICE_CONFIG0 0x00
@@ -75,6 +76,8 @@ enum mode
 extern uint8_t led_next_state;
 extern uint32_t flash_repeat_counter;
 extern struct gpio_dt_spec led;
+
+extern RGB_LED rgb_led;
 
 extern void led_init(void);
 extern void led_update(void);

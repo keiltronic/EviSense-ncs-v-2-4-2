@@ -124,11 +124,11 @@ void Event_AddInArray(GenericEvent *NewEvent)
   /* If local event buffer in RAm is full, pack (protobuf) and outsource the whole buffer to the external flash memory to free the local event buffer in RAM */
   if (Event_ItemsInArray >= EVENT_MAX_ITEMS_IN_ARRAY)
   {
-    Event_StorePackedUsageObjectToFlash();
+  //  Event_StorePackedUsageObjectToFlash(); //!#
 
     /* Clear event array in RAM */
     Event_ClearArray();
-    clear_last_seen_location_record_array();
+   // clear_last_seen_location_record_array();  //!#
   }
 }
 

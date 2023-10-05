@@ -1,11 +1,10 @@
 /**
  * @file notification.h
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 05 Oct 2023
  * @brief This file contains functions headers to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
-
 
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H

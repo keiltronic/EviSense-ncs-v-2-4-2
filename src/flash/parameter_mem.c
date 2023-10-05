@@ -1,133 +1,133 @@
-// /**
-//  * @file parameter_mem.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 28 Sep 2022
-//  * @brief This file contains function to write and read device settings (parameters) to and from the external flash memory
-//  * @version 1.0.0
-//  */
+/**
+ * @file parameter_mem.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 05 Oct 2023
+ * @brief This file contains function to write and read device settings (parameters) to and from the external flash memory
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup Memory
-//  * @brief This file contains function to write and read device settings (parameters) to and from the external flash memory
-//  * @{*/
+/*!
+ * @defgroup Memory
+ * @brief This file contains function to write and read device settings (parameters) to and from the external flash memory
+ * @{*/
 
-// #include "parameter_mem.h"
+#include "parameter_mem.h"
 
-// PARAMETER Parameter;
+PARAMETER Parameter;
 
-// /*!
-//  * @brief This functions initalize a structure with parameter in RAM.
-//  */
-// void Parameter_InitRAM(void)
-// {
-//   Parameter.datalog_Interval = 50;
-//   Parameter.imu_interval = 50;
-//   Parameter.rfid_interval = 300;
-//   Parameter.rfid_interval_lifted = 120; // msec
-//   Parameter.rfid_verbose = false;
-//   Parameter.rfid_output_power = 27;
-//   Parameter.rfid_output_power_lifted = 27;
-//   Parameter.rfid_frequency = 5; // EU =5 US = 1;
-//   Parameter.datalog_sniffFrame = false;
-//   Parameter.stepdetection_verbose = false;
-//   Parameter.led_brightness = 255;
-//   Parameter.buzzer_duty_cycle = 15;
-//   Parameter.debug = false;
-//   Parameter.datalogEnable = false;
-//   Parameter.acc_noise_thr = 0.10;                      // m/s^2 - Noise threshold for Acc
-//   Parameter.gyr_noise_thr = 10.0;                      // deg/s  - Noise threshold for Gyr
-//   Parameter.gyr_spin_thr = 100.0;                      // degrees to rotate handle during S-shape mopping
-//   Parameter.mag_noise_thr = 90.0;                     // microT - Noise threshold for Mag to remove earth magnetic field strength
-//   Parameter.frame_handle_angle_thr = 20.0;             // in deg -  threshold to detect frame flip.
-//   Parameter.floor_handle_angle_mopping_thr_min = 30.0; // in deg -  min threshold to enable mopping detection.
-//   Parameter.floor_handle_angle_mopping_thr_max = 80.0; // in deg -  max threshold to enable mopping detection.
-//   Parameter.floor_handle_angle_mopchange_thr = 15.0;  // in deg -  thresholds to enable mop change detection.
-//   Parameter.min_mopchange_duration = 1LL;              // in sec - time threshold to enable mop change detection.
-//   Parameter.min_mopframeflip_duration = 5LL;           // in sec - time threshold to enable mop frame flip detection.
-//   Parameter.angle_smooth_factor = 0.9;                 // exponential filter factor for estimation of inclination angles (close to 0 gives more weight to recent samples)
-//   Parameter.gyr_smooth_factor = 0.95;                  // exponential filter factor for smoothing Gyro based feature values
-//   Parameter.min_mopcycle_duration = 0.4;               // sec - min duration of mop cycle is the recurring mopping movement (actually is half of the oscillation)-fast mopping
-//   Parameter.max_mopcycle_duration = 4.0;               // <3 sec - max duration of mop cycle -slow mopping
-//   Parameter.mop_width = 0.50;                          // in meters - width of the mop frame
-//   Parameter.mop_overlap = 1.0;                         // in precentage during mopping
-//   Parameter.mopcycle_sequence_thr = 1.0;               // num of mop cycles needed to set mopping flag
-//   Parameter.peakfollower_update_delay = 1LL;           // secs - period in sec to update the signal peak
-//   Parameter.mop_rfid_detection_thr = 7;               //-- 3-5 number of sequential reads until the mop rfid is confirmed
-//   Parameter.mopping_coverage_per_mop_thr = 1.0;        // sends info only if some m2 have been mopped;
-//   Parameter.algo_flag_verbose = false;
-//   Parameter.algo_verbose = true;
-//   Parameter.coap_verbose = false;
-//   Parameter.events_verbose = true;
-//   Parameter.protobuf_verbose = false;
-//   Parameter.modem_verbose = false;
-//   Parameter.cloud_sync_interval_idle = 300;   // seconds
-//   Parameter.cloud_sync_interval_moving = 600; // seconds
-//   Parameter.flash_verbose = false;
-//   Parameter.epc_verbose = true;
-//   Parameter.epc_raw_verbose = false;
-//   Parameter.rfid_autoscan = false;
-//   Parameter.log_unkown_tags = true;
-//   Parameter.last_seen_locations_auto_reset_time = 5;     // in seconds
-//   Parameter.last_seen_mop_array_auto_reset_time = 20000; // => 30000=8.3h in seconds
-//   Parameter.enable_blue_dev_led = false;
-//   Parameter.notification_verbose = false;
-//   Parameter.notifications_while_usb_connected = false;
-//   Parameter.enable_rfid_confirmation_blinking = false;
-//   Parameter.enable_coveraged_per_mop_notification = true;
-//   Parameter.max_sqm_coveraged_per_mop = 12.0;
-//   Parameter.usb_plugin_reset_time = 900; // sec: 15 min
-//   Parameter.usb_auto_reset_time = 86400; // sec: 24 h
-//   Parameter.anymotion_duration = 2;
-//   Parameter.anymotion_thr = 12;
-//   Parameter.motion_reset_time = 15;
-//   Parameter.fota_enable = true;
-//   Parameter.fota_verbose = false;
-//   Parameter.current_shift_mop_check = true;
-//   Parameter.fully_charged_indicator_time = 8640000;    // sec (100 days)
-//   Parameter.battery_charge_termination_current = 20.0; // mA
-//   Parameter.battery_gauge_sniff_i2c = false;
-//   Parameter.battery_gauge_charge_temp_min = 0.0;
-//   Parameter.battery_gauge_charge_temp_max = 45.0;
-//   Parameter.network_connection_type = LTE_M; // LTE_M NB_IOT
-//   Parameter.mop_id_refresh_timer = 45;
-//   Parameter.hit_shock_mag_thr = 2.5;
-//   Parameter.algocontrol_bymag_det = 1;
-//   Parameter.mag_det_threshold = 120;
-//   Parameter.mag_det_consecutive_samples = 30; // unit: 100ms
-//   Parameter.notification_test = false;
-//   Parameter.rfid_blink_notification = false;
-//   Parameter.modem_disable = false;
-//   Parameter.rfid_disable = false;
-//   Parameter.low_bat_threshold = 3450; // mV
-//   Parameter.binary_search_verbose = false;
-//   Parameter.mop_verbose = false;
-//   Parameter.event1statistics_interval = 60; // sec  
-// }
+/*!
+ * @brief This functions initalize a structure with parameter in RAM.
+ */
+void Parameter_InitRAM(void)
+{
+  Parameter.datalog_Interval = 50;
+  Parameter.imu_interval = 50;
+  Parameter.rfid_interval = 300;
+  Parameter.rfid_interval_lifted = 120; // msec
+  Parameter.rfid_verbose = false;
+  Parameter.rfid_output_power = 27;
+  Parameter.rfid_output_power_lifted = 27;
+  Parameter.rfid_frequency = 5; // EU =5 US = 1;
+  Parameter.datalog_sniffFrame = false;
+  Parameter.stepdetection_verbose = false;
+  Parameter.led_brightness = 255;
+  Parameter.buzzer_duty_cycle = 15;
+  Parameter.debug = false;
+  Parameter.datalogEnable = false;
+  Parameter.acc_noise_thr = 0.10;                      // m/s^2 - Noise threshold for Acc
+  Parameter.gyr_noise_thr = 10.0;                      // deg/s  - Noise threshold for Gyr
+  Parameter.gyr_spin_thr = 100.0;                      // degrees to rotate handle during S-shape mopping
+  Parameter.mag_noise_thr = 90.0;                     // microT - Noise threshold for Mag to remove earth magnetic field strength
+  Parameter.frame_handle_angle_thr = 20.0;             // in deg -  threshold to detect frame flip.
+  Parameter.floor_handle_angle_mopping_thr_min = 30.0; // in deg -  min threshold to enable mopping detection.
+  Parameter.floor_handle_angle_mopping_thr_max = 80.0; // in deg -  max threshold to enable mopping detection.
+  Parameter.floor_handle_angle_mopchange_thr = 15.0;  // in deg -  thresholds to enable mop change detection.
+  Parameter.min_mopchange_duration = 1LL;              // in sec - time threshold to enable mop change detection.
+  Parameter.min_mopframeflip_duration = 5LL;           // in sec - time threshold to enable mop frame flip detection.
+  Parameter.angle_smooth_factor = 0.9;                 // exponential filter factor for estimation of inclination angles (close to 0 gives more weight to recent samples)
+  Parameter.gyr_smooth_factor = 0.95;                  // exponential filter factor for smoothing Gyro based feature values
+  Parameter.min_mopcycle_duration = 0.4;               // sec - min duration of mop cycle is the recurring mopping movement (actually is half of the oscillation)-fast mopping
+  Parameter.max_mopcycle_duration = 4.0;               // <3 sec - max duration of mop cycle -slow mopping
+  Parameter.mop_width = 0.50;                          // in meters - width of the mop frame
+  Parameter.mop_overlap = 1.0;                         // in precentage during mopping
+  Parameter.mopcycle_sequence_thr = 1.0;               // num of mop cycles needed to set mopping flag
+  Parameter.peakfollower_update_delay = 1LL;           // secs - period in sec to update the signal peak
+  Parameter.mop_rfid_detection_thr = 7;               //-- 3-5 number of sequential reads until the mop rfid is confirmed
+  Parameter.mopping_coverage_per_mop_thr = 1.0;        // sends info only if some m2 have been mopped;
+  Parameter.algo_flag_verbose = false;
+  Parameter.algo_verbose = true;
+  Parameter.coap_verbose = false;
+  Parameter.events_verbose = true;
+  Parameter.protobuf_verbose = false;
+  Parameter.modem_verbose = false;
+  Parameter.cloud_sync_interval_idle = 300;   // seconds
+  Parameter.cloud_sync_interval_moving = 600; // seconds
+  Parameter.flash_verbose = false;
+  Parameter.epc_verbose = true;
+  Parameter.epc_raw_verbose = false;
+  Parameter.rfid_autoscan = false;
+  Parameter.log_unkown_tags = true;
+  Parameter.last_seen_locations_auto_reset_time = 5;     // in seconds
+  Parameter.last_seen_mop_array_auto_reset_time = 20000; // => 30000=8.3h in seconds
+  Parameter.enable_blue_dev_led = false;
+  Parameter.notification_verbose = false;
+  Parameter.notifications_while_usb_connected = false;
+  Parameter.enable_rfid_confirmation_blinking = false;
+  Parameter.enable_coveraged_per_mop_notification = true;
+  Parameter.max_sqm_coveraged_per_mop = 12.0;
+  Parameter.usb_plugin_reset_time = 900; // sec: 15 min
+  Parameter.usb_auto_reset_time = 86400; // sec: 24 h
+  Parameter.anymotion_duration = 2;
+  Parameter.anymotion_thr = 12;
+  Parameter.motion_reset_time = 15;
+  Parameter.fota_enable = true;
+  Parameter.fota_verbose = false;
+  Parameter.current_shift_mop_check = true;
+  Parameter.fully_charged_indicator_time = 8640000;    // sec (100 days)
+  Parameter.battery_charge_termination_current = 20.0; // mA
+  Parameter.battery_gauge_sniff_i2c = false;
+  Parameter.battery_gauge_charge_temp_min = 0.0;
+  Parameter.battery_gauge_charge_temp_max = 45.0;
+  Parameter.network_connection_type = LTE_M; // LTE_M NB_IOT
+  Parameter.mop_id_refresh_timer = 45;
+  Parameter.hit_shock_mag_thr = 2.5;
+  Parameter.algocontrol_bymag_det = 1;
+  Parameter.mag_det_threshold = 120;
+  Parameter.mag_det_consecutive_samples = 30; // unit: 100ms
+  Parameter.notification_test = false;
+  Parameter.rfid_blink_notification = false;
+  Parameter.modem_disable = false;
+  Parameter.rfid_disable = false;
+  Parameter.low_bat_threshold = 3450; // mV
+  Parameter.binary_search_verbose = false;
+  Parameter.mop_verbose = false;
+  Parameter.event1statistics_interval = 60; // sec  
+}
 
-// /*!
-//  * @brief This functions reads the the stored parameter setting from external flash memory to the RAM.
-//  */
-// void Parameter_PopFlashToRAM(void)
-// {
+/*!
+ * @brief This functions reads the the stored parameter setting from external flash memory to the RAM.
+ */
+void Parameter_PopFlashToRAM(void)
+{
 //   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
-// }
+ }
 
-// /*!
-//  * @brief This functions saves the current parameter setting in RAM to external flash memory.
-//  */
-// void Parameter_PushRAMToFlash(void)
-// {
+/*!
+ * @brief This functions saves the current parameter setting in RAM to external flash memory.
+ */
+ void Parameter_PushRAMToFlash(void)
+ {
 //   flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, PARAMETER_MEM_LENGTH);
 //   flash_write(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
-// }
+ }
 
-// /**
-//  * @brief This functions prints the current parameter setting on console
-//  *
-//  * @param para: Pointer to parameter structure
-//  */
-// void Parameter_PrintValues(PARAMETER *para)
-// {
+/**
+ * @brief This functions prints the current parameter setting on console
+ *
+ * @param para: Pointer to parameter structure
+ */
+void Parameter_PrintValues(PARAMETER *para)
+{
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalog_Interval = %d\n", para->datalog_Interval);
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "imu_interval = %d\n", para->imu_interval);
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_interval = %d\n", para->rfid_interval);
@@ -207,4 +207,4 @@
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "epc_raw_verbose = %d\n", Parameter.epc_raw_verbose);
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_verbose = %d\n", Parameter.mop_verbose);
 //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "event1statistics_interval = %d\n", Parameter.event1statistics_interval);
-// }
+}

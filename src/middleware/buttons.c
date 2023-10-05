@@ -124,7 +124,7 @@ void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_
     System.StatusInputs |= STATUSFLAG_UB;
 
     /* Add event in event array which is send to cloud in next sync interval */
-    // NewEvent0x0D();
+    NewEvent0x0D();
 
     /* Capture kernel time stamp to measure press duration */
     btn1_start_time = k_cycle_get_32();

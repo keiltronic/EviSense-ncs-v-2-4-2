@@ -23,6 +23,7 @@
 		myspiflash = &mt25ql256_0;
 		mysensor = &bmx160;
 		myleddriver = &lp5009;
+		lp5009enable = &lp5009_enable;
 	};
 
 	leds {
@@ -30,6 +31,11 @@
 		led0: led_0 {
 			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
 			label = "Blue dev LED";
+		};
+
+		lp5009_enable: lp5009_en {
+			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+			label = "LED driver enable pin";
 		};
 	};
 
@@ -80,7 +86,6 @@
 
 	lp5009: lp5009@14 {
 		compatible = "ti,lp5009";
-		enable-pin = <&gpio0 3 GPIO_ACTIVE_LOW>;
 		reg = <0x14>;
 	};
 

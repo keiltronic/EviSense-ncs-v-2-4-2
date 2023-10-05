@@ -105,15 +105,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 200;  // ms
-        led.blink_off_time = 200; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 4;
-        led.red_value = 255;
-        led.green_value = 0;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 200;  // ms
+        rgb_led.blink_off_time = 200; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 4;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         buzzer.status = BUZZER_BEEP;
@@ -159,15 +159,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 500; // ms
-        led.blink_off_time = 1;  // ms
-        led.pos_slope = 0;       // ms
-        led.neg_slope = 0;       // ms
-        led.repeats = 1;
-        led.red_value = 0;
-        led.green_value = 255;
-        led.blue_value = 0;
-        led.brightness_value = 10;
+        rgb_led.blink_on_time = 500; // ms
+        rgb_led.blink_off_time = 1;  // ms
+        rgb_led.pos_slope = 0;       // ms
+        rgb_led.neg_slope = 0;       // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 10;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -202,15 +202,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 200;  // ms
-        led.blink_off_time = 200; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 2;
-        led.red_value = 0;
-        led.green_value = 0;
-        led.blue_value = 255;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 200;  // ms
+        rgb_led.blink_off_time = 200; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 2;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -245,15 +245,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 60000; // ms
-        led.blink_off_time = 1;    // ms
-        led.pos_slope = 0;         // ms
-        led.neg_slope = 0;         // ms
-        led.repeats = 1;
-        led.red_value = 255;
-        led.green_value = 0;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 60000; // ms
+        rgb_led.blink_off_time = 1;    // ms
+        rgb_led.pos_slope = 0;         // ms
+        rgb_led.neg_slope = 0;         // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -287,15 +287,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 300000; // ms
-        led.blink_off_time = 1;     // ms
-        led.pos_slope = 0;          // ms
-        led.neg_slope = 0;          // ms
-        led.repeats = 1;
-        led.red_value = 0;
-        led.green_value = 0;
-        led.blue_value = 255;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 300000; // ms
+        rgb_led.blink_off_time = 1;     // ms
+        rgb_led.pos_slope = 0;          // ms
+        rgb_led.neg_slope = 0;          // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -330,15 +330,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 1000; // ms
-        led.blink_off_time = 1;   // ms
-        led.pos_slope = 1000;     // ms
-        led.neg_slope = 1000;     // ms
-        led.repeats = 1;
-        led.red_value = 255;
-        led.green_value = 255;
-        led.blue_value = 255;
-        led.brightness_value = 50;
+        rgb_led.blink_on_time = 1000; // ms
+        rgb_led.blink_off_time = 1;   // ms
+        rgb_led.pos_slope = 1000;     // ms
+        rgb_led.neg_slope = 1000;     // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 50;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -373,15 +373,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 20000; // ms
-        led.blink_off_time = 1;    // ms
-        led.pos_slope = 0;         // ms
-        led.neg_slope = 0;         // ms
-        led.repeats = 1;
-        led.red_value = 255;
-        led.green_value = 0;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 20000; // ms
+        rgb_led.blink_off_time = 1;    // ms
+        rgb_led.pos_slope = 0;         // ms
+        rgb_led.neg_slope = 0;         // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -416,15 +416,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 180; // ms
-        led.blink_off_time = 5;  // ms
-        led.pos_slope = 0;       // ms
-        led.neg_slope = 0;       // ms
-        led.repeats = 1;
-        led.red_value = 0;
-        led.green_value = 0;
-        led.blue_value = 255;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 180; // ms
+        rgb_led.blink_off_time = 5;  // ms
+        rgb_led.pos_slope = 0;       // ms
+        rgb_led.neg_slope = 0;       // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -459,15 +459,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 500;  // ms
-        led.blink_off_time = 500; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 5;
-        led.red_value = 0;
-        led.green_value = 255;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 500;  // ms
+        rgb_led.blink_off_time = 500; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 5;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -502,15 +502,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 200;  // ms
-        led.blink_off_time = 200; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 8;
-        led.red_value = 255;
-        led.green_value = 255;
-        led.blue_value = 0;
-        led.brightness_value = 60;
+        rgb_led.blink_on_time = 200;  // ms
+        rgb_led.blink_off_time = 200; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 8;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 60;
 
         led_next_state = FLASH;
 
@@ -538,10 +538,10 @@ void notification_update(void)
 
   case NOTIFICATION_HIBERNATE:
 
-    led.red_value = 0;
-    led.green_value = 0;
-    led.blue_value = 0;
-    led.brightness_value = 100;
+    rgb_led.red_value = 0;
+    rgb_led.green_value = 0;
+    rgb_led.blue_value = 0;
+    rgb_led.brightness_value = 100;
     led_next_state = OFF;
 
     buzzer.status = BUZZER_BEEP;
@@ -569,15 +569,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 1000;  // ms
-        led.blink_off_time = 1000; // ms
-        led.pos_slope = 500;       // ms
-        led.neg_slope = 500;       // ms
-        led.repeats = 0;
-        led.red_value = 255;
-        led.green_value = 255;
-        led.blue_value = 255;
-        led.brightness_value = 30;
+        rgb_led.blink_on_time = 1000;  // ms
+        rgb_led.blink_off_time = 1000; // ms
+        rgb_led.pos_slope = 500;       // ms
+        rgb_led.neg_slope = 500;       // ms
+        rgb_led.repeats = 0;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 30;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -617,10 +617,10 @@ void notification_update(void)
         notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_CHARGING);
       }
 
-      led.red_value = 255;
-      led.green_value = 255;
-      led.blue_value = 255;
-      led.brightness_value = 50;
+      rgb_led.red_value = 255;
+      rgb_led.green_value = 255;
+      rgb_led.blue_value = 255;
+      rgb_led.brightness_value = 50;
       led_next_state = ON;
 
       /* Print debug messages if enabled */
@@ -659,15 +659,15 @@ void notification_update(void)
         notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_RED);
       }
 
-      led.blink_on_time = 1000; // ms
-      led.blink_off_time = 500; // ms
-      led.pos_slope = 500;      // ms
-      led.neg_slope = 500;      // ms
-      led.repeats = 0;
-      led.red_value = 255;
-      led.green_value = 255;
-      led.blue_value = 0;
-      led.brightness_value = 30;
+      rgb_led.blink_on_time = 1000; // ms
+      rgb_led.blink_off_time = 500; // ms
+      rgb_led.pos_slope = 500;      // ms
+      rgb_led.neg_slope = 500;      // ms
+      rgb_led.repeats = 0;
+      rgb_led.red_value = 255;
+      rgb_led.green_value = 255;
+      rgb_led.blue_value = 0;
+      rgb_led.brightness_value = 30;
       led_next_state = FLASH;
 
       /* Print debug messages if enabled */
@@ -706,10 +706,10 @@ void notification_update(void)
         notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_GREEN);
       }
 
-      led.red_value = 0;
-      led.green_value = 255;
-      led.blue_value = 0;
-      led.brightness_value = 100;
+      rgb_led.red_value = 0;
+      rgb_led.green_value = 255;
+      rgb_led.blue_value = 0;
+      rgb_led.brightness_value = 100;
       led_next_state = ON;
 
       /* Print debug messages if enabled */
@@ -745,45 +745,45 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        if (battery.StateOfCharge > BATTERY_GOOD)
-        {                            /* green LED */
-          led.blink_on_time = 10000; // ms
-          led.blink_off_time = 1;    // ms
-          led.pos_slope = 0;         // ms
-          led.neg_slope = 0;         // ms
-          led.repeats = 1;
-          led.red_value = 0;
-          led.green_value = 255;
-          led.blue_value = 0;
-          led.brightness_value = 255;
-          led_next_state = FLASH;
-        }
-        else if (battery.StateOfCharge > BATTERY_LOW)
-        {                            /* yellow LED */
-          led.blink_on_time = 10000; // ms
-          led.blink_off_time = 1;    // ms
-          led.pos_slope = 0;         // ms
-          led.neg_slope = 0;         // ms
-          led.repeats = 1;
-          led.red_value = 100;
-          led.green_value = 255;
-          led.blue_value = 0;
-          led.brightness_value = 255;
-          led_next_state = FLASH;
-        }
-        else
-        {                            /* red LED */
-          led.blink_on_time = 10000; // ms
-          led.blink_off_time = 1;    // ms
-          led.pos_slope = 0;         // ms
-          led.neg_slope = 0;         // ms
-          led.repeats = 1;
-          led.red_value = 255;
-          led.green_value = 0;
-          led.blue_value = 0;
-          led.brightness_value = 255;
-          led_next_state = FLASH;
-        }
+        // if (battery.StateOfCharge > BATTERY_GOOD)
+        // {                            /* green LED */
+        //   rgb_led.blink_on_time = 10000; // ms
+        //   rgb_led.blink_off_time = 1;    // ms
+        //   rgb_led.pos_slope = 0;         // ms
+        //   rgb_led.neg_slope = 0;         // ms
+        //   rgb_led.repeats = 1;
+        //   rgb_led.red_value = 0;
+        //   rgb_led.green_value = 255;
+        //   rgb_led.blue_value = 0;
+        //   rgb_led.brightness_value = 255;
+        //   led_next_state = FLASH;
+        // }
+        // else if (battery.StateOfCharge > BATTERY_LOW)
+        // {                            /* yellow LED */
+        //   rgb_led.blink_on_time = 10000; // ms
+        //   rgb_led.blink_off_time = 1;    // ms
+        //   rgb_led.pos_slope = 0;         // ms
+        //   rgb_led.neg_slope = 0;         // ms
+        //   rgb_led.repeats = 1;
+        //   rgb_led.red_value = 100;
+        //   rgb_led.green_value = 255;
+        //   rgb_led.blue_value = 0;
+        //   rgb_led.brightness_value = 255;
+        //   led_next_state = FLASH;
+        // }
+        // else
+        // {                            /* red LED */
+        //   rgb_led.blink_on_time = 10000; // ms
+        //   rgb_led.blink_off_time = 1;    // ms
+        //   rgb_led.pos_slope = 0;         // ms
+        //   rgb_led.neg_slope = 0;         // ms
+        //   rgb_led.repeats = 1;
+        //   rgb_led.red_value = 255;
+        //   rgb_led.green_value = 0;
+        //   rgb_led.blue_value = 0;
+        //   rgb_led.brightness_value = 255;
+        //   led_next_state = FLASH;
+        // }
 
         /* Print debug messages if enabled */
         if ((Parameter.notification_verbose == true) && (pcb_test_is_running == false))
@@ -817,15 +817,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 30; // ms
-        led.blink_off_time = 10; // ms
-        led.pos_slope = 0;      // ms
-        led.neg_slope = 0;      // ms
-        led.repeats = 1;
-        led.red_value = 0;
-        led.green_value = 0;
-        led.blue_value = 255;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 30; // ms
+        rgb_led.blink_off_time = 10; // ms
+        rgb_led.pos_slope = 0;      // ms
+        rgb_led.neg_slope = 0;      // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -860,15 +860,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 30; // ms
-        led.blink_off_time = 1; // ms
-        led.pos_slope = 0;      // ms
-        led.neg_slope = 0;      // ms
-        led.repeats = 1;
-        led.red_value = 0;
-        led.green_value = 0;
-        led.blue_value = 255;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 30; // ms
+        rgb_led.blink_off_time = 1; // ms
+        rgb_led.pos_slope = 0;      // ms
+        rgb_led.neg_slope = 0;      // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 0;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 255;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
@@ -903,15 +903,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 250;  // ms
-        led.blink_off_time = 250; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 20;
-        led.red_value = 200;
-        led.green_value = 255;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 250;  // ms
+        rgb_led.blink_off_time = 250; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 20;
+        rgb_led.red_value = 200;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
         flash_repeat_counter = 0;
 
@@ -947,15 +947,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 20000; // ms
-        led.blink_off_time = 1;    // ms
-        led.pos_slope = 0;         // ms
-        led.neg_slope = 0;         // ms
-        led.repeats = 1;
-        led.red_value = 200;
-        led.green_value = 255;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 20000; // ms
+        rgb_led.blink_off_time = 1;    // ms
+        rgb_led.pos_slope = 0;         // ms
+        rgb_led.neg_slope = 0;         // ms
+        rgb_led.repeats = 1;
+        rgb_led.red_value = 200;
+        rgb_led.green_value = 255;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
         flash_repeat_counter = 0;
 
@@ -991,15 +991,15 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        led.blink_on_time = 500;  // ms
-        led.blink_off_time = 500; // ms
-        led.pos_slope = 0;        // ms
-        led.neg_slope = 0;        // ms
-        led.repeats = 30;
-        led.red_value = 255;
-        led.green_value = 0;
-        led.blue_value = 0;
-        led.brightness_value = 255;
+        rgb_led.blink_on_time = 500;  // ms
+        rgb_led.blink_off_time = 500; // ms
+        rgb_led.pos_slope = 0;        // ms
+        rgb_led.neg_slope = 0;        // ms
+        rgb_led.repeats = 30;
+        rgb_led.red_value = 255;
+        rgb_led.green_value = 0;
+        rgb_led.blue_value = 0;
+        rgb_led.brightness_value = 255;
         led_next_state = FLASH;
 
         /* Print debug messages if enabled */
