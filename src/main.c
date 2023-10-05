@@ -106,26 +106,26 @@ void ValidateParameterInExernalFlash(void)
 	// modem_update_information();
 
 	/* Print firmware version */
-//	if (pcb_test_is_running == false)
-//	{
-//		rtc_print_debug_timestamp();
-//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: \t%d.%d.%d,\tBuild time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
+	//	if (pcb_test_is_running == false)
+	//	{
+	//		rtc_print_debug_timestamp();
+	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: \t%d.%d.%d,\tBuild time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
 
-//		/* Print modem firmware version */
-//		rtc_print_debug_timestamp();
-//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
+	//		/* Print modem firmware version */
+	//		rtc_print_debug_timestamp();
+	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
 
-//		/* Print hardware information */
-//		rtc_print_debug_timestamp();
-//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
-//	}
+	//		/* Print hardware information */
+	//		rtc_print_debug_timestamp();
+	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
+	//	}
 
 	/* Read stored firmware version from flash */
-//	DEVICE device_mem_flash;
-//	flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &device_mem_flash.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+	//	DEVICE device_mem_flash;
+	//	flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &device_mem_flash.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 
 	/* Firmware update recognized, reset parameter setting */
-//	if (device_mem_flash.FirmwareMajorVersion != Device.FirmwareMajorVersion || device_mem_flash.FirmwareMinorVersion != Device.FirmwareMinorVersion || device_mem_flash.FirmwareInternVersion != Device.FirmwareInternVersion)
+	//	if (device_mem_flash.FirmwareMajorVersion != Device.FirmwareMajorVersion || device_mem_flash.FirmwareMinorVersion != Device.FirmwareMinorVersion || device_mem_flash.FirmwareInternVersion != Device.FirmwareInternVersion)
 	// {
 	// 	if (pcb_test_is_running == false)
 	// 	{
@@ -259,9 +259,6 @@ void factorysettings(void)
 	// }
 }
 
-/* The device tree node idedntify for the "led0" alias*/
-#define LED0_NODE DT_ALIAS(led0)
-
 /*!
  * @brief This main function is the initial starting point of the application after Zephyr OS booted up.
  * @details The purpose of this main function is to initialize all pheriperals and finally to start all threads.
@@ -270,16 +267,14 @@ void factorysettings(void)
  */
 void main(void)
 {
-	// int16_t err = 0;
-	 gpio_init();
-	 button_init();
-	 i2c_init();
+	// int16_t err = 0;/*  */
+	button_init();
 	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
 
 	// Event_ClearArray();
 
 	// // at_cmd_init();
-	//init_rtc();
+	// init_rtc();
 
 	// k_msleep(50);
 
@@ -292,15 +287,15 @@ void main(void)
 	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
 	// }
 
-	 /* welcome message */
-	 printk("boot!\n\r");
-	 printk("VILEDA PROFESSIONAL - EviSense\r\n");
+	/* welcome message */
+	printk("boot!\n\r");
+	printk("VILEDA PROFESSIONAL - EviSense\r\n");
 
-//	 rtc_print_debug_timestamp();
-//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
-	 //shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - %s\n" CONFIG_BOARD);
-//	 rtc_print_debug_timestamp();
-//	 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "====================================\n");
+	//	 rtc_print_debug_timestamp();
+	//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
+	// shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - %s\n" CONFIG_BOARD);
+	//	 rtc_print_debug_timestamp();
+	//	 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "====================================\n");
 
 	// nrf_power_resetreas_clear(NRF_POWER_NS, 0xFFFFFFFF);
 	// rtc_print_debug_timestamp();
@@ -378,7 +373,7 @@ void main(void)
 
 	// /* Init propritary driver  which depents on loaded parameters*/
 	// init_battery_gauge();
-	// init_led();
+	led_init();
 	// init_imu();
 	command_init();
 	// init_algorithms();
@@ -406,7 +401,7 @@ void main(void)
 
 	// /* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
 	// wdt_reset();
-	 init_threads();
+	init_threads();
 
 	// k_msleep(100);
 

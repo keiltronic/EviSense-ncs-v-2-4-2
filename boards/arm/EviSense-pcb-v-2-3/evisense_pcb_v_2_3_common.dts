@@ -20,15 +20,16 @@
 		led0 = &led0;
 		btn0 = &button0;
 		btn1 = &button1;
-		myspiflash= &mt25ql256_0;
+		myspiflash = &mt25ql256_0;
 		mysensor = &bmx160;
+		myleddriver = &lp5009;
 	};
 
 	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
 			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
-			label = "Dev LED";
+			label = "Blue dev LED";
 		};
 	};
 
@@ -79,6 +80,7 @@
 
 	lp5009: lp5009@14 {
 		compatible = "ti,lp5009";
+		enable-pin = <&gpio0 3 GPIO_ACTIVE_LOW>;
 		reg = <0x14>;
 	};
 

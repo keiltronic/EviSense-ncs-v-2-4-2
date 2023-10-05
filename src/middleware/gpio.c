@@ -7,32 +7,6 @@
  */
 #include "gpio.h"
 
-/* The device tree node idedntify for the "led0" alias*/
-#define LED0_NODE DT_ALIAS(led0)
-
-struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-
-/*!
- * @brief tbd
- * @details tbd
- */
-void gpio_init(void){
-
-  if (!device_is_ready(led.port)) {
-      return;
-  }
-
-  int16_t ret = 0;
-
-  ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-  if (ret < 0) {
-      return;
-  }
-
-  gpio_pin_set_dt(&led, GPIO_ACTIVE_LOW);
-}
-
-
 //struct device *gpio_dev;
 //struct gpio_callback gpio_cb_acc_int1, gpio_cb_acc_int2, gpio_cb_btn1, gpio_cb_btn2, gpio_cb_mag_int;
 

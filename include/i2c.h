@@ -14,7 +14,7 @@
 #include <zephyr/drivers/i2c.h>
 #include "parameter_mem.h"
 
-extern void i2c_init(void);
+// extern void i2c_init(void);
 
 // #define I2C_SLAVE_COUNT 5
 

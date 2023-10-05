@@ -22,18 +22,17 @@ Addr: 0x68: Accelerometer
 
 #include "i2c.h"
 
-#define I2C2_NODE DT_NODELABEL(bmx160)
+//#define I2C2_NODE DT_NODELABEL(lp5009)
+//struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(I2C2_NODE);
 
-struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(I2C2_NODE);
-
-void i2c_init(void)
-{
-  if (!device_is_ready(dev_i2c.bus))
-  {
-    printk("I2C bus %s is not ready!\n\r", dev_i2c.bus->name);
-    return;
-  }
-}
+// void i2c_init(void)
+// {
+  // if (!device_is_ready(dev_i2c.bus))
+  // {
+  //   printk("I2C bus %s is not ready!\n\r", dev_i2c.bus->name);
+  //   return;
+  // }
+//}
 
 // struct device *i2c_dev;
 // struct i2c_msg msgs[1];

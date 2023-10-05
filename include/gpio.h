@@ -41,9 +41,5 @@
 #define GPIO_PIN_FLASH_CS1      27  // datalog
 #define GPIO_PIN_FLASH_CS2      31  // parameters, epc records storage
 
-extern struct device *gpio_dev;
-
-extern void gpio_init(void);
-extern struct gpio_dt_spec led;
-
+//extern struct device *gpio_dev;
 #endif
