@@ -24,6 +24,7 @@
 		mysensor = &bmx160;
 		myleddriver = &lp5009;
 		lp5009enable = &lp5009_enable;
+		batterygauge = &max17201g;
 	};
 
 	leds {

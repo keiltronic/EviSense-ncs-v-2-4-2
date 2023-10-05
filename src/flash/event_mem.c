@@ -1,29 +1,29 @@
-// /**
-//  * @file epc_mem.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 11 Oct 2022
-//  * @brief This file contains function to write, read and erase events which happend during the last shift.
-//  * @version 1.0.0
-//  */
+/**
+ * @file epc_mem.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 05 Oct 2023
+ * @brief This file contains function to write, read and erase events which happend during the last shift.
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup Memory
-//  * @brief This file contains function to write, read and erase event data to and from the external flash memory
-//  * @{*/
-// #include "event_mem.h"
+/*!
+ * @defgroup Memory
+ * @brief This file contains function to write, read and erase event data to and from the external flash memory
+ * @{*/
+#include "event_mem.h"
 
-// EVENT_LIST_OF_OUTSOURCED_MESSAGES Event_ListOfOutsourcedMessages[EVENT_MAX_OUTSOURCED_MESSAGES];
-// uint32_t Event_NumberOfOutsourcedMessages = 0;
-// uint32_t Event_flash_write_head = 0UL;
-// uint8_t event_clearing_in_progress = false;
+EVENT_LIST_OF_OUTSOURCED_MESSAGES Event_ListOfOutsourcedMessages[EVENT_MAX_OUTSOURCED_MESSAGES];
+uint32_t Event_NumberOfOutsourcedMessages = 0;
+uint32_t Event_flash_write_head = 0UL;
+uint8_t event_clearing_in_progress = false;
 
-// /*!
-//  * @brief This functions writes a complete data frame (structe) in the external flash.
-//  * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
-//  * @see flash.c
-//  */
-// void Event_StorePackedUsageObjectToFlash(void)
-// {
+/*!
+ * @brief This functions writes a complete data frame (structe) in the external flash.
+ * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
+ * @see flash.c
+ */
+void Event_StorePackedUsageObjectToFlash(void)
+{
 //     uint8_t *payload = NULL;
 //     uint32_t len = 0;
 
@@ -88,15 +88,15 @@
 //         /* Free the allocated serialized buffer */
 //         free(payload);
 //     }
-// }
+}
 
-// /*!
-//  * @brief This functions reads event objects from the external flash memory and prints it on console.
-//  * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
-//  * @see flash.c
-//  */
-// uint8_t Event_ReadFromFlash(uint32_t address, uint32_t length, uint8_t **buf)
-// {
+/*!
+ * @brief This functions reads event objects from the external flash memory and prints it on console.
+ * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
+ * @see flash.c
+ */
+uint8_t Event_ReadFromFlash(uint32_t address, uint32_t length, uint8_t **buf)
+{
 //     uint8_t *memory = NULL;
 
 //     memory = malloc(length);
@@ -111,19 +111,19 @@
 //     {
 //         return false;
 //     }
-// }
+ }
 
-// /*!
-//  * @brief This functions clears the event memory in the external flash and reset the write address.
-//  * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
-//  * @see flash.c
-//  */
-// void Event_ClearCompleteFlash(void)
-// {
+/*!
+ * @brief This functions clears the event memory in the external flash and reset the write address.
+ * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
+ * @see flash.c
+ */
+void Event_ClearCompleteFlash(void)
+{
 //     event_clearing_in_progress = true;
 
 //     flash_ClearMemAll(GPIO_PIN_FLASH_CS1, EVENT_MEM, EVENT_MEM_LENGTH);
 //     Event_flash_write_head = 0UL;
 
 //     event_clearing_in_progress = false;
-// }
+ }

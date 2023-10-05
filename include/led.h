@@ -20,7 +20,7 @@
 /* The device tree node idedntify for the "led0" alias*/
 #define LED0_NODE DT_ALIAS(led0)
 #define LP5009_EN_NODE DT_ALIAS(lp5009enable)
-#define I2C2_NODE DT_NODELABEL(lp5009)
+#define LP5009_NODE DT_NODELABEL(lp5009)
 
 #define DEVICE_CONFIG0 0x00
 #define DEVICE_CONFIG1 0x01

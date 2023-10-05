@@ -22,8 +22,18 @@ uint8_t battery_avoid_multiple_notifications = false; // If the device is charge
 uint16_t battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
 uint16_t battery_gauge_temperature_progress_delay = BATTERY_GAUGE_TEMPERATURE_PROGRESS_DELAY;
 
-void init_battery_gauge(void)
+struct i2c_dt_spec battery_i2c = I2C_DT_SPEC_GET(BATTERY_NODE);
+
+void battery_gauge_init(void)
 {
+  if (!device_is_ready(battery_i2c.bus))
+  {
+    printk("I2C bus %s is not ready!\n\r", battery_i2c.bus->name);
+    return;
+  }
+
+  k_msleep(100);
+
   /* This initialzation data comes from MAXIMs MAX172xx m5 Fuel Gauge PC software configuration wizard */
   // Device = MAX17201
   // Title = EVKIT Configurator Profile Generated on 2022 / 08 / 19 12 : 42 : 47_CheckSum_0x3 battery_gauge_write(0x180, 0X0000); // nXTable0 Register
@@ -183,9 +193,9 @@ void battery_gauge_CheckLowBat(void)
       Notification.next_state = NOTIFICATION_LOWBAT;
 
       /* Disable the 5V booster and enable it again if the voltage goes above the threshold voltage */
-      imu_enter_sleep();
-      rfid_power_off();
-      lte_lc_offline(); // Send "AT+CFUN=4"
+  //    imu_enter_sleep();
+  //    rfid_power_off();
+ //     lte_lc_offline(); // Send "AT+CFUN=4"
                         //   bsd_shutdown();     // Method to gracefully shutdown the BSD library.
 
       System.StatusOutputs |= STATUSFLAG_LB;
@@ -206,16 +216,16 @@ void battery_gauge_CheckLowBat(void)
       }
 
       /* Power on IMU and rfid module */
-      RFID_PowerOn();
-      init_imu();
+  //    RFID_PowerOn();
+  //    init_imu();
 
       /* Reset cellular connection flags */
-      modem.connection_stat = false;
-      modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
-      modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
+    //  modem.connection_stat = false;
+   //   modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
+  //    modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
 
       /* Turn modem on - it will automatically search for networks*/
-      lte_lc_normal();
+  //    lte_lc_normal();
     }
   }
 }
@@ -271,11 +281,18 @@ int8_t battery_remaining_non_volatile_updates(void)
   uint8_t val = 0;
   int8_t rslt = 0;
   uint8_t readout[2];
+  int16_t ret = 0;
 
   battery_gauge_write(MAX1720X_COMMAND_REG, 0xE2FA); // fuel gauge reset
   k_msleep(tRECALL);
 
-  i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, 0x1ED, &readout, 2);
+ // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, 0x1ED, &readout, 2);
+    ret = i2c_burst_read_dt(&battery_i2c, 0x1ED, &readout, sizeof(readout));
+    if (ret != 0)
+    {
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, 0x1ED, ret);
+      return;
+    }
 
   if (Parameter.battery_gauge_sniff_i2c == true)
   {
@@ -466,13 +483,21 @@ double battery_getChargeCycle(void)
 void battery_gauge_write(uint16_t reg, uint16_t val)
 {
   uint8_t data[3];
+  int16_t ret = 0;
 
   if (reg >= 0x100)
   {
     data[0] = (reg & 0xFF);
     data[1] = (uint8_t)val;
     data[2] = (uint8_t)(val >> 8);
-    i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_HI);
+    // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_HI);
+
+    ret = i2c_write_dt(&battery_i2c, data, sizeof(data));
+    if (ret != 0)
+    {
+      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, data[0], ret);
+      return;
+    }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
@@ -485,7 +510,14 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[0] = reg;
     data[1] = (uint8_t)val;
     data[2] = (uint8_t)(val >> 8);
-    i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_LO);
+    // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_LO);
+
+    ret = i2c_write_dt(&battery_i2c, data, sizeof(data));
+    if (ret != 0)
+    {
+      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, data[0], ret);
+      return;
+    }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
@@ -498,10 +530,17 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
 uint16_t battery_gauge_read(uint16_t reg)
 {
   uint8_t readout[2];
+  int16_t ret = 0;
 
   if (reg >= 0x100)
   {
-    i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
+    // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
+    ret = i2c_burst_read_dt(&battery_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    if (ret != 0)
+    {
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, (reg & 0xFF), ret);
+      return;
+    }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
@@ -511,7 +550,12 @@ uint16_t battery_gauge_read(uint16_t reg)
   }
   else
   {
-    i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, reg, &readout, 2);
+    // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, reg, &readout, 2);
+    ret = i2c_burst_read_dt(&battery_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    {
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, (reg & 0xFF), ret);
+      return;
+    }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {

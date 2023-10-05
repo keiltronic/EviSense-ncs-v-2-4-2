@@ -23,7 +23,7 @@ void enter_hibernate(void)
     /* Notify user with beep to release the button */
     Notification.next_state = NOTIFICATION_HIBERNATE;
 
-    rfid_power_off();
+  //  rfid_power_off();
    // imu_enter_sleep();
    
     /* Disable all GPIO pins */

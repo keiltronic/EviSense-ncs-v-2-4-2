@@ -159,39 +159,39 @@ void notification_thread(void *dummy1, void *dummy2, void *dummy3)
 
 static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
-  //     algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
+  while (1)
+  {
+    if (datalog_ReadOutisActive == false)
+    {
+ //     imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
+ //     algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
 
-  //     if (step_interrupt_triggered)
-  //     {
-  //       if (Parameter.stepdetection_verbose || Parameter.debug)
-  //       {
-  //         rtc_print_debug_timestamp();
-  //         shell_print(shell_backend_uart_get_ptr(), "Step detected. Total step count: %d, step sequence count: %d", System.TotalSteps, System.Steps);
-  //       }
-  //       step_interrupt_triggered = false;
-  //     }
+      // if (step_interrupt_triggered)
+      // {
+      //   if (Parameter.stepdetection_verbose || Parameter.debug)
+      //   {
+      //     rtc_print_debug_timestamp();
+      //     shell_print(shell_backend_uart_get_ptr(), "Step detected. Total step count: %d, step sequence count: %d", System.TotalSteps, System.Steps);
+      //   }
+      //   step_interrupt_triggered = false;
+      // }
 
-  //     if (trace_imu_flag)
-  //     {
-  //       trace_imu();
-  //     }
+      // if (trace_imu_flag)
+      // {
+      //   trace_imu();
+      // }
 
-  //     if (trace_imu_reduced_flag)
-  //     {
-  //       trace_imu_reduced();
-  //     }
-  //   }
-  //   k_msleep(Parameter.imu_interval);
-  // }
+      // if (trace_imu_reduced_flag)
+      // {
+      //   trace_imu_reduced();
+      // }
+    }
+    k_msleep(Parameter.imu_interval);
+  }
 }
 
 void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -247,36 +247,36 @@ void epc_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void datalog_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // static uint32_t time_based_logging_timer = 0;
+  static uint32_t time_based_logging_timer = 0;
 
-  // while (1)
-  // {
-  //   if ((datalog_EnableFlag == true) && (datalog_ReadOutisActive == false) && (datalog_EraseActive == false))
-  //   {
-  //     /* Time based logging */
-  //     if (time_based_logging_timer > (Parameter.datalog_Interval / 10))
-  //     {
-  //       datalog_StoreFrame();
-  //       time_based_logging_timer = 0;
-  //     }
-  //     else
-  //     {
-  //       time_based_logging_timer++;
+  while (1)
+  {
+    if ((datalog_EnableFlag == true) && (datalog_ReadOutisActive == false) && (datalog_EraseActive == false))
+    {
+      /* Time based logging */
+      if (time_based_logging_timer > (Parameter.datalog_Interval / 10))
+      {
+        datalog_StoreFrame();
+        time_based_logging_timer = 0;
+      }
+      else
+      {
+        time_based_logging_timer++;
 
-  //       /* Event based logging - log a new line every time any system flag changed */
-  //       System_CheckStatusFlagChange();
-  //     }
-  //   }
-  //   else
-  //   {
-  //     time_based_logging_timer = 0;
-  //   }
-  //   k_msleep(10);
-  // }
+        /* Event based logging - log a new line every time any system flag changed */
+        System_CheckStatusFlagChange();
+      }
+    }
+    else
+    {
+      time_based_logging_timer = 0;
+    }
+    k_msleep(10);
+  }
 }
 
 void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)

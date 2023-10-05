@@ -33,230 +33,230 @@ uint8_t mag_data[8] = {0};
 
 void init_imu(void)
 {
-  int8_t rslt = BMI160_OK;
-  uint8_t bmm150_data_start = BMM150_DATA_X_LSB;
+  // int8_t rslt = BMI160_OK;
+  // uint8_t bmm150_data_start = BMM150_DATA_X_LSB;
 
-  imu_IsInitialized = false;
+  // imu_IsInitialized = false;
 
-  /* Config BMI 160 */
-  bmi160.id = BMI160_I2C_ADDR;
-  bmi160.interface = BMI160_I2C_INTF;
-  bmi160.read = user_bmi160_i2c_read;
-  bmi160.write = user_bmi160_i2c_write;
-  bmi160.delay_ms = user_delay_ms;
+  // /* Config BMI 160 */
+  // bmi160.id = BMI160_I2C_ADDR;
+  // bmi160.interface = BMI160_I2C_INTF;
+  // bmi160.read = user_bmi160_i2c_read;
+  // bmi160.write = user_bmi160_i2c_write;
+  // bmi160.delay_ms = user_delay_ms;
 
-  /* Config BMM150 */
-  bmm150.dev_id = BMM150_DEFAULT_I2C_ADDRESS;
-  bmm150.intf = BMM150_I2C_INTF;
-  bmm150.read = bmm150_aux_read;
-  bmm150.write = bmm150_aux_write;
-  bmm150.delay_ms = user_delay_ms;
+  // /* Config BMM150 */
+  // bmm150.dev_id = BMM150_DEFAULT_I2C_ADDRESS;
+  // bmm150.intf = BMM150_I2C_INTF;
+  // bmm150.read = bmm150_aux_read;
+  // bmm150.write = bmm150_aux_write;
+  // bmm150.delay_ms = user_delay_ms;
 
-  rslt = bmi160_init(&bmi160);
+  // rslt = bmi160_init(&bmi160);
 
-  if (bmi160.chip_id == BMI160_CHIP_ID)
-  {
-    if (rslt == BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_print(shell_backend_uart_get_ptr(), "BMI160 initialization success");
-        shell_print(shell_backend_uart_get_ptr(), "Chip ID 0x%X\n", bmi160.chip_id);
-      }
-    }
-    else
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMI160 initialization failure");
-      }
-    }
+  // if (bmi160.chip_id == BMI160_CHIP_ID)
+  // {
+  //   if (rslt == BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_print(shell_backend_uart_get_ptr(), "BMI160 initialization success");
+  //       shell_print(shell_backend_uart_get_ptr(), "Chip ID 0x%X\n", bmi160.chip_id);
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMI160 initialization failure");
+  //     }
+  //   }
 
-    /* Configure the BMI160's auxiliary interface for the BMM150 */
-    bmi160.aux_cfg.aux_sensor_enable = BMI160_ENABLE;
-    bmi160.aux_cfg.aux_i2c_addr = BMM150_DEFAULT_I2C_ADDRESS;
-    bmi160.aux_cfg.manual_enable = BMI160_ENABLE;            // manual mode
-    bmi160.aux_cfg.aux_rd_burst_len = BMI160_AUX_READ_LEN_2; // 2 byte
+  //   /* Configure the BMI160's auxiliary interface for the BMM150 */
+  //   bmi160.aux_cfg.aux_sensor_enable = BMI160_ENABLE;
+  //   bmi160.aux_cfg.aux_i2c_addr = BMM150_DEFAULT_I2C_ADDRESS;
+  //   bmi160.aux_cfg.manual_enable = BMI160_ENABLE;            // manual mode
+  //   bmi160.aux_cfg.aux_rd_burst_len = BMI160_AUX_READ_LEN_2; // 2 byte
 
-    rslt = bmi160_aux_init(&bmi160);
-    if (rslt == BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMI160 aux. interface init success");
-      }
-    }
-    else
-    {
-      if (Parameter.debug)
-      {
-        shell_error(shell_backend_uart_get_ptr(), "BMI160 aux. interface init failure");
-      }
-    }
+  //   rslt = bmi160_aux_init(&bmi160);
+  //   if (rslt == BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMI160 aux. interface init success");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       shell_error(shell_backend_uart_get_ptr(), "BMI160 aux. interface init failure");
+  //     }
+  //   }
 
-    rslt = bmm150_init(&bmm150);
-    if (rslt == BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMM150 initialization success");
-      }
-    }
-    else
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMM150 initialization failure");
-      }
-    }
+  //   rslt = bmm150_init(&bmm150);
+  //   if (rslt == BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMM150 initialization success");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMM150 initialization failure");
+  //     }
+  //   }
 
-    /* Select the Output data rate, range of accelerometer sensor */
-    bmi160.accel_cfg.odr = BMI160_ACCEL_ODR_100HZ;
-    bmi160.accel_cfg.range = BMI160_ACCEL_RANGE_2G;
-    bmi160.accel_cfg.bw = BMI160_ACCEL_BW_NORMAL_AVG4;
+  //   /* Select the Output data rate, range of accelerometer sensor */
+  //   bmi160.accel_cfg.odr = BMI160_ACCEL_ODR_100HZ;
+  //   bmi160.accel_cfg.range = BMI160_ACCEL_RANGE_2G;
+  //   bmi160.accel_cfg.bw = BMI160_ACCEL_BW_NORMAL_AVG4;
 
-    /* Select the power mode of accelerometer sensor */
-    bmi160.accel_cfg.power = BMI160_ACCEL_NORMAL_MODE;
+  //   /* Select the power mode of accelerometer sensor */
+  //   bmi160.accel_cfg.power = BMI160_ACCEL_NORMAL_MODE;
 
-    /* Select the Output data rate, range of Gyroscope sensor */
-    bmi160.gyro_cfg.odr = BMI160_GYRO_ODR_100HZ;
-    bmi160.gyro_cfg.range = BMI160_GYRO_RANGE_2000_DPS;
-    bmi160.gyro_cfg.bw = BMI160_GYRO_BW_NORMAL_MODE;
+  //   /* Select the Output data rate, range of Gyroscope sensor */
+  //   bmi160.gyro_cfg.odr = BMI160_GYRO_ODR_100HZ;
+  //   bmi160.gyro_cfg.range = BMI160_GYRO_RANGE_2000_DPS;
+  //   bmi160.gyro_cfg.bw = BMI160_GYRO_BW_NORMAL_MODE;
 
-    /* Select the power mode of Gyroscope sensor */
-    bmi160.gyro_cfg.power = BMI160_GYRO_NORMAL_MODE;
+  //   /* Select the power mode of Gyroscope sensor */
+  //   bmi160.gyro_cfg.power = BMI160_GYRO_NORMAL_MODE;
 
-    /* Set the sensor configuration */
-    rslt = BMI160_OK;
-    rslt = bmi160_set_sens_conf(&bmi160);
+  //   /* Set the sensor configuration */
+  //   rslt = BMI160_OK;
+  //   rslt = bmi160_set_sens_conf(&bmi160);
 
-    if (rslt == BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMI160 set configuration successful");
-      }
-    }
-    else
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "BMI160 set configuration failure");
-      }
-    }
+  //   if (rslt == BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMI160 set configuration successful");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "BMI160 set configuration failure");
+  //     }
+  //   }
 
-    /*** Step detection interrupt on INT1 ***/
+  //   /*** Step detection interrupt on INT1 ***/
 
-    /* Select the Interrupt channel/pin */
-    int_config.int_channel = BMI160_INT_CHANNEL_1; // Interrupt channel/pin 1
+  //   /* Select the Interrupt channel/pin */
+  //   int_config.int_channel = BMI160_INT_CHANNEL_1; // Interrupt channel/pin 1
 
-    /* Select the Interrupt type */
-    int_config.int_type = BMI160_STEP_DETECT_INT; // Choosing Step Detector interrupt
+  //   /* Select the Interrupt type */
+  //   int_config.int_type = BMI160_STEP_DETECT_INT; // Choosing Step Detector interrupt
 
-    /* Select the interrupt channel/pin settings */
-    int_config.int_pin_settg.output_en = BMI160_ENABLE;         // Enabling interrupt pins to act as output pin
-    int_config.int_pin_settg.output_mode = BMI160_DISABLE;      // Choosing push-pull mode for interrupt pin
-    int_config.int_pin_settg.output_type = BMI160_ENABLE;       // Choosing active High output
-    int_config.int_pin_settg.edge_ctrl = BMI160_ENABLE;         // Choosing edge triggered output
-    int_config.int_pin_settg.input_en = BMI160_DISABLE;         // Disabling interrupt pin to act as input
-    int_config.int_pin_settg.latch_dur = BMI160_LATCH_DUR_NONE; // non-latched output
+  //   /* Select the interrupt channel/pin settings */
+  //   int_config.int_pin_settg.output_en = BMI160_ENABLE;         // Enabling interrupt pins to act as output pin
+  //   int_config.int_pin_settg.output_mode = BMI160_DISABLE;      // Choosing push-pull mode for interrupt pin
+  //   int_config.int_pin_settg.output_type = BMI160_ENABLE;       // Choosing active High output
+  //   int_config.int_pin_settg.edge_ctrl = BMI160_ENABLE;         // Choosing edge triggered output
+  //   int_config.int_pin_settg.input_en = BMI160_DISABLE;         // Disabling interrupt pin to act as input
+  //   int_config.int_pin_settg.latch_dur = BMI160_LATCH_DUR_NONE; // non-latched output
 
-    /* Select the Step Detector interrupt parameters, Kindly use the recommended settings for step detector */
-    int_config.int_type_cfg.acc_step_detect_int.step_detector_mode = BMI160_STEP_DETECT_NORMAL;
-    int_config.int_type_cfg.acc_step_detect_int.step_detector_en = BMI160_ENABLE; // 1-enable, 0-disable the step detector
+  //   /* Select the Step Detector interrupt parameters, Kindly use the recommended settings for step detector */
+  //   int_config.int_type_cfg.acc_step_detect_int.step_detector_mode = BMI160_STEP_DETECT_NORMAL;
+  //   int_config.int_type_cfg.acc_step_detect_int.step_detector_en = BMI160_ENABLE; // 1-enable, 0-disable the step detector
 
-    /* Set the Step Detector interrupt */
-    bmi160_set_int_config(&int_config, &bmi160); /* sensor is an instance of the structure bmi160_dev */
+  //   /* Set the Step Detector interrupt */
+  //   bmi160_set_int_config(&int_config, &bmi160); /* sensor is an instance of the structure bmi160_dev */
 
-    if (rslt != BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "Unable to config step counter interrupt");
-      }
-    }
-    else
-    {
-      uint8_t step_enable = 1; // enable the step counter
+  //   if (rslt != BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "Unable to config step counter interrupt");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     uint8_t step_enable = 1; // enable the step counter
 
-      rslt = bmi160_set_step_counter(step_enable, &bmi160);
+  //     rslt = bmi160_set_step_counter(step_enable, &bmi160);
 
-      if (rslt != BMI160_OK)
-      {
-        if (Parameter.debug)
-        {
-          rtc_print_debug_timestamp();
-          shell_error(shell_backend_uart_get_ptr(), "Unable to activate step counter");
-        }
-      }
-    }
+  //     if (rslt != BMI160_OK)
+  //     {
+  //       if (Parameter.debug)
+  //       {
+  //         rtc_print_debug_timestamp();
+  //         shell_error(shell_backend_uart_get_ptr(), "Unable to activate step counter");
+  //       }
+  //     }
+  //   }
 
-    /*** Any motion interrupt on INT2 ***/
+  //   /*** Any motion interrupt on INT2 ***/
 
-    /* Select the Interrupt channel/pin */
-    int_config.int_channel = BMI160_INT_CHANNEL_2; // Interrupt channel/pin 2
+  //   /* Select the Interrupt channel/pin */
+  //   int_config.int_channel = BMI160_INT_CHANNEL_2; // Interrupt channel/pin 2
 
-    /* Select the Interrupt type */
-    int_config.int_type = BMI160_ACC_ANY_MOTION_INT; // Choosing any motion for interrupt
+  //   /* Select the Interrupt type */
+  //   int_config.int_type = BMI160_ACC_ANY_MOTION_INT; // Choosing any motion for interrupt
 
-    /* Select the interrupt channel/pin settings */
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_en = BMI160_ENABLE; // na - 1- Enable the any-motion, 0- disable any-motion
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_x = BMI160_ENABLE;  // na - Enabling x-axis for any motion interrupt - monitor x axis
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_y = BMI160_ENABLE;  // na - Enabling y-axis for any motion interrupt - monitor y axis
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_z = BMI160_ENABLE;  // na - Enabling z-axis for any motion interrupt - monitor z axis
-    // int_config.int_type_cfg.acc_any_motion_int.anymotion_dur = 2;            // na - any-motion duration. This is the consecutive datapoints -> see datasheet pg32 section 2.6.1 <int_anym_dur> and pg78
-    // int_config.int_type_cfg.acc_any_motion_int.anymotion_thr = 25;           // na - An interrupt will be generated if the absolute value of two consecutive accelarion signal exceeds the threshold value -> see datasheet pg32 section 2.6.1 <int_anym_th> and pg78 INT_MOTION[1]
-    //                                                                          // na - (2-g range) -> (anymotion_thr) * 3.91 mg, (4-g range) -> (anymotion_thr) * 7.81 mg, (8-g range) ->(anymotion_thr) * 15.63 mg, (16-g range) -> (anymotion_thr) * 31.25 mg
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_dur = (uint8_t)Parameter.anymotion_duration; // na - any-motion duration. This is the consecutive datapoints -> see datasheet pg32 section 2.6.1 <int_anym_dur> and pg78
-    int_config.int_type_cfg.acc_any_motion_int.anymotion_thr = (uint8_t)Parameter.anymotion_thr;      // na - An interrupt will be generated if the absolute value of two consecutive accelarion signal exceeds the threshold value -> see datasheet pg32 section 2.6.1 <int_anym_th> and pg78 INT_MOTION[1]
+  //   /* Select the interrupt channel/pin settings */
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_en = BMI160_ENABLE; // na - 1- Enable the any-motion, 0- disable any-motion
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_x = BMI160_ENABLE;  // na - Enabling x-axis for any motion interrupt - monitor x axis
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_y = BMI160_ENABLE;  // na - Enabling y-axis for any motion interrupt - monitor y axis
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_z = BMI160_ENABLE;  // na - Enabling z-axis for any motion interrupt - monitor z axis
+  //   // int_config.int_type_cfg.acc_any_motion_int.anymotion_dur = 2;            // na - any-motion duration. This is the consecutive datapoints -> see datasheet pg32 section 2.6.1 <int_anym_dur> and pg78
+  //   // int_config.int_type_cfg.acc_any_motion_int.anymotion_thr = 25;           // na - An interrupt will be generated if the absolute value of two consecutive accelarion signal exceeds the threshold value -> see datasheet pg32 section 2.6.1 <int_anym_th> and pg78 INT_MOTION[1]
+  //   //                                                                          // na - (2-g range) -> (anymotion_thr) * 3.91 mg, (4-g range) -> (anymotion_thr) * 7.81 mg, (8-g range) ->(anymotion_thr) * 15.63 mg, (16-g range) -> (anymotion_thr) * 31.25 mg
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_dur = (uint8_t)Parameter.anymotion_duration; // na - any-motion duration. This is the consecutive datapoints -> see datasheet pg32 section 2.6.1 <int_anym_dur> and pg78
+  //   int_config.int_type_cfg.acc_any_motion_int.anymotion_thr = (uint8_t)Parameter.anymotion_thr;      // na - An interrupt will be generated if the absolute value of two consecutive accelarion signal exceeds the threshold value -> see datasheet pg32 section 2.6.1 <int_anym_th> and pg78 INT_MOTION[1]
 
-    /* Set the Step Detector interrupt */
-    bmi160_set_int_config(&int_config, &bmi160); /* sensor is an instance of the structure bmi160_dev */
+  //   /* Set the Step Detector interrupt */
+  //   bmi160_set_int_config(&int_config, &bmi160); /* sensor is an instance of the structure bmi160_dev */
 
-    if (rslt != BMI160_OK)
-    {
-      if (Parameter.debug)
-      {
-        rtc_print_debug_timestamp();
-        shell_error(shell_backend_uart_get_ptr(), "Unable to config any motion interrupt");
-      }
-    }
+  //   if (rslt != BMI160_OK)
+  //   {
+  //     if (Parameter.debug)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_error(shell_backend_uart_get_ptr(), "Unable to config any motion interrupt");
+  //     }
+  //   }
 
-    /*** Magnetometer Settings ***/
+  //   /*** Magnetometer Settings ***/
 
-    /* Configure the magnetometer. The regular preset supports up to 60Hz in Forced mode */
-    bmm150.settings.preset_mode = BMM150_PRESETMODE_ENHANCED;
-    // bmm150.settings.preset_mode = BMM150_PRESETMODE_HIGHACCURACY;
-    rslt += bmm150_set_presetmode(&bmm150);
+  //   /* Configure the magnetometer. The regular preset supports up to 60Hz in Forced mode */
+  //   bmm150.settings.preset_mode = BMM150_PRESETMODE_ENHANCED;
+  //   // bmm150.settings.preset_mode = BMM150_PRESETMODE_HIGHACCURACY;
+  //   rslt += bmm150_set_presetmode(&bmm150);
 
-    /* It is important that the last write to the BMM150 sets the forced mode.
-     * This is because the BMI160 writes the last value to the auxiliary sensor
-     * after every read */
-    bmm150.settings.pwr_mode = BMM150_FORCED_MODE;
-    rslt += bmm150_set_op_mode(&bmm150);
+  //   /* It is important that the last write to the BMM150 sets the forced mode.
+  //    * This is because the BMI160 writes the last value to the auxiliary sensor
+  //    * after every read */
+  //   bmm150.settings.pwr_mode = BMM150_FORCED_MODE;
+  //   rslt += bmm150_set_op_mode(&bmm150);
 
-    bmi160.aux_cfg.aux_odr = BMI160_AUX_ODR_50HZ;
-    rslt += bmi160_set_aux_auto_mode(&bmm150_data_start, &bmi160);
+  //   bmi160.aux_cfg.aux_odr = BMI160_AUX_ODR_50HZ;
+  //   rslt += bmi160_set_aux_auto_mode(&bmm150_data_start, &bmi160);
 
-    imu_IsInitialized = true;
-  }
-  else
-  {
-    imu_IsInitialized = false;
-    if (Parameter.debug)
-    {
-      rtc_print_debug_timestamp();
-      shell_error(shell_backend_uart_get_ptr(), "BMI160 device ID does not match");
-    }
-  }
+  //   imu_IsInitialized = true;
+  // }
+  // else
+  // {
+  //   imu_IsInitialized = false;
+  //   if (Parameter.debug)
+  //   {
+  //     rtc_print_debug_timestamp();
+  //     shell_error(shell_backend_uart_get_ptr(), "BMI160 device ID does not match");
+  //   }
+  // }
 }
 
 void user_delay_ms(uint32_t period, void *intf_ptr)
@@ -270,70 +270,70 @@ void user_delay_ms(uint32_t period, void *intf_ptr)
 
 int8_t user_bmi160_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
-  /*
-   * Data on the bus should be like
-   * |------------+---------------------|
-   * | I2C action | Data                |
-   * |------------+---------------------|
-   * | Start      | -                   |
-   * | Write      | (reg_addr)          |
-   * | Stop       | -                   |
-   * | Start      | -                   |
-   * | Read       | (reg_data[0])       |
-   * | Read       | (....)              |
-   * | Read       | (reg_data[len - 1]) |
-   * | Stop       | -                   |
-   * |------------+---------------------|
-   */
+//   /*
+//    * Data on the bus should be like
+//    * |------------+---------------------|
+//    * | I2C action | Data                |
+//    * |------------+---------------------|
+//    * | Start      | -                   |
+//    * | Write      | (reg_addr)          |
+//    * | Stop       | -                   |
+//    * | Start      | -                   |
+//    * | Read       | (reg_data[0])       |
+//    * | Read       | (....)              |
+//    * | Read       | (reg_data[len - 1]) |
+//    * | Stop       | -                   |
+//    * |------------+---------------------|
+//    */
 
-  int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
-  rslt = i2c_burst_read(i2c_dev, (uint16_t)dev_id, reg_addr, reg_data, (uint32_t)len);
-  return rslt;
-}
+//   int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
+//   rslt = i2c_burst_read(i2c_dev, (uint16_t)dev_id, reg_addr, reg_data, (uint32_t)len);
+//   return rslt;
+// }
 
-int8_t user_bmi160_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
-{
-  /*
-   * Data on the bus should be like
-   * |------------+---------------------|
-   * | I2C action | Data                |
-   * |------------+---------------------|
-   * | Start      | -                   |
-   * | Write      | (reg_addr)          |
-   * | Write      | (reg_data[0])       |
-   * | Write      | (....)              |
-   * | Write      | (reg_data[len - 1]) |
-   * | Stop       | -                   |
-   * |------------+---------------------|
-   */
+// int8_t user_bmi160_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
+// {
+//   /*
+//    * Data on the bus should be like
+//    * |------------+---------------------|
+//    * | I2C action | Data                |
+//    * |------------+---------------------|
+//    * | Start      | -                   |
+//    * | Write      | (reg_addr)          |
+//    * | Write      | (reg_data[0])       |
+//    * | Write      | (....)              |
+//    * | Write      | (reg_data[len - 1]) |
+//    * | Stop       | -                   |
+//    * |------------+---------------------|
+//    */
 
-  int8_t rslt = 1; /* Return 0 for Success, non-zero for failure */
-  uint16_t i = 0;
+//   int8_t rslt = 1; /* Return 0 for Success, non-zero for failure */
+//   uint16_t i = 0;
 
-  uint8_t *data = (uint8_t *)calloc((len + 1), sizeof(uint8_t)); // write data has the reg_addr and the data included
-  uint8_t *write_pointer;
+//   uint8_t *data = (uint8_t *)calloc((len + 1), sizeof(uint8_t)); // write data has the reg_addr and the data included
+//   uint8_t *write_pointer;
 
-  write_pointer = data;
+//   write_pointer = data;
 
-  if (data != NULL)
-  {
-    *write_pointer = reg_addr;
+//   if (data != NULL)
+//   {
+//     *write_pointer = reg_addr;
 
-    for (i = 1; i <= len; i++)
-    {
-      *++write_pointer = *reg_data++;
-    }
+//     for (i = 1; i <= len; i++)
+//     {
+//       *++write_pointer = *reg_data++;
+//     }
 
-    rslt = i2c_write(i2c_dev, data, (uint32_t)(len + 1), (uint16_t)dev_id);
+//     rslt = i2c_write(i2c_dev, data, (uint32_t)(len + 1), (uint16_t)dev_id);
 
-    free(data);
-  }
-  else
-  {
-    shell_error(shell_backend_uart_get_ptr(), "I2C write error. Could not allocate memory.");
-  }
+//     free(data);
+//   }
+//   else
+//   {
+//     shell_error(shell_backend_uart_get_ptr(), "I2C write error. Could not allocate memory.");
+//   }
 
-  return rslt;
+//   return rslt;
 }
 
 int8_t bmm150_aux_read(uint8_t id, uint8_t reg_addr, uint8_t *aux_data, uint16_t len)
@@ -460,7 +460,9 @@ void trace_imu(void)
   if (imu_IsInitialized)
   {
     rtc_print_debug_timestamp();
-    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sensor time:%8.3fs; Acc x: %4.2f; y: %4.2f; z: %4.2f  m/s^2;\t Gyro x: %4.2f; y: %4.2f; z: %4.2f dps;\t Mag: x: %3d; y: %3d; z: %3d\n",
+       printk("Sensor time:%8.3fs; Acc x: %4.2f; y: %4.2f; z: %4.2f  m/s^2;\t Gyro x: %4.2f; y: %4.2f; z: %4.2f dps;\t Mag: x: %3d; y: %3d; z: %3d\n",
+ 
+   // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sensor time:%8.3fs; Acc x: %4.2f; y: %4.2f; z: %4.2f  m/s^2;\t Gyro x: %4.2f; y: %4.2f; z: %4.2f dps;\t Mag: x: %3d; y: %3d; z: %3d\n",
                   ((float)accel.sensortime * 0.000039),
                   acc_lsb_to_ms2(accel.x),
                   acc_lsb_to_ms2(accel.y),
@@ -485,7 +487,8 @@ void trace_imu_reduced(void)
   if (imu_IsInitialized)
   {
     rtc_print_debug_timestamp();
-    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%d;%d;%d\n",
+    printk("%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%d;%d;%d\n",
+    //shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%d;%d;%d\n",
                   acc_lsb_to_ms2(accel.x),
                   acc_lsb_to_ms2(accel.y),
                   acc_lsb_to_ms2(accel.z),
@@ -513,10 +516,10 @@ void motion_detection(void)
         motion_reset_counter = 0;
 
         /* For debugging prupose */
-        if (Parameter.enable_blue_dev_led == true)
-        {
-          gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
-        }
+        // if (Parameter.enable_blue_dev_led == true)
+        // {
+        //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
+        // }
         System.StatusInputs &= ~STATUSFLAG_MD; // Delete status entry
       }
       else

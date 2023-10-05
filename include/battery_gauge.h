@@ -50,6 +50,7 @@
 #define MAX1720X_AIN1_ADDR  0x134 
 
 //#define MAX1720X_CONFIG2_ADDR           0x1b4   // Hibernate register
+#define BATTERY_NODE DT_ALIAS(batterygauge)
 
 /* Resolutions */
 #define MAX1720X_CAPACITY_RES 0.005          // Vh with 10mOhm shunt
@@ -96,7 +97,7 @@ typedef struct
 
 extern BATTERY battery;
 
-extern void init_battery_gauge(void);
+extern void battery_gauge_init(void);
 extern void battery_gauge_soft_reset(void);
 extern void battery_gauge_full_reset(void);
 extern void battery_gauge_write(uint16_t reg, uint16_t val);

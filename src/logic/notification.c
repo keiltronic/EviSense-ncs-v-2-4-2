@@ -745,45 +745,45 @@ void notification_update(void)
     {
       if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
       {
-        // if (battery.StateOfCharge > BATTERY_GOOD)
-        // {                            /* green LED */
-        //   rgb_led.blink_on_time = 10000; // ms
-        //   rgb_led.blink_off_time = 1;    // ms
-        //   rgb_led.pos_slope = 0;         // ms
-        //   rgb_led.neg_slope = 0;         // ms
-        //   rgb_led.repeats = 1;
-        //   rgb_led.red_value = 0;
-        //   rgb_led.green_value = 255;
-        //   rgb_led.blue_value = 0;
-        //   rgb_led.brightness_value = 255;
-        //   led_next_state = FLASH;
-        // }
-        // else if (battery.StateOfCharge > BATTERY_LOW)
-        // {                            /* yellow LED */
-        //   rgb_led.blink_on_time = 10000; // ms
-        //   rgb_led.blink_off_time = 1;    // ms
-        //   rgb_led.pos_slope = 0;         // ms
-        //   rgb_led.neg_slope = 0;         // ms
-        //   rgb_led.repeats = 1;
-        //   rgb_led.red_value = 100;
-        //   rgb_led.green_value = 255;
-        //   rgb_led.blue_value = 0;
-        //   rgb_led.brightness_value = 255;
-        //   led_next_state = FLASH;
-        // }
-        // else
-        // {                            /* red LED */
-        //   rgb_led.blink_on_time = 10000; // ms
-        //   rgb_led.blink_off_time = 1;    // ms
-        //   rgb_led.pos_slope = 0;         // ms
-        //   rgb_led.neg_slope = 0;         // ms
-        //   rgb_led.repeats = 1;
-        //   rgb_led.red_value = 255;
-        //   rgb_led.green_value = 0;
-        //   rgb_led.blue_value = 0;
-        //   rgb_led.brightness_value = 255;
-        //   led_next_state = FLASH;
-        // }
+        if (battery.StateOfCharge > BATTERY_GOOD)
+        {                            /* green LED */
+          rgb_led.blink_on_time = 10000; // ms
+          rgb_led.blink_off_time = 1;    // ms
+          rgb_led.pos_slope = 0;         // ms
+          rgb_led.neg_slope = 0;         // ms
+          rgb_led.repeats = 1;
+          rgb_led.red_value = 0;
+          rgb_led.green_value = 255;
+          rgb_led.blue_value = 0;
+          rgb_led.brightness_value = 255;
+          led_next_state = FLASH;
+        }
+        else if (battery.StateOfCharge > BATTERY_LOW)
+        {                            /* yellow LED */
+          rgb_led.blink_on_time = 10000; // ms
+          rgb_led.blink_off_time = 1;    // ms
+          rgb_led.pos_slope = 0;         // ms
+          rgb_led.neg_slope = 0;         // ms
+          rgb_led.repeats = 1;
+          rgb_led.red_value = 100;
+          rgb_led.green_value = 255;
+          rgb_led.blue_value = 0;
+          rgb_led.brightness_value = 255;
+          led_next_state = FLASH;
+        }
+        else
+        {                            /* red LED */
+          rgb_led.blink_on_time = 10000; // ms
+          rgb_led.blink_off_time = 1;    // ms
+          rgb_led.pos_slope = 0;         // ms
+          rgb_led.neg_slope = 0;         // ms
+          rgb_led.repeats = 1;
+          rgb_led.red_value = 255;
+          rgb_led.green_value = 0;
+          rgb_led.blue_value = 0;
+          rgb_led.brightness_value = 255;
+          led_next_state = FLASH;
+        }
 
         /* Print debug messages if enabled */
         if ((Parameter.notification_verbose == true) && (pcb_test_is_running == false))

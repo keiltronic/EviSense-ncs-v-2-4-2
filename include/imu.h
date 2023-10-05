@@ -17,6 +17,7 @@
 #include "bmm150_defs.h"
 #include "stdio.h"
 #include "i2c.h"
+#include "system_mem.h"
 
 #define GRAVITY_EARTH           9.81
 

@@ -1,9 +1,9 @@
 // /**
 //  * @file epc_mem.c
 //  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 28 Sep 2022
+//  * @date 05 Oct 2023
 //  * @brief This file contains function to write, read and search epc data to and from the external flash memory
-//  * @version 1.0.0
+//  * @version 2.0.0
 //  */
 
 // /*!
@@ -112,11 +112,11 @@
 // {
 //   uint16_t i = 0;
 
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last seen location epc:\n");
+//  // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last seen location epc:\n");
 
 //   for (i = 0; i < last_seen_location_records_array_position; i++)
 //   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d: %s\n", i, DeserializeHexToChar(last_seen_location_records_array[i].epc, EPC_TOTAL_HEX_LENGTH));
+//    // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d: %s\n", i, DeserializeHexToChar(last_seen_location_records_array[i].epc, EPC_TOTAL_HEX_LENGTH));
 //   }
 // }
 

@@ -55,49 +55,47 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
+ /*!
+  *  @brief This is the function description
+ */
+static int cmd_factorysettings(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
+  factorysettings();
+  return 0;
+}
 
-//  */
-// static int cmd_factorysettings(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_reboot(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   factorysettings();
-//   return 0;
-// }
+  Device_PushRAMToFlash();
+ // lte_lc_power_off();
+  sys_reboot(0);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_reboot(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   Device_PushRAMToFlash();
-//   lte_lc_power_off();
-//   sys_reboot(0);
-//   return 0;
-// }
+  Device_PushRAMToFlash();
+//  lte_lc_power_off();
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+ // gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
 
-//   Device_PushRAMToFlash();
-//   lte_lc_power_off();
-
-//   gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
-
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -423,180 +421,164 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_voltage(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%4.2fmV", battery.Voltage);
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_current(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%4.2fmA", battery.Current);
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_charge_cycles(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  if (argc == 1)
+  {
+    shell_print(shell, "%d", Device.ChargeCycles);
+  }
+  else
+  {
+    if (atoi(argv[1]) >= 0)
+    {
+      Device.ChargeCycles = atol(argv[1]);
+      Device_PushRAMToFlash();
+      shell_print(shell, "Set battery charge cycles to %d", Device.ChargeCycles);
+    }
+    else
+    {
+      shell_error(shell, "Could not set new IMU interval");
+    }
+  }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
 
 
-//  */
-// static int cmd_battery_voltage(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   shell_print(shell, "%4.2fmV", battery.Voltage);
-//   return 0;
-// }
+ */
+static int cmd_battery_temperature(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%2.2f degree", battery.Temperature);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_time_to_empty(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
+  if (System.charger_connected == false)
+  {
+    uint32_t hours = 0;
+    uint32_t minutes = 0;
+    uint32_t seconds = 0;
 
-//  */
-// static int cmd_battery_current(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   shell_print(shell, "%4.2fmA", battery.Current);
-//   return 0;
-// }
+    uint32_t tte = (uint32_t)battery.TimeToEmpty;
 
-// /*!
-//  *  @brief This is the function description
+    /* Convert seconds to hh:mm:ss */
+    hours = tte / 3600;
+    minutes = (tte % 3600) / 60;
+    seconds = tte - ((hours * 3600) + (minutes * 60));
 
+    shell_fprintf(shell, 0, "Estimate time to empty battery: %02d:%02d:%02d\n", hours, minutes, seconds);
+  }
+  else
+  {
+    shell_warn(shell, "USB connected, battery is charging");
+  }
 
-//  */
-// static int cmd_battery_charge_cycles(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+  return 0;
+}
 
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "%d", Device.ChargeCycles);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) >= 0)
-//     {
-//       Device.ChargeCycles = atol(argv[1]);
-//       Device_PushRAMToFlash();
-//       shell_print(shell, "Set battery charge cycles to %d", Device.ChargeCycles);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set new IMU interval");
-//     }
-//   }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_time_to_full(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   return 0;
-// }
+  if (System.charger_connected == true)
+  {
+    uint32_t hours = 0;
+    uint32_t minutes = 0;
+    uint32_t seconds = 0;
 
-// /*!
-//  *  @brief This is the function description
+    uint32_t ttf = (uint32_t)battery.TimeToFull;
 
+    /* Convert seconds to hh:mm:ss */
+    hours = ttf / 3600;
+    minutes = (ttf % 3600) / 60;
+    seconds = ttf - ((hours * 3600) + (minutes * 60));
 
-//  */
-// static int cmd_battery_temperature(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   shell_print(shell, "%2.2f degree", battery.Temperature);
-//   return 0;
-// }
+    shell_fprintf(shell, 0, "Estimate time for fully charged battery: %02d:%02d:%02d\n", hours, minutes, seconds);
+  }
+  else
+  {
+    shell_warn(shell, "USB not connected, battery is not charging");
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_state_of_charge(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%2.1f\%", battery.StateOfCharge);
+  return 0;
+}
 
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_age(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//  */
-// static int cmd_battery_time_to_empty(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+  shell_print(shell, "%2.1f\%", battery.age);
+  return 0;
+}
 
-//   if (System.charger_connected == false)
-//   {
-//     uint32_t hours = 0;
-//     uint32_t minutes = 0;
-//     uint32_t seconds = 0;
-
-//     uint32_t tte = (uint32_t)battery.TimeToEmpty;
-
-//     /* Convert seconds to hh:mm:ss */
-//     hours = tte / 3600;
-//     minutes = (tte % 3600) / 60;
-//     seconds = tte - ((hours * 3600) + (minutes * 60));
-
-//     shell_fprintf(shell, 0, "Estimate time to empty battery: %02d:%02d:%02d\n", hours, minutes, seconds);
-//   }
-//   else
-//   {
-//     shell_warn(shell, "USB connected, battery is charging");
-//   }
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-
-//  */
-// static int cmd_battery_time_to_full(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   if (System.charger_connected == true)
-//   {
-//     uint32_t hours = 0;
-//     uint32_t minutes = 0;
-//     uint32_t seconds = 0;
-
-//     uint32_t ttf = (uint32_t)battery.TimeToFull;
-
-//     /* Convert seconds to hh:mm:ss */
-//     hours = ttf / 3600;
-//     minutes = (ttf % 3600) / 60;
-//     seconds = ttf - ((hours * 3600) + (minutes * 60));
-
-//     shell_fprintf(shell, 0, "Estimate time for fully charged battery: %02d:%02d:%02d\n", hours, minutes, seconds);
-//   }
-//   else
-//   {
-//     shell_warn(shell, "USB not connected, battery is not charging");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-
-//  */
-// static int cmd_battery_state_of_charge(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   shell_print(shell, "%2.1f\%", battery.StateOfCharge);
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-
-//  */
-// static int cmd_battery_age(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   shell_print(shell, "%2.1f\%", battery.age);
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-
-//  */
-// static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   shell_print(shell, "%4.2fmAh", battery.RemainingCapacity);
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%4.2fmAh", battery.RemainingCapacity);
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1165,28 +1147,28 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_notification_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_notification_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.notification_verbose == false)
-//   {
-//     Parameter.notification_verbose = true;
-//     shell_print(shell, "Enabled notification verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.notification_verbose = false;
-//     shell_print(shell, "Disabled notification verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
+  if (Parameter.notification_verbose == false)
+  {
+    Parameter.notification_verbose = true;
+    shell_print(shell, "Enabled notification verbose mode");
+  }
+  else
+  {
+    Parameter.notification_verbose = false;
+    shell_print(shell, "Disabled notification verbose mode");
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1229,23 +1211,23 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "fully_charged_indicator_time: %d sec", Parameter.fully_charged_indicator_time);
-//   }
-//   else
-//   {
-//     Parameter.fully_charged_indicator_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "Set interval to %dms", Parameter.fully_charged_indicator_time);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "fully_charged_indicator_time: %d sec", Parameter.fully_charged_indicator_time);
+  }
+  else
+  {
+    Parameter.fully_charged_indicator_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "Set interval to %dms", Parameter.fully_charged_indicator_time);
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1924,58 +1906,58 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_enable_blue_dev_led(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_enable_blue_dev_led(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.enable_blue_dev_led == false)
-//   {
-//     Parameter.enable_blue_dev_led = true;
-//     shell_print(shell, "Enabled blue dev led");
+  if (Parameter.enable_blue_dev_led == false)
+  {
+    Parameter.enable_blue_dev_led = true;
+    shell_print(shell, "Enabled blue dev led");
 
-//     /* Switch blue led on if motion is already detected when enabling the blue led*/
-//     if (motion_detected == true)
-//     {
-//       gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
-//     }
-//   }
-//   else
-//   {
-//     Parameter.enable_blue_dev_led = false;
-//     shell_print(shell, "Disabled blue dev led");
-//     gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
-//   }
-//   Parameter_PushRAMToFlash();
+    /* Switch blue led on if motion is already detected when enabling the blue led*/
+     if (motion_detected == true)
+     {
+    //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
+     }
+  }
+  else
+  {
+    Parameter.enable_blue_dev_led = false;
+    shell_print(shell, "Disabled blue dev led");
+ //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.enable_rfid_confirmation_blinking == false)
-//   {
-//     Parameter.enable_rfid_confirmation_blinking = true;
-//     shell_print(shell, "Enabled rfid confirmation led for wall tags (valid epc database needed)");
-//   }
-//   else
-//   {
-//     Parameter.enable_rfid_confirmation_blinking = false;
-//     shell_print(shell, "Disabled rfid confirmation led for wall tags (valid epc database needed)");
-//   }
-//   Parameter_PushRAMToFlash();
+  if (Parameter.enable_rfid_confirmation_blinking == false)
+  {
+    Parameter.enable_rfid_confirmation_blinking = true;
+    shell_print(shell, "Enabled rfid confirmation led for wall tags (valid epc database needed)");
+  }
+  else
+  {
+    Parameter.enable_rfid_confirmation_blinking = false;
+    shell_print(shell, "Disabled rfid confirmation led for wall tags (valid epc database needed)");
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -2680,199 +2662,199 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_notification_while_usb_connceted(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_notification_while_usb_connceted(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.notifications_while_usb_connected == false)
-//   {
-//     Notification.current_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST; // Set priority to lowest level to allow new user notification
-//     Notification.next_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST;
+  if (Parameter.notifications_while_usb_connected == false)
+  {
+    Notification.current_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST; // Set priority to lowest level to allow new user notification
+    Notification.next_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST;
 
-//     Parameter.notifications_while_usb_connected = true;
-//     shell_print(shell, "Enabled notification while usb connected");
-//   }
-//   else
-//   {
-//     Parameter.notifications_while_usb_connected = false;
-//     shell_print(shell, "Disabled notification while usb connected");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+    Parameter.notifications_while_usb_connected = true;
+    shell_print(shell, "Enabled notification while usb connected");
+  }
+  else
+  {
+    Parameter.notifications_while_usb_connected = false;
+    shell_print(shell, "Disabled notification while usb connected");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fw(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fw(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_print(shell, "Firmware version: v%d.%d.%d", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
-//   return 0;
-// }
+  shell_print(shell, "Firmware version: v%d.%d.%d", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_hw(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_hw(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_print(shell, "Supported pcb version: v%d.%d", zephyr/device.hardwareMajorVersion, zephyr/device.hardwareMinorVersion);
-//   return 0;
-// }
+  shell_print(shell, "Supported pcb version: v%d.%d", Device.HardwareMajorVersion, Device.HardwareMinorVersion);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_heap_freespace(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_heap_freespace(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d bytes free on heap.\n", memcheck_heap_freespace());
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d bytes free on heap.\n", memcheck_heap_freespace());
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_debug(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_debug(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.debug == false)
-//   {
-//     Parameter.debug = true;
-//     shell_print(shell, "Global verbose mode on");
-//   }
-//   else
-//   {
-//     Parameter.debug = false;
-//     shell_print(shell, "Global verbose mode off");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.debug == false)
+  {
+    Parameter.debug = true;
+    shell_print(shell, "Global verbose mode on");
+  }
+  else
+  {
+    Parameter.debug = false;
+    shell_print(shell, "Global verbose mode off");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_print_parameter_ram(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_print_parameter_ram(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   Parameter_PrintValues(&Parameter);
-//   return 0;
-// }
+  Parameter_PrintValues(&Parameter);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_print_parameter_flash(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_print_parameter_flash(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   PARAMETER readout;
+  PARAMETER readout;
 
-//   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+  flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
 
-//   Parameter_PrintValues(&readout);
-//   return 0;
-// }
+  Parameter_PrintValues(&readout);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_led_color(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 4)
-//   {
-//     uint8_t red = 0;
-//     uint8_t green = 0;
-//     uint8_t blue = 0;
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_led_color(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 4)
+  {
+    uint8_t red = 0;
+    uint8_t green = 0;
+    uint8_t blue = 0;
 
-//     red = atoi(argv[1]);
-//     green = atoi(argv[2]);
-//     blue = atoi(argv[3]);
+    red = atoi(argv[1]);
+    green = atoi(argv[2]);
+    blue = atoi(argv[3]);
 
-//     if ((red <= 255) && (green <= 255) && (blue <= 255))
-//     {
-//       led_set_rgb_color(red, green, blue);
-//       shell_print(shell, "Red: %d, green: %d, blue: %d", red, green, blue);
-//     }
-//     else
-//     {
-//       shell_print(shell, "Invalid rgb color (colors must be in range of 0 to 255)");
-//     }
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameters");
-//   }
-// }
+    if ((red <= 255) && (green <= 255) && (blue <= 255))
+    {
+      led_set_rgb_color(red, green, blue);
+      shell_print(shell, "Red: %d, green: %d, blue: %d", red, green, blue);
+    }
+    else
+    {
+      shell_print(shell, "Invalid rgb color (colors must be in range of 0 to 255)");
+    }
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameters");
+  }
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_led_brightness(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "LED brightness: %d", Parameter.led_brightness);
-//   }
-//   else
-//   {
-//     if ((atoi(argv[1]) >= 0) && (atoi(argv[1]) <= 255))
-//     {
-//       Parameter.led_brightness = atoi(argv[1]);
-//       led_set_rgb_brightness(Parameter.led_brightness);
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Set LED brightness to %d", Parameter.led_brightness);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set LED brightness");
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_led_brightness(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "LED brightness: %d", Parameter.led_brightness);
+  }
+  else
+  {
+    if ((atoi(argv[1]) >= 0) && (atoi(argv[1]) <= 255))
+    {
+      Parameter.led_brightness = atoi(argv[1]);
+      led_set_rgb_brightness(Parameter.led_brightness);
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Set LED brightness to %d", Parameter.led_brightness);
+    }
+    else
+    {
+      shell_error(shell, "Could not set LED brightness");
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_buzzer_duty_cycle(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "Buzzer duty cycle: %d", Parameter.buzzer_duty_cycle);
-//   }
-//   else
-//   {
-//     if ((atoi(argv[1]) >= 0) && (atoi(argv[1]) <= 50))
-//     {
-//       Parameter.buzzer_duty_cycle = atoi(argv[1]);
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Buzzer duty cycle to %d", Parameter.buzzer_duty_cycle);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set duty cycle");
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_buzzer_duty_cycle(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "Buzzer duty cycle: %d", Parameter.buzzer_duty_cycle);
+  }
+  else
+  {
+    if ((atoi(argv[1]) >= 0) && (atoi(argv[1]) <= 50))
+    {
+      Parameter.buzzer_duty_cycle = atoi(argv[1]);
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Buzzer duty cycle to %d", Parameter.buzzer_duty_cycle);
+    }
+    else
+    {
+      shell_error(shell, "Could not set duty cycle");
+    }
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -3046,48 +3028,48 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_sessionuptime(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_sessionuptime(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint16_t hours = 0;
-//   uint16_t minutes = 0;
-//   uint16_t seconds = 0;
+  uint16_t hours = 0;
+  uint16_t minutes = 0;
+  uint16_t seconds = 0;
 
-//   /* Convert seconds to hh:mm:ss */
-//   hours = ((uint32_t)System.MillisecSinceBoot / 1000) / 3600;
-//   minutes = (((uint32_t)System.MillisecSinceBoot / 1000) % 3600) / 60;
-//   seconds = ((uint32_t)System.MillisecSinceBoot / 1000) - ((hours * 3600) + (minutes * 60));
-//   shell_fprintf(shell, 0, "%d sec equals %02d:%02d:%02d\n", ((uint32_t)System.MillisecSinceBoot / 1000), hours, minutes, seconds);
-//   return 0;
-// }
+  /* Convert seconds to hh:mm:ss */
+  hours = ((uint32_t)System.MillisecSinceBoot / 1000) / 3600;
+  minutes = (((uint32_t)System.MillisecSinceBoot / 1000) % 3600) / 60;
+  seconds = ((uint32_t)System.MillisecSinceBoot / 1000) - ((hours * 3600) + (minutes * 60));
+  shell_fprintf(shell, 0, "%d sec equals %02d:%02d:%02d\n", ((uint32_t)System.MillisecSinceBoot / 1000), hours, minutes, seconds);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_totaluptime(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_totaluptime(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint16_t hours = 0;
-//   uint16_t minutes = 0;
-//   uint16_t seconds = 0;
+  uint16_t hours = 0;
+  uint16_t minutes = 0;
+  uint16_t seconds = 0;
 
-//   /* Convert seconds to hh:mm:ss */
-//   hours = Device.OpertingTime / 3600;
-//   minutes = (Device.OpertingTime % 3600) / 60;
-//   seconds = Device.OpertingTime - ((hours * 3600) + (minutes * 60));
+  /* Convert seconds to hh:mm:ss */
+  hours = Device.OpertingTime / 3600;
+  minutes = (Device.OpertingTime % 3600) / 60;
+  seconds = Device.OpertingTime - ((hours * 3600) + (minutes * 60));
 
-//   shell_fprintf(shell, 0, "%ld sec equals %02d:%02d:%02d\n", Device.OpertingTime, hours, minutes, seconds);
-//   Device_PushRAMToFlash();
+  shell_fprintf(shell, 0, "%ld sec equals %02d:%02d:%02d\n", Device.OpertingTime, hours, minutes, seconds);
+  Device_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -3340,90 +3322,90 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_battery_charge_termination_current(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.battery_charge_termination_current);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_charge_termination_current(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.battery_charge_termination_current);
+  }
+  else
+  {
 
-//     Parameter.battery_charge_termination_current = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "battery_charge_termination_current new value: %f\n", Parameter.battery_charge_termination_current);
-//   }
-//   return 0;
-// }
+    Parameter.battery_charge_termination_current = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "battery_charge_termination_current new value: %f\n", Parameter.battery_charge_termination_current);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_battery_charge_termination_temp_min(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.battery_gauge_charge_temp_min);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_charge_termination_temp_min(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.battery_gauge_charge_temp_min);
+  }
+  else
+  {
 
-//     Parameter.battery_gauge_charge_temp_min = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "battery_gauge_charge_temp_min new value: %f\n", Parameter.battery_gauge_charge_temp_min);
-//   }
-//   return 0;
-// }
+    Parameter.battery_gauge_charge_temp_min = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "battery_gauge_charge_temp_min new value: %f\n", Parameter.battery_gauge_charge_temp_min);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_battery_charge_termination_temp_max(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.battery_gauge_charge_temp_max);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_charge_termination_temp_max(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.battery_gauge_charge_temp_max);
+  }
+  else
+  {
 
-//     Parameter.battery_gauge_charge_temp_max = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "battery_gauge_charge_temp_max new value: %f\n", Parameter.battery_gauge_charge_temp_max);
-//   }
-//   return 0;
-// }
+    Parameter.battery_gauge_charge_temp_max = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "battery_gauge_charge_temp_max new value: %f\n", Parameter.battery_gauge_charge_temp_max);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_battery_gauge_sniff_i2c(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (Parameter.battery_gauge_sniff_i2c == false)
-//   {
-//     Parameter.battery_gauge_sniff_i2c = true;
-//     shell_print(shell, "Enabled sniffing battery gauge i2c communication.");
-//   }
-//   else
-//   {
-//     Parameter.battery_gauge_sniff_i2c = false;
-//     shell_print(shell, "Disabled sniffing battery gauge i2c communication.");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_gauge_sniff_i2c(const struct shell *shell, size_t argc, char **argv)
+{
+  if (Parameter.battery_gauge_sniff_i2c == false)
+  {
+    Parameter.battery_gauge_sniff_i2c = true;
+    shell_print(shell, "Enabled sniffing battery gauge i2c communication.");
+  }
+  else
+  {
+    Parameter.battery_gauge_sniff_i2c = false;
+    shell_print(shell, "Disabled sniffing battery gauge i2c communication.");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_battery_gauge_report(const struct shell *shell, size_t argc, char **argv)
-// {
-//   battery_gauge_print_report();
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_battery_gauge_report(const struct shell *shell, size_t argc, char **argv)
+{
+  battery_gauge_print_report();
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -3725,142 +3707,143 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_usb_plugin_reset_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%ld sec\n", Parameter.usb_plugin_reset_time);
-//   }
-//   else
-//   {
-//     Parameter.usb_plugin_reset_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %ld\n", Parameter.usb_plugin_reset_time);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_usb_plugin_reset_time(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%ld sec\n", Parameter.usb_plugin_reset_time);
+  }
+  else
+  {
+    Parameter.usb_plugin_reset_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %ld\n", Parameter.usb_plugin_reset_time);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_usb_auto_reset_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%ld sec\n", Parameter.usb_auto_reset_time);
-//   }
-//   else
-//   {
-//     Parameter.usb_auto_reset_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %ld\n", Parameter.usb_auto_reset_time);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_usb_auto_reset_time(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%ld sec\n", Parameter.usb_auto_reset_time);
+  }
+  else
+  {
+    Parameter.usb_auto_reset_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %ld\n", Parameter.usb_auto_reset_time);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.modem_disable);
-//   }
-//   else
-//   {
-//     Parameter.modem_disable = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.modem_disable);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv)
+{
+  int16_t err = 0;
 
-//     if (Parameter.modem_disable == true)
-//     { /* Turn modem off */
-//       lte_lc_power_off();
-//       k_msleep(500);
-//     }
-//     else
-//     {
-//       /* Configure modem to use either LTE-M or NB-IoT */
-//       if (Parameter.network_connection_type == NB_IOT)
-//       {
-//         err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.modem_disable);
+  }
+  else
+  {
+    Parameter.modem_disable = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.modem_disable);
 
-//         rtc_print_debug_timestamp();
-//         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
+    if (Parameter.modem_disable == true)
+    { /* Turn modem off */
+//      lte_lc_power_off();
+      k_msleep(500);
+    }
+    else
+    {
+      /* Configure modem to use either LTE-M or NB-IoT */
+      if (Parameter.network_connection_type == NB_IOT)
+      {
+//err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
 
-//         if (err)
-//         {
-//           rtc_print_debug_timestamp();
-//           shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
-//         }
-//       }
-//       else
-//       {
-//         err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+        rtc_print_debug_timestamp();
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
 
-//         if (err)
-//         {
-//           rtc_print_debug_timestamp();
-//           shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
-//         }
-//       }
-//       k_msleep(100);
+        if (err)
+        {
+          rtc_print_debug_timestamp();
+          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
+        }
+      }
+      else
+      {
+   //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
 
-//       /* Turn modem on - it will automatically search for networks*/
-//       lte_lc_normal();
-//     }
-//   }
-//   return 0;
-// }
+        if (err)
+        {
+          rtc_print_debug_timestamp();
+          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+        }
+      }
+      k_msleep(100);
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_low_bat_thres(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d mV\n", Parameter.low_bat_threshold);
-//   }
-//   else
-//   {
-//     Parameter.low_bat_threshold = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d mV\n", Parameter.low_bat_threshold);
-//   }
+      /* Turn modem on - it will automatically search for networks*/
+    //  lte_lc_normal();
+    }
+  }
+  return 0;
+}
 
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_low_bat_thres(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d mV\n", Parameter.low_bat_threshold);
+  }
+  else
+  {
+    Parameter.low_bat_threshold = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d mV\n", Parameter.low_bat_threshold);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_disable(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.rfid_disable);
-//   }
-//   else
-//   {
-//     Parameter.rfid_disable = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.rfid_disable);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_disable(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.rfid_disable);
+  }
+  else
+  {
+    Parameter.rfid_disable = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.rfid_disable);
 
-//     if (Parameter.rfid_disable == 1)
-//     {
-//       rfid_power_off();
-//     }
-//     else
-//     {
-//       RFID_PowerOn();
-//     }
-//   }
-//   return 0;
-// }
+    if (Parameter.rfid_disable == 1)
+    {
+  //    rfid_power_off();
+    }
+    else
+    {
+   //   RFID_PowerOn();
+    }
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4048,64 +4031,64 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_event_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_event_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.events_verbose == false)
-//   {
-//     Parameter.events_verbose = true;
-//     shell_print(shell, "Enabled event verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.events_verbose = false;
-//     shell_print(shell, "Disabled event verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.events_verbose == false)
+  {
+    Parameter.events_verbose = true;
+    shell_print(shell, "Enabled event verbose mode");
+  }
+  else
+  {
+    Parameter.events_verbose = false;
+    shell_print(shell, "Disabled event verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_list_events(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_list_events(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   Event_PrintPreviousEvents();
-//   return 0;
-// }
+  Event_PrintPreviousEvents();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_count_events(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_count_events(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_print(shell, "Total events: %d, events to upload: %d", System.EventNumber, (Event_ItemsInArray + (Event_NumberOfOutsourcedMessages * EVENT_MAX_ITEMS_IN_ARRAY)));
-//   return 0;
-// }
+  shell_print(shell, "Total events: %d, events to upload: %d", System.EventNumber, (Event_ItemsInArray + (Event_NumberOfOutsourcedMessages * EVENT_MAX_ITEMS_IN_ARRAY)));
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_events(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_events(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   Event_ClearArray();
-//   shell_print(shell, "Cleared event list.");
-//   return 0;
-// }
+  Event_ClearArray();
+  shell_print(shell, "Cleared event list.");
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4400,25 +4383,25 @@ void command_init(void)
 //   );
 //   SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(battery,
-//                                  SHELL_CMD(voltage, NULL, "Returns the battery voltage", cmd_battery_voltage),
-//                                  SHELL_CMD(current, NULL, "Returns the battery current", cmd_battery_current),
-//                                  SHELL_CMD(cycles, NULL, "Returns the battery charge cycles", cmd_battery_charge_cycles),
-//                                  SHELL_CMD(soc, NULL, "Returns the state of charge(SOC) in percentage of the battery", cmd_battery_state_of_charge),
-//                                  SHELL_CMD(age, NULL, "Returns the estimated age of the battery", cmd_battery_age),
-//                                  SHELL_CMD(temperature, NULL, "Returns the measured temperature of the battery (10k NTC inside battery, AIN1 port battery gauge)", cmd_battery_temperature),
-//                                  SHELL_CMD(cap, NULL, "Returns the remaining capacity of the battery", cmd_battery_remaining_capacity),
-//                                  SHELL_CMD(tte, NULL, "Returns the estimated time to empty under present temperature and load conditions", cmd_battery_time_to_empty),
-//                                  SHELL_CMD(ttf, NULL, "Returns the estimated time to fully charge the battery", cmd_battery_time_to_full),
-//                                  SHELL_CMD(fully_charged_indicator_time, NULL, "Time to keep the green led is ON (when usb is connected and device is fully charged)", cmd_fully_charged_indicator_time),
-//                                  SHELL_CMD(charge_termination_current, NULL, "Charge current threshold to switch from white to green led (when charging ends).", cmd_battery_charge_termination_current),
-//                                  SHELL_CMD(charge_termination_temp_min, NULL, "Minimum temperature to allow charging (default: 0°C)", cmd_battery_charge_termination_temp_min),
-//                                  SHELL_CMD(charge_termination_temp_max, NULL, "Maximum temperature to allow charging (default: 45°C)", cmd_battery_charge_termination_temp_max),
-//                                  SHELL_CMD(sniff, NULL, "Sniff I2C communiction to battery gauge.", cmd_battery_gauge_sniff_i2c),
-//                                  SHELL_CMD(report, NULL, "Sniff I2C communiction to battery gauge.", cmd_battery_gauge_report),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(battery, &battery, "Command set to control and read out battery data", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(battery,
+                                 SHELL_CMD(voltage, NULL, "Returns the battery voltage", cmd_battery_voltage),
+                                 SHELL_CMD(current, NULL, "Returns the battery current", cmd_battery_current),
+                                 SHELL_CMD(cycles, NULL, "Returns the battery charge cycles", cmd_battery_charge_cycles),
+                                 SHELL_CMD(soc, NULL, "Returns the state of charge(SOC) in percentage of the battery", cmd_battery_state_of_charge),
+                                 SHELL_CMD(age, NULL, "Returns the estimated age of the battery", cmd_battery_age),
+                                 SHELL_CMD(temperature, NULL, "Returns the measured temperature of the battery (10k NTC inside battery, AIN1 port battery gauge)", cmd_battery_temperature),
+                                 SHELL_CMD(cap, NULL, "Returns the remaining capacity of the battery", cmd_battery_remaining_capacity),
+                                 SHELL_CMD(tte, NULL, "Returns the estimated time to empty under present temperature and load conditions", cmd_battery_time_to_empty),
+                                 SHELL_CMD(ttf, NULL, "Returns the estimated time to fully charge the battery", cmd_battery_time_to_full),
+                                 SHELL_CMD(fully_charged_indicator_time, NULL, "Time to keep the green led is ON (when usb is connected and device is fully charged)", cmd_fully_charged_indicator_time),
+                                 SHELL_CMD(charge_termination_current, NULL, "Charge current threshold to switch from white to green led (when charging ends).", cmd_battery_charge_termination_current),
+                                 SHELL_CMD(charge_termination_temp_min, NULL, "Minimum temperature to allow charging (default: 0°C)", cmd_battery_charge_termination_temp_min),
+                                 SHELL_CMD(charge_termination_temp_max, NULL, "Maximum temperature to allow charging (default: 45°C)", cmd_battery_charge_termination_temp_max),
+                                 SHELL_CMD(sniff, NULL, "Sniff I2C communiction to battery gauge.", cmd_battery_gauge_sniff_i2c),
+                                 SHELL_CMD(report, NULL, "Sniff I2C communiction to battery gauge.", cmd_battery_gauge_report),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(battery, &battery, "Command set to control and read out battery data", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(modem,
 //                                  SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
@@ -4451,14 +4434,14 @@ void command_init(void)
 //   );
 //   SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(events,
-//                                  SHELL_CMD(verbose, NULL, "Shows event debug information.", cmd_event_verbose),
-//                                  SHELL_CMD(list, NULL, "Displays the last events.", cmd_list_events),
-//                                  SHELL_CMD(count, NULL, "Returns event count stored int the event array.", cmd_count_events),
-//                                  SHELL_CMD(clear, NULL, "Clear event list.", cmd_clear_events),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(events, &events, "Commands to monitor events", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(events,
+                                 SHELL_CMD(verbose, NULL, "Shows event debug information.", cmd_event_verbose),
+                                 SHELL_CMD(list, NULL, "Displays the last events.", cmd_list_events),
+                                 SHELL_CMD(count, NULL, "Returns event count stored int the event array.", cmd_count_events),
+                                 SHELL_CMD(clear, NULL, "Clear event list.", cmd_clear_events),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(events, &events, "Commands to monitor events", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(datetime,
 //                                  SHELL_CMD(timestamp, NULL, "Prints out the current timestamp in ISO8601 format", cmd_timestamp),
@@ -4542,18 +4525,18 @@ void command_init(void)
 //   );
 //   SHELL_CMD_REGISTER(flash, &flash, "Command set to check, erase and readout external flash memory", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(led,
-//                                  SHELL_CMD(color, NULL, "Color for rgb LED. Thre values need: <RED> <GREEN> <BLUE> (range 0-255)", cmd_led_color),
-//                                  SHELL_CMD(brightness, NULL, "Brightness rgb LED (range 0-255)", cmd_led_brightness),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(led, &led, "Command set to change the settings of each LED", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(led,
+                                 SHELL_CMD(color, NULL, "Color for rgb LED. Thre values need: <RED> <GREEN> <BLUE> (range 0-255)", cmd_led_color),
+                                 SHELL_CMD(brightness, NULL, "Brightness rgb LED (range 0-255)", cmd_led_brightness),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(led, &led, "Command set to change the settings of each LED", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(buzzer,
-//                                  SHELL_CMD(duty_cycle, NULL, "Sets the buzzer volume (range 0-50).", cmd_buzzer_duty_cycle),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(buzzer, &buzzer, "Command set to change the buzzer settings", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(buzzer,
+                                 SHELL_CMD(duty_cycle, NULL, "Sets the buzzer volume (range 0-50).", cmd_buzzer_duty_cycle),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(buzzer, &buzzer, "Command set to change the buzzer settings", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(rfid,
 //                                  SHELL_CMD(settings, NULL, "Inquire the current settings from RFID module", cmd_rfid_settings),
@@ -4602,35 +4585,35 @@ void command_init(void)
 //   );
 //   SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(device,
-//                                  SHELL_CMD(factory_reset, NULL, "For development pruposes.", cmd_factorysettings),
-//                                  SHELL_CMD(reboot, NULL, "Reboots the device", cmd_reboot),
-//                                  SHELL_CMD(hard_reboot, NULL, "Reboots the device", cmd_hard_reboot),
-//                                  SHELL_CMD(fw, NULL, "Get the firmware version", cmd_fw),
-//                                  SHELL_CMD(hw, NULL, "Get the hardware version", cmd_hw),
-//                                  SHELL_CMD(heap, NULL, "Returns the available space in heap", cmd_heap_freespace),
-//                                  SHELL_CMD(sessionuptime, NULL, "Get the hardware version", cmd_sessionuptime),
-//                                  SHELL_CMD(totaluptime, NULL, "Get the hardware version", cmd_totaluptime),
-//                                  SHELL_CMD(debug, NULL, "For development only", cmd_debug),
-//                                  SHELL_CMD(parameter_ram, NULL, "Displays all parameter from RAM.", cmd_print_parameter_ram),
-//                                  SHELL_CMD(parameter_flash, NULL, "Displays all parameter from flash.", cmd_print_parameter_flash),
-//                                  SHELL_CMD(blue_dev_led, NULL, "Controlles the blue on board dev led for debugging purposes.", cmd_enable_blue_dev_led),
-//                                  SHELL_CMD(rfid_confirmation, NULL, "Controlles led confirmation if a new wall tag was read.", cmd_enable_rfid_confirmation_blinking),
-//                                  SHELL_CMD(usb_plugin_reset_time, NULL, "Reset time in sec after the device reboots if it gets connected with the charger", cmd_usb_plugin_reset_time),
-//                                  SHELL_CMD(usb_auto_reset_time, NULL, "Reset time in sec if the device is continouse conected with the charger", cmd_usb_auto_reset_time),
-//                                  SHELL_CMD(modem_disable, NULL, "Disables modem (switchs it off permanently)", cmd_modem_disable),
-//                                  SHELL_CMD(rfid_disable, NULL, "Disables rfid module (switchs it off permanently)", cmd_rfid_disable),
-//                                  SHELL_CMD(low_bat_thres, NULL, "mV - Threshold to activate low bat notificatiopn", cmd_low_bat_thres),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(device, &device, "help description", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(device,
+                                 SHELL_CMD(factory_reset, NULL, "For development pruposes.", cmd_factorysettings),
+                                 SHELL_CMD(reboot, NULL, "Reboots the device", cmd_reboot),
+                                 SHELL_CMD(hard_reboot, NULL, "Reboots the device", cmd_hard_reboot),
+                                 SHELL_CMD(fw, NULL, "Get the firmware version", cmd_fw),
+                                 SHELL_CMD(hw, NULL, "Get the hardware version", cmd_hw),
+                                 SHELL_CMD(heap, NULL, "Returns the available space in heap", cmd_heap_freespace),
+                                 SHELL_CMD(sessionuptime, NULL, "Get the hardware version", cmd_sessionuptime),
+                                 SHELL_CMD(totaluptime, NULL, "Get the hardware version", cmd_totaluptime),
+                                 SHELL_CMD(debug, NULL, "For development only", cmd_debug),
+                                 SHELL_CMD(parameter_ram, NULL, "Displays all parameter from RAM.", cmd_print_parameter_ram),
+                                 SHELL_CMD(parameter_flash, NULL, "Displays all parameter from flash.", cmd_print_parameter_flash),
+                                 SHELL_CMD(blue_dev_led, NULL, "Controlles the blue on board dev led for debugging purposes.", cmd_enable_blue_dev_led),
+                                 SHELL_CMD(rfid_confirmation, NULL, "Controlles led confirmation if a new wall tag was read.", cmd_enable_rfid_confirmation_blinking),
+                                 SHELL_CMD(usb_plugin_reset_time, NULL, "Reset time in sec after the device reboots if it gets connected with the charger", cmd_usb_plugin_reset_time),
+                                 SHELL_CMD(usb_auto_reset_time, NULL, "Reset time in sec if the device is continouse conected with the charger", cmd_usb_auto_reset_time),
+                                 SHELL_CMD(modem_disable, NULL, "Disables modem (switchs it off permanently)", cmd_modem_disable),
+                                 SHELL_CMD(rfid_disable, NULL, "Disables rfid module (switchs it off permanently)", cmd_rfid_disable),
+                                 SHELL_CMD(low_bat_thres, NULL, "mV - Threshold to activate low bat notificatiopn", cmd_low_bat_thres),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(device, &device, "help description", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(notification,
-//                                  SHELL_CMD(verbose, NULL, "Displays all user notification after they gets triggered.", cmd_notification_verbose),
-//                                  SHELL_CMD(allow_while_usb_connected, NULL, "Allow user notification signals while device is connected to USB. Otherwise notification are disabled and only red/green charge led will appear.", cmd_notification_while_usb_connceted),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(notification, &notification, "help description", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(notification,
+                                 SHELL_CMD(verbose, NULL, "Displays all user notification after they gets triggered.", cmd_notification_verbose),
+                                 SHELL_CMD(allow_while_usb_connected, NULL, "Allow user notification signals while device is connected to USB. Otherwise notification are disabled and only red/green charge led will appear.", cmd_notification_while_usb_connceted),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(notification, &notification, "help description", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(test,
                              //    SHELL_CMD(notification, NULL, "PCB self test", cmd_test_notification),

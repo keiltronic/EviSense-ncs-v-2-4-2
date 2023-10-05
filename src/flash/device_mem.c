@@ -1,9 +1,9 @@
 /**
  * @file device_mem.c
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 28 Sep 2022
+ * @date 05 Oct 2023
  * @brief This file contains function to write and read device specific data to and from the external flash memory
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 /*!
@@ -39,15 +39,15 @@ void Device_InitRAM(void)
  * @brief This functions saves the current device structure in RAM to external flash memory.
  */
 void Device_PushRAMToFlash(void) {
-  flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, DEVICE_MEM, DEVICE_MEM_LENGTH);
-  flash_write(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+ // flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, DEVICE_MEM, DEVICE_MEM_LENGTH);
+  //flash_write(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 }
 
 /*!
  * @brief This functions reads the the stored device structure from external flash memory to the RAM.
  */
 void Device_PopFlashToRAM(void) {
-  flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+//  flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 }
 
 /*!
