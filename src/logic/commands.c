@@ -4279,7 +4279,8 @@ static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-  shell_print(shell, "Test");
+  shell_print(shell, "Initializing spi device.");
+  flash_init();
 
   // uint16_t i = 0;
 

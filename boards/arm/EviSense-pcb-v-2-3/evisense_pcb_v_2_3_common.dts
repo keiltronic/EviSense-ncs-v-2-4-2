@@ -16,6 +16,14 @@
 		zephyr,uart-mcumgr = &uart0;
 	};
 
+	aliases{
+		led0 = &led0;
+		btn0 = &button0;
+		btn1 = &button1;
+		myspiflash= &mt25ql256_0;
+		mysensor = &bmx160;
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
@@ -26,7 +34,7 @@
 
 	buttons {
 		compatible = "gpio-keys";
-		button0: button_0 { 
+		button0: button_0 {
 			gpios = <&gpio0 18 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "Internal button";
 		};
@@ -34,13 +42,6 @@
 			gpios = <&gpio0 19 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "User button";
 		};
-	};
-	
-
-	aliases{
-		led0 = &led0;
-		btn0 = &button0;
-		btn1 = &button1;
 	};
 };
 
@@ -96,8 +97,8 @@
 	pinctrl-0 = <&spi3_default>;
 	pinctrl-1 = <&spi3_sleep>;
 	pinctrl-names = "default", "sleep";
-	/*
-	mt25ql256: mt25ql256@0 {
+
+	mt25ql256_0: mt25ql256@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		jedec-id = [ 20 BA 19  ];
@@ -105,14 +106,13 @@
 		spi-max-frequency = <8000000>;
 	};
 
-	mt25ql256: mt25ql256@1 {
+	mt25ql256_1: mt25ql256@1 {
 		compatible = "jedec,spi-nor";
 		reg = <1>;
 		jedec-id = [ 20 BA 19  ];
 		size = <268435456>;
 		spi-max-frequency = <8000000>;
 	};
-	 */
 };
 
 &timer0 {

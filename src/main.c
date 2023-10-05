@@ -273,6 +273,7 @@ void main(void)
 	// int16_t err = 0;
 	 gpio_init();
 	 button_init();
+	 i2c_init();
 	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
 
 	// Event_ClearArray();
