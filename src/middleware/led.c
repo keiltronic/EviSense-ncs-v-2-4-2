@@ -191,8 +191,8 @@ void led_update(void)
     flash_period_counter = 0;
     current_brightness = 0.0;
     led_next_state = IDLE;
- //   Notification.current_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST; // Set priority to lowest level to allow new user notification
- //   Notification.next_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST;
+    Notification.current_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST; // Set priority to lowest level to allow new user notification
+    Notification.next_priority = NOTIFICATION_PRIORITY_LEVEL_LOWEST;
     break;
 
   case ON:

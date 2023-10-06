@@ -1,9 +1,9 @@
 /**
  * @file button.c
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 06 Oct 2023
  * @brief This file contains functions to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 /*!
@@ -85,10 +85,8 @@ void button_monitor(void)
   if (btn0_pressed == true)  
     btn0_press_timer++;
   
-
   if (btn1_pressed == true)  
-    btn1_press_timer++;
-  
+    btn1_press_timer++;  
 
   /* ########### INTERNAL BUTTON ########################################################## */
   if (btn0_pressed == true && btn0_pressed_old == false)
@@ -147,7 +145,6 @@ void button0_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint
     btn0_press_counter++;
     btn0_press_timer = 0;
   }
-
 }
 
 /*!

@@ -167,7 +167,7 @@ void notification_thread(void *dummy1, void *dummy2, void *dummy3)
   {
     if (datalog_ReadOutisActive == false)
     {
-    //  notification_update();
+      notification_update();
       led_update();
       buzzer_update(&buzzer);
     }
