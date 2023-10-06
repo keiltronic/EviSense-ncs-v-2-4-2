@@ -98,7 +98,7 @@ void ValidateParameterInExernalFlash(void)
 	System_InitRAM();
 	Parameter_InitRAM();
 	Device_InitRAM();
-	init_epc_mem();
+	//init_epc_mem();
 	notification_init();
 	notification_init_action_matrix();
 
@@ -369,7 +369,7 @@ void main(void)
 	// init_flash(GPIO_PIN_FLASH_CS1);
 	// init_flash(GPIO_PIN_FLASH_CS2);
 	// wdt_reset();
-	// ValidateParameterInExernalFlash();
+	ValidateParameterInExernalFlash();
 
 	// /* Init propritary driver  which depents on loaded parameters*/
 	// init_battery_gauge();
