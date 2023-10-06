@@ -91,8 +91,7 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
   Device_PushRAMToFlash();
 //  lte_lc_power_off();
-
- // gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
+  gpio_pin_set_dt(&reset_switch, 1);
 
   return 0;
 }

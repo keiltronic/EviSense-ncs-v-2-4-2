@@ -122,12 +122,13 @@ void button_monitor(void)
   {
     // enter_hibernate();
     /* Do a hard reboot */
-    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Device hard reboot via user button\n", battery.Voltage);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Device hard reboot via user button\n");
     Device_PushRAMToFlash();
     Notification.next_state = NOTIFICATION_HIBERNATE;
     // lte_lc_power_off();
     k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
                     //     gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
+                    gpio_pin_set_dt(&reset_switch, 1);
   }
 
   btn1_pressed_old = btn1_pressed;
@@ -154,7 +155,6 @@ void button0_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint
 void button1_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
   btn1_pressed = (bool)gpio_pin_get_dt(&button1);
-  gpio_pin_toggle_dt(&led);
 
   if (btn1_pressed == true)
   {

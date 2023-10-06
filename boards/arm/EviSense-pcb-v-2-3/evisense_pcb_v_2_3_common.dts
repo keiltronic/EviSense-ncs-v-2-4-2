@@ -39,6 +39,7 @@
 			label = "LED driver enable pin";
 		};
 	};
+	
 
 	buttons {
 		compatible = "gpio-keys";
@@ -50,6 +51,14 @@
 			gpios = <&gpio0 19 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "User button";
 		};
+	};
+
+	reset {
+		compatible = "reset-switch";
+		reset0: reset_0 {
+			gpios = <&gpio0 1 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>;			
+		};
+
 	};
 };
 

@@ -14,7 +14,7 @@
 
 #include "led.h"
 
-struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+struct gpio_dt_spec dev_led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 struct gpio_dt_spec lp5009_enable_pin = GPIO_DT_SPEC_GET(LP5009_EN_NODE, gpios);
 struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(LP5009_NODE);
 
@@ -31,94 +31,101 @@ float current_brightness = 0.0;
 /*!
  *  @brief This is the function description
  */
-void led_init(void)
+void dev_led_init(void)
 {
-    uint8_t data[2];
-    int16_t ret = 0;
+  int16_t ret = 0;
+  /* Init blue onboard led */
+  if (!device_is_ready(dev_led.port))
+    printk("Could not initialize onboard dev led!\n\r");
 
-    /* Init blue onboard led */
-    if (!device_is_ready(led.port))
-        printk("Could not initialize onboard dev led!\n\r");
+  ret = gpio_pin_configure_dt(&dev_led, GPIO_OUTPUT_ACTIVE);
+  if (ret < 0)
+    printk("Could not configure onboard dev led!\n\r");
+}
 
-    ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    if (ret < 0)
-        printk("Could not configure onboard dev led!\n\r");
+/*!
+ *  @brief This is the function description
+ */
+void rgb_led_init(void)
+{
+  uint8_t data[2];
+  int16_t ret = 0;
 
-    /* Init i2c led driver for rgb leds */
-    if (!device_is_ready(lp5009_enable_pin.port))
-        printk("Could not initialize onboard dev led!\n\r");
+  /* Init i2c led driver for rgb leds */
+  if (!device_is_ready(lp5009_enable_pin.port))
+    printk("Could not initialize onboard dev led!\n\r");
 
-    ret = gpio_pin_configure_dt(&lp5009_enable_pin, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_set_dt(&lp5009_enable_pin, 1);
+  ret = gpio_pin_configure_dt(&lp5009_enable_pin, GPIO_OUTPUT_ACTIVE);
+  gpio_pin_set_dt(&lp5009_enable_pin, 1);
 
-    k_msleep(100);
+  k_msleep(100);
 
-    if (!device_is_ready(dev_i2c.bus))
-    {
-        printk("I2C bus %s is not ready!\n\r", dev_i2c.bus->name);
-        return;
-    }
+  if (!device_is_ready(dev_i2c.bus))
+  {
+    printk("I2C bus %s is not ready!\n\r", dev_i2c.bus->name);
+    return;
+  }
 
-    /* Chip enable */
-    data[0] = DEVICE_CONFIG0;
-    data[1] = 0b01000000;
+  /* Chip enable */
+  data[0] = DEVICE_CONFIG0;
+  data[1] = 0b01000000;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = DEVICE_CONFIG1;
-    data[1] = 0b00010000;
+  data[0] = DEVICE_CONFIG1;
+  data[1] = 0b00010000;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = LED_CONFIG0;
-    data[1] = 0x07;
+  data[0] = LED_CONFIG0;
+  data[1] = 0x07;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = BANK_A_COLOR; // green
-    data[1] = 0;
+  data[0] = BANK_A_COLOR; // green
+  data[1] = 0;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = BANK_B_COLOR; // red
-    data[1] = 0;
+  data[0] = BANK_B_COLOR; // red
+  data[1] = 0;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = BANK_C_COLOR; // blue
-    data[1] = 0;
+  data[0] = BANK_C_COLOR; // blue
+  data[1] = 0;
 
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 }
 
 /*!
@@ -126,35 +133,35 @@ void led_init(void)
  */
 void led_set_rgb_color(uint8_t red, uint8_t green, uint8_t blue)
 {
-    uint8_t data[2];
-    int16_t ret = 0;
+  uint8_t data[2];
+  int16_t ret = 0;
 
-    data[0] = BANK_A_COLOR; // green
-    data[1] = green;
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  data[0] = BANK_A_COLOR; // green
+  data[1] = green;
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = BANK_B_COLOR; // red
-    data[1] = red;
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  data[0] = BANK_B_COLOR; // red
+  data[1] = red;
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 
-    data[0] = BANK_C_COLOR; // blue
-    data[1] = blue;
-    ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  data[0] = BANK_C_COLOR; // blue
+  data[1] = blue;
+  ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 }
 
 /*!
@@ -168,11 +175,11 @@ void led_set_rgb_brightness(uint8_t brightness)
   data[0] = BANK_BRIGHTNESS;
   data[1] = brightness;
   ret = i2c_write_dt(&dev_i2c, data, sizeof(data));
-    if (ret != 0)
-    {
-        printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
-        return;
-    }
+  if (ret != 0)
+  {
+    printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", dev_i2c.addr, data[0], ret);
+    return;
+  }
 }
 
 /*!
@@ -220,14 +227,14 @@ void led_update(void)
         }
       }
       else if (flash_period_counter >= rgb_led.blink_on_time)
-      {                                                      // off-phase
+      {                                                          // off-phase
         if (flash_period_counter == (rgb_led.blink_on_time + 1)) // For not spamming hte I2C bus color and brightnes value should be sent only once a start of periode
         {
           led_set_rgb_brightness(0);
         }
       }
       else if ((flash_period_counter >= 0) && (flash_period_counter < rgb_led.blink_on_time))
-      {                                               // on-phase
+      {                                                       // on-phase
         if (rgb_led.pos_slope == 0 && rgb_led.neg_slope == 0) // no slope - turn immediatelly on
         {
           if (flash_period_counter == 1) // For not spamming hte I2C bus color and brightnes value should be sent only once a start of periode

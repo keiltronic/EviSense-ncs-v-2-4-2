@@ -75,11 +75,12 @@ enum mode
 
 extern uint8_t led_next_state;
 extern uint32_t flash_repeat_counter;
-extern struct gpio_dt_spec led;
+extern struct gpio_dt_spec dev_led;
 
 extern RGB_LED rgb_led;
 
-extern void led_init(void);
+extern void dev_led_init(void);
+extern void rgb_led_init(void);
 extern void led_update(void);
 extern void led_set_rgb_brightness(uint8_t brightness);
 extern void led_set_rgb_color(uint8_t red, uint8_t green, uint8_t blue);

@@ -18,6 +18,7 @@
 #include "hibernate.h"
 #include "interrupts.h"
 #include "led.h"
+#include "hard_reset.h"
 
 #define BATTERY_LEVEL_TIME 1000 // ms
 #define HIBERNATE_TIME 5000 // ms

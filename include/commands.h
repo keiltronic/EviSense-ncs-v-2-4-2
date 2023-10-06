@@ -40,10 +40,10 @@
 #include <nrfx_twi_twim.h>
 #include "test.h"
 #include "event_mem.h"
+#include "hard_reset.h"
 
 extern bool trace_acc_switch;
 extern bool trace_flash;
-//extern struct device *gpio_dev;
 
 extern void command_init(void);
 extern void factorysettings(void);

@@ -84,6 +84,7 @@
 // #include "usb.h"
 // #include "aws_fota.h"
 // #include "test.h"
+#include "hard_reset.h"
 
 /*!
  * @brief This functions validates if all parameter values stored in the external flash are valid.
@@ -104,19 +105,19 @@ void ValidateParameterInExernalFlash(void)
 	// modem_update_information();
 
 	/* Print firmware version */
-		if (pcb_test_is_running == false)
-		{
-			rtc_print_debug_timestamp();
-			shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: \t%d.%d.%d,\tBuild time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
+	if (pcb_test_is_running == false)
+	{
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: %d.%d.%d, Build time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
 
-			/* Print modem firmware version */
+		/* Print modem firmware version */
 		//	rtc_print_debug_timestamp();
 		//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
 
-			/* Print hardware information */
-	//		rtc_print_debug_timestamp();
-	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
-		}
+		/* Print hardware information */
+		//		rtc_print_debug_timestamp();
+		//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
+	}
 
 	/* Read stored firmware version from flash */
 	//	DEVICE device_mem_flash;
@@ -267,8 +268,11 @@ void main(void)
 {
 	uint32_t reset_reason = 0;
 	int16_t err = 0;
+
+	hard_reset_init();
+	dev_led_init();
 	button_init();
-	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
+	gpio_pin_set_dt(&dev_led, 1); // Enable blue dev led while booting
 
 	Event_ClearArray();
 
@@ -283,18 +287,18 @@ void main(void)
 	/* If device restarts from hibernate mode, do a real hardware reset */
 	if (reset_reason == 0x4)
 	{
-		// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
+		gpio_pin_set_dt(&reset_switch, 1);
 	}
 
 	/* Welcome message */
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
 	rtc_print_debug_timestamp();
-	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "===============================\n");
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "==============================\n");
 
 	nrf_power_resetreas_clear(NRF_POWER_NS, 0xFFFFFFFF);
 	rtc_print_debug_timestamp();
-	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Last reset reason:\t\t");
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Last reset reason: ");
 
 	switch (reset_reason)
 	{
@@ -337,8 +341,7 @@ void main(void)
 
 	if (reset_reason & POWER_RESETREAS_OFF_Msk)
 	{
-		// Clear all RESETREAS when waking up from System OFF sleep by GPIO.
-		nrf_power_resetreas_clear(NRF_POWER_NS, 0x70017);
+		nrf_power_resetreas_clear(NRF_POWER_NS, 0x70017); // Clear all RESETREAS when waking up from System OFF sleep by GPIO.
 	}
 
 	/* Init peripherals */
@@ -352,7 +355,7 @@ void main(void)
 
 	/* Check if charger is pluged into the device while it is booting */
 	uint16_t vusb_digit = 0;
-	//vusb_digit = adc_sample(0);
+	// vusb_digit = adc_sample(0);
 
 	// if (vusb_digit >= VUSB_THRES_DIGIT && vusb_digit <= 4095)
 	// {
@@ -367,7 +370,7 @@ void main(void)
 
 	// /* Init propritary driver  which depents on loaded parameters*/
 	battery_gauge_init();
-	led_init();
+	rgb_led_init();
 	// init_imu();
 	command_init();
 	// init_algorithms();
@@ -406,21 +409,14 @@ void main(void)
 	// 	fota_reboot_while_usb_connected = true;
 	// }
 
-	// if (Parameter.rfid_autoscan == true)
-	// {
-	// 	RFID_autoscan_enabled = true;
-	// 	config_RFID();
-	// 	k_msleep(50);
-	// 	RFID_ScanEnable = true;
-
-	// 	/* For debugging prupose enable blue dev led when motion detected*/
-	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
-	// }
-	// else
-	// {
-	// 	/* For debugging prupose enable blue dev led when motion detected*/
-	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
-	// }
+	if (Parameter.rfid_autoscan == true)
+	{
+		// 	RFID_autoscan_enabled = true;
+		// 	config_RFID();
+		// 	k_msleep(50);
+		// 	RFID_ScanEnable = true;
+		//	gpio_pin_set_dt(&dev_led, 0);
+	}
 
 	// /* Set "device on frame" detection */
 	// k_msleep(100);
@@ -448,4 +444,7 @@ void main(void)
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;
+
+	/* Disable blue dev led */
+	gpio_pin_set_dt(&dev_led, 0);
 }
