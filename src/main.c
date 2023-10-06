@@ -372,15 +372,15 @@ void main(void)
 	ValidateParameterInExernalFlash();
 
 	// /* Init propritary driver  which depents on loaded parameters*/
-	// init_battery_gauge();
+	battery_gauge_init();
 	led_init();
 	// init_imu();
 	command_init();
 	// init_algorithms();
 	// wdt_reset();
 
-	// /* Create power on event*/
-	// NewEvent0x13();
+	/* Create power on event*/
+	 NewEvent0x13();
 
 	// /* All initializations were successful mark image as working so that we
 	//  * will not revert upon reboot.
@@ -452,6 +452,6 @@ void main(void)
 	// shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
 	// Event_ClearCompleteFlash();
 
-	// /* Set flag that boot sequence completed before main thread is terminated */
-	// System.boot_complete = true;
+	/* Set flag that boot sequence completed before main thread is terminated */
+	System.boot_complete = true;
 }
