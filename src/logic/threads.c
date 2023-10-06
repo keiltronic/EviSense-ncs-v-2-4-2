@@ -19,6 +19,7 @@ K_THREAD_STACK_DEFINE(epc_stack_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(datalog_stack_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(battery_area, STACKSIZE_SMALL);
 K_THREAD_STACK_DEFINE(lte_and_cloud_area, STACKSIZE_LARGE);
+K_THREAD_STACK_DEFINE(button_area, STACKSIZE_SMALL);
 K_THREAD_STACK_DEFINE(aws_fota_area, STACKSIZE_LARGE);
 K_THREAD_STACK_DEFINE(fetch_time_area, STACKSIZE_SMALL);
 K_THREAD_STACK_DEFINE(datalog_readout_area, STACKSIZE_SMALL);
@@ -41,6 +42,7 @@ static struct k_thread autosave_data;
 static struct k_thread safety_data;
 static struct k_thread magnet_detection_data;
 static struct k_thread seconds_loop_data;
+static struct k_thread button_data;
 
 k_tid_t tid;
 
@@ -139,6 +141,22 @@ void safety_thread(void *dummy1, void *dummy2, void *dummy3)
   // }
 }
 
+void button_thread(void *dummy1, void *dummy2, void *dummy3)
+{
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
+
+  while (1)
+  {
+    if (datalog_ReadOutisActive == false)
+    {
+      button_monitor();
+    }
+    k_msleep(1);
+  }
+}
+
 void notification_thread(void *dummy1, void *dummy2, void *dummy3)
 {
   ARG_UNUSED(dummy1);
@@ -149,7 +167,7 @@ void notification_thread(void *dummy1, void *dummy2, void *dummy3)
   {
     if (datalog_ReadOutisActive == false)
     {
-      notification_update();
+    //  notification_update();
       led_update();
       buzzer_update(&buzzer);
     }
@@ -377,30 +395,30 @@ void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     USB_CheckConnectionStatus();
-  //     battery_gauge_UpdateData();
+  while (1)
+  {
+    // if (datalog_ReadOutisActive == false)
+    // {
+    //  // USB_CheckConnectionStatus();
+    //   battery_gauge_UpdateData();
 
-  //     if (battery_charge_status_delay == 0)
-  //     {
-  //       battery_gauge_CheckChargeStatus();
-  //       battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
-  //     }
-  //     else
-  //     {
-  //       battery_charge_status_delay--;
-  //     }
-  //     battery_gauge_CheckLowBat();
-  //   }
-  //   k_msleep(100);
-  // }
+    //   if (battery_charge_status_delay == 0)
+    //   {
+    //     battery_gauge_CheckChargeStatus();
+    //     battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
+    //   }
+    //   else
+    //   {
+    //     battery_charge_status_delay--;
+    //   }
+    //   battery_gauge_CheckLowBat();
+    // }
+    k_msleep(100);
+  }
 }
 
 void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -633,5 +651,8 @@ void init_threads(void)
   k_thread_name_set(tid, "magnet-detection-thread");
 
   tid = k_thread_create(&seconds_loop_data, seconds_loop_area, STACKSIZE_LARGE, seconds_loop_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
+  k_thread_name_set(tid, "seconds-loop");
+  
+  tid = k_thread_create(&button_data, button_area, STACKSIZE_SMALL, button_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
   k_thread_name_set(tid, "seconds-loop");
 }

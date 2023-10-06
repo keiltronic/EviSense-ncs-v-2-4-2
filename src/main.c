@@ -44,9 +44,9 @@
 /**
  * @file main.c
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 18 Jan 2022
+ * @date 06 Oct 2023
  * @brief This main file is the initial application starting point after Zephyr OS booted up
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 /*!
@@ -85,8 +85,6 @@
 // #include "aws_fota.h"
 // #include "test.h"
 
-uint32_t reset_reason = 0;
-
 /*!
  * @brief This functions validates if all parameter values stored in the external flash are valid.
  * @note This function talks directly over the SPI bus with the external NOR flash memory. For this it uses the API calls defined in flash.c
@@ -98,7 +96,7 @@ void ValidateParameterInExernalFlash(void)
 	System_InitRAM();
 	Parameter_InitRAM();
 	Device_InitRAM();
-	//init_epc_mem();
+	// init_epc_mem();
 	notification_init();
 	notification_init_action_matrix();
 
@@ -106,19 +104,19 @@ void ValidateParameterInExernalFlash(void)
 	// modem_update_information();
 
 	/* Print firmware version */
-	//	if (pcb_test_is_running == false)
-	//	{
-	//		rtc_print_debug_timestamp();
-	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: \t%d.%d.%d,\tBuild time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
+		if (pcb_test_is_running == false)
+		{
+			rtc_print_debug_timestamp();
+			shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: \t%d.%d.%d,\tBuild time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
 
-	//		/* Print modem firmware version */
-	//		rtc_print_debug_timestamp();
-	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
+			/* Print modem firmware version */
+		//	rtc_print_debug_timestamp();
+		//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
 
-	//		/* Print hardware information */
+			/* Print hardware information */
 	//		rtc_print_debug_timestamp();
 	//		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
-	//	}
+		}
 
 	/* Read stored firmware version from flash */
 	//	DEVICE device_mem_flash;
@@ -267,87 +265,83 @@ void factorysettings(void)
  */
 void main(void)
 {
-	// int16_t err = 0;/*  */
+	uint32_t reset_reason = 0;
+	int16_t err = 0;
 	button_init();
 	// gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0); // Enable blue dev led while booting
 
-	// Event_ClearArray();
+	Event_ClearArray();
 
 	// // at_cmd_init();
-	// init_rtc();
+	init_rtc();
 
-	// k_msleep(50);
+	k_msleep(50);
 
-	// /* Readout and output last reset reason */
-	// reset_reason = nrf_power_resetreas_get(NRF_POWER_NS);
+	/* Readout and output last reset reason */
+	reset_reason = nrf_power_resetreas_get(NRF_POWER_NS);
 
-	// /* If device restarts from hibernate mode, do a real hardware reset */
-	// if (reset_reason == 0x4)
-	// {
-	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
-	// }
+	/* If device restarts from hibernate mode, do a real hardware reset */
+	if (reset_reason == 0x4)
+	{
+		// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
+	}
 
-	/* welcome message */
-	printk("boot!\n\r");
-	printk("VILEDA PROFESSIONAL - EviSense\r\n");
+	/* Welcome message */
+	rtc_print_debug_timestamp();
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
+	rtc_print_debug_timestamp();
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "===============================\n");
 
-	//	 rtc_print_debug_timestamp();
-	//	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - EviSense\n");
-	// shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "VILEDA PROFESSIONAL - %s\n" CONFIG_BOARD);
-	//	 rtc_print_debug_timestamp();
-	//	 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "====================================\n");
+	nrf_power_resetreas_clear(NRF_POWER_NS, 0xFFFFFFFF);
+	rtc_print_debug_timestamp();
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Last reset reason:\t\t");
 
-	// nrf_power_resetreas_clear(NRF_POWER_NS, 0xFFFFFFFF);
-	// rtc_print_debug_timestamp();
-	// shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Last reset reason:\t\t");
+	switch (reset_reason)
+	{
+	case 0x0:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Power-on reset or a brownout reset\n", reset_reason);
+		break;
 
-	// switch (reset_reason)
-	// {
+	case 0x1:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from pin reset detected\n", reset_reason);
+		break;
 
-	// case 0x0:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Power-on reset or a brownout reset\n", reset_reason);
-	// 	break;
+	case 0x2:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from global watchdog detected\n", reset_reason);
+		break;
 
-	// case 0x1:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from pin reset detected\n", reset_reason);
-	// 	break;
+	case 0x4:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by DETECT signal from GPIO\n", reset_reason);
+		break;
 
-	// case 0x2:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from global watchdog detected\n", reset_reason);
-	// 	break;
+	case 0x10:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by entering debug interface mode\n", reset_reason);
+		break;
 
-	// case 0x4:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by DETECT signal from GPIO\n", reset_reason);
-	// 	break;
+	case 0x10000:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from AIRCR.SYSRESETREQ detected\n", reset_reason);
+		break;
 
-	// case 0x10:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by entering debug interface mode\n", reset_reason);
-	// 	break;
+	case 0x20000:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from CPU lock-up detected\n", reset_reason);
+		break;
 
-	// case 0x10000:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from AIRCR.SYSRESETREQ detected\n", reset_reason);
-	// 	break;
+	case 0x30000:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset triggered through CTRL-AP\n", reset_reason);
+		break;
 
-	// case 0x20000:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from CPU lock-up detected\n", reset_reason);
-	// 	break;
+	default:
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "0x%X - Unkown reset reason\n", reset_reason);
+		break;
+	}
 
-	// case 0x30000:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset triggered through CTRL-AP\n", reset_reason);
-	// 	break;
+	if (reset_reason & POWER_RESETREAS_OFF_Msk)
+	{
+		// Clear all RESETREAS when waking up from System OFF sleep by GPIO.
+		nrf_power_resetreas_clear(NRF_POWER_NS, 0x70017);
+	}
 
-	// default:
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "0x%X - Unkown reset reason\n", reset_reason);
-	// 	break;
-	// }
-
-	// if (reset_reason & POWER_RESETREAS_OFF_Msk)
-	// {
-	// 	// Clear all RESETREAS when waking up from System OFF sleep by GPIO.
-	// 	nrf_power_resetreas_clear(NRF_POWER_NS, 0x70017);
-	// }
-
-	// /* Init peripherals */
+	/* Init peripherals */
 	// init_watchdog();
 	// wdt_reset();
 	// init_adc();
@@ -356,9 +350,9 @@ void main(void)
 	// init_uart(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	// init_pwm();
 
-	// /* Check if charger is pluged into the device while it is booting */
-	// uint16_t vusb_digit = 0;
-	// vusb_digit = adc_sample(0);
+	/* Check if charger is pluged into the device while it is booting */
+	uint16_t vusb_digit = 0;
+	//vusb_digit = adc_sample(0);
 
 	// if (vusb_digit >= VUSB_THRES_DIGIT && vusb_digit <= 4095)
 	// {
@@ -380,7 +374,7 @@ void main(void)
 	// wdt_reset();
 
 	/* Create power on event*/
-	 NewEvent0x13();
+	NewEvent0x13();
 
 	// /* All initializations were successful mark image as working so that we
 	//  * will not revert upon reboot.

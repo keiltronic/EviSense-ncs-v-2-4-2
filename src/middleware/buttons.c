@@ -24,6 +24,17 @@ struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(BTN1_NODE, gpios);
 struct gpio_callback button0_cb_data;
 struct gpio_callback button1_cb_data;
 
+bool btn0_pressed = false;
+bool btn1_pressed = false;
+bool btn0_pressed_old = false;
+bool btn1_pressed_old = false;
+bool btn0_beep = false;
+bool btn1_beep = false;
+uint16_t btn0_press_timer = 0;
+uint16_t btn1_press_timer = 0;
+volatile uint16_t btn0_press_counter = 0;
+volatile uint16_t btn1_press_counter = 0;
+
 /*!
  * @brief tbd
  * @details tbd
@@ -57,8 +68,8 @@ void button_init(void)
     return;
   }
 
-  gpio_init_callback(&button0_cb_data, button0_pressed, BIT(button0.pin));
-  gpio_init_callback(&button1_cb_data, button1_pressed, BIT(button1.pin));
+  gpio_init_callback(&button0_cb_data, button0_pressed_cb, BIT(button0.pin));
+  gpio_init_callback(&button1_cb_data, button1_pressed_cb, BIT(button1.pin));
 
   gpio_add_callback(button0.port, &button0_cb_data);
   gpio_add_callback(button1.port, &button1_cb_data);
@@ -68,108 +79,89 @@ void button_init(void)
  * @brief tbd
  * @details tbd
  */
-void button0_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+void button_monitor(void)
 {
-  static uint64_t btn0_start_time = 0;
-  static uint64_t btn0_stop_time = 0;
-  static uint64_t btn0_cycles_spent = 0;
-  static uint64_t btn0_press_time_ns = 0;
-  static float btn0_press_time_ms = 0.0;
+  /* Check if any button is pressed (interrupt) and count press time*/
+  if (btn0_pressed == true)  
+    btn0_press_timer++;
+  
 
-  btn0_status = (bool)gpio_pin_get_dt(&button0);
+  if (btn1_pressed == true)  
+    btn1_press_timer++;
+  
 
-  if (btn0_status == true)
+  /* ########### INTERNAL BUTTON ########################################################## */
+  if (btn0_pressed == true && btn0_pressed_old == false)
+  {
+    /* Not used */
+  }
+  btn0_pressed_old = btn0_pressed;
+
+  /* ########### USER BUTTON ########################################################## */
+
+  /* Activate blue rgb led while user button (btn2) is pressed and not USB is connected */
+  if (btn1_pressed == true && btn1_pressed_old == false)
   {
     System.StatusInputs |= STATUSFLAG_UB;
 
-    /* Capture kernel time stamp to measure press duration */
-    btn0_start_time = k_cycle_get_32();
+    /* Add event in event array which is send to cloud in next sync interval */
+    NewEvent0x0D();
   }
-  else
+
+  /* Check for how long the user button is pressed an trigger actions depending on press duration */
+  if (btn1_press_timer == BATTERY_LEVEL_TIME)
   {
-    if (btn0_start_time > 0)
+    if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
     {
-      /* Capture final kernel time stamp */
-      btn0_stop_time = k_cycle_get_32();
+      /* Show battery level with led */
+      Notification.next_state = NOTIFICATION_BATTERY_LEVEL;
 
-      /* Compute how long the binary search needed */
-      btn0_cycles_spent = btn0_stop_time - btn0_start_time;
-
-      /* Convert ticks into nanoseconds and milliseconds */
-      btn0_press_time_ns = k_cyc_to_ns_floor64(btn0_cycles_spent);
-      btn0_press_time_ms = ((float)btn0_press_time_ns / 1000000.0);
-
-      printk("Button 0 press time: %.2fms\r\n", btn0_press_time_ms);
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Show battery level indicator (led), battery voltage= %4.2fmV\n", battery.Voltage);
     }
   }
+  else if (btn1_press_timer == HIBERNATE_TIME)
+  {
+    // enter_hibernate();
+    /* Do a hard reboot */
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Device hard reboot via user button\n", battery.Voltage);
+    Device_PushRAMToFlash();
+    Notification.next_state = NOTIFICATION_HIBERNATE;
+    // lte_lc_power_off();
+    k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
+                    //     gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
+  }
+
+  btn1_pressed_old = btn1_pressed;
+}
+/*!
+ * @brief tbd
+ * @details tbd
+ */
+void button0_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+  btn0_pressed = (bool)gpio_pin_get_dt(&button0);
+
+  if (btn0_pressed == true)
+  {
+    btn0_press_counter++;
+    btn0_press_timer = 0;
+  }
+
 }
 
 /*!
  * @brief tbd
  * @details tbd
  */
-void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+void button1_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-  static uint64_t btn1_start_time = 0;
-  static uint64_t btn1_stop_time = 0;
-  static uint64_t btn1_cycles_spent = 0;
-  static uint64_t btn1_press_time_ns = 0;
-  static float btn1_press_time_ms = 0.0;
-
-  btn1_status = (bool)gpio_pin_get_dt(&button1);
+  btn1_pressed = (bool)gpio_pin_get_dt(&button1);
   gpio_pin_toggle_dt(&led);
 
-  if (btn1_status == true)
+  if (btn1_pressed == true)
   {
-    System.StatusInputs |= STATUSFLAG_UB;
-
-    /* Add event in event array which is send to cloud in next sync interval */
-    NewEvent0x0D();
-
-    /* Capture kernel time stamp to measure press duration */
-    btn1_start_time = k_cycle_get_32();
-  }
-  else
-  {
-    if (btn1_start_time > 0)
-    {
-      /* Capture final kernel time stamp */
-      btn1_stop_time = k_cycle_get_32();
-
-      /* Compute how long the binary search needed */
-      btn1_cycles_spent = btn1_stop_time - btn1_start_time;
-
-      /* Convert ticks into nanoseconds and milliseconds */
-      btn1_press_time_ns = k_cyc_to_ns_floor64(btn1_cycles_spent);
-      btn1_press_time_ms = ((float)btn1_press_time_ns / 1000000.0);
-
-      /* Trigger */
-      printk("Button 1 press time: %.2fms\r\n", btn1_press_time_ms);
-
-      if (btn1_press_time_ms >= HIBERNATE_TIME)
-      {
-        printk("Enter hibernate mode\r\n");
-        // enter_hibernate();
-        /* Do a hard reboot */
-        // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Device hard reboot via user button\n", battery.Voltage);
-        // Device_PushRAMToFlash();
-        // Notification.next_state = NOTIFICATION_HIBERNATE;
-        // lte_lc_power_off();
-        // k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
-        // gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
-      }
-      else if (btn1_press_time_ms >= BATTERY_LEVEL_TIME)
-      {
-      //  if ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true))
-      //  {
-          printk("Show battery level\r\n");
-          //       /* Show battery level with led */
-          //       Notification.next_state = NOTIFICATION_BATTERY_LEVEL;
-
-          //       rtc_print_debug_timestamp();
-          //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Show battery level indicator (led), battery voltage= %4.2fmV\n", battery.Voltage);
-     //   }
-      }
-    }
-  }
+    btn1_press_counter++;
+    btn1_press_timer = 0;
+  }  
 }

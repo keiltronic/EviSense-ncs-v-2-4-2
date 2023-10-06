@@ -26,9 +26,9 @@ void Device_InitRAM(void)
   Device_StructSizeInByte = sizeof(DEVICE);
   Device_StructMemberQuantity = Device_StructSizeInByte / sizeof(uint32_t);
 
-  Device.FirmwareMajorVersion = 2UL;
-  Device.FirmwareMinorVersion = 5UL;
-  Device.FirmwareInternVersion = 4UL;
+  Device.FirmwareMajorVersion = 3UL;
+  Device.FirmwareMinorVersion = 0UL;
+  Device.FirmwareInternVersion = 0UL;
   Device.HardwareMajorVersion = 2UL;
   Device.HardwareMinorVersion = 3UL;
   Device.OpertingTime = 0UL;

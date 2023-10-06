@@ -29,7 +29,7 @@ extern struct gpio_callback button0_cb_data;
 extern struct gpio_callback button1_cb_data;
 
 extern void button_init(void);
-extern void button0_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
-extern void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+extern void button0_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
+extern void button1_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
 
 #endif

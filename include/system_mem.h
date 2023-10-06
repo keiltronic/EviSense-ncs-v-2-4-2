@@ -93,8 +93,6 @@ typedef struct
 
 extern volatile SYSTEM System;
 
-extern uint32_t reset_reason;
-
 extern void System_InitRAM(void);
 extern void System_CheckStatusFlagChange(void);
 extern uint32_t memcheck_heap_freespace(void);
