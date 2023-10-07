@@ -305,7 +305,7 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-    // wdt_reset(); // blocks watchdog activation
+     wdt_reset(); // blocks watchdog activation
 
     // /* Update step detection */
     // if (datalog_ReadOutisActive == false)

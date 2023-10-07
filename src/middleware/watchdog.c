@@ -1,27 +1,34 @@
 /**
  * @file watchdog.c
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 07 Oct 2023
  * @brief This file contains functions to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 /*!
  * @defgroup Peripherals
  * @brief This file contains functions to communicate with the pheripherals
  * @{*/
-
 #include "watchdog.h"
 
 int16_t wdt_channel_id;
-static struct device *wdt;
+//static struct device *wdt;
 static struct wdt_timeout_cfg wdt_config;
 
+const struct device *const wdt = DEVICE_DT_GET(DT_ALIAS(watchdog0));
+
+/*!
+ *  @brief This is the function description
+ */
 void wdt_reset(void)
 {
   wdt_feed(wdt, wdt_channel_id);
 }
 
+/*!
+ *  @brief This is the function description
+ */
 void wdt_callback(struct device *wdt_dev, int channel_id)
 {
   static bool handled_event;
@@ -37,18 +44,19 @@ void wdt_callback(struct device *wdt_dev, int channel_id)
   handled_event = true;
 }
 
-void init_watchdog(void)
+/*!
+ *  @brief This is the function description
+ */
+void wdt_init(void)
 {
-
   int16_t err = 0;
 
-  wdt = device_get_binding("WDT");
+ // wdt = device_get_binding("WDT");
 
-  if (!wdt)
-  {
-    printk("Cannot get WDT device\n");
-    return;
-  }
+	if (!device_is_ready(wdt)) {
+		printk("%s: device not ready.\n", wdt->name);
+		return 0;
+	}
 
   /* Reset SoC when watchdog timer expires. */
   wdt_config.flags = WDT_FLAG_RESET_SOC;

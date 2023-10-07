@@ -31,7 +31,7 @@ target_sources(app PRIVATE src/middleware/spi.c)
 #target_sources(app PRIVATE src/middleware/stepdetection.c)
 target_sources(app PRIVATE src/middleware/uart.c)
 target_sources(app PRIVATE src/middleware/usb.c)
-#target_sources(app PRIVATE src/middleware/watchdog.c)
+target_sources(app PRIVATE src/middleware/watchdog.c)
 
 target_sources(app PRIVATE src/flash/datalog_mem.c)
 target_sources(app PRIVATE src/flash/device_mem.c)

@@ -25,6 +25,7 @@
 		myleddriver = &lp5009;
 		lp5009enable = &lp5009_enable;
 		batterygauge = &max17201g;
+		watchdog0 = &wdt0;
 	};
 
 	leds {
@@ -60,6 +61,11 @@
 		};
 
 	};
+};
+
+&wdt0 {
+	/* uncomment to use Non-Maskable interrupt instead of the normal one */
+	/* interrupt-nmi; */
 };
 
 &adc {

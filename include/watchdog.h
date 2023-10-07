@@ -13,8 +13,9 @@
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/watchdog.h>
+#include <zephyr/devicetree.h>
 
-extern void init_watchdog(void);
+extern void wdt_init(void);
 extern void wdt_reset(void);
 
 #endif

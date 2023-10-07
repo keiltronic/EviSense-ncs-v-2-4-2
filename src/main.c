@@ -345,11 +345,9 @@ void main(void)
 	}
 
 	/* Init peripherals */
-	// init_watchdog();
-	// wdt_reset();
-	//init_adc();
+	wdt_init();
+	wdt_reset();
 	adc_init();
-	// init_i2c();
 	// init_spi();
 	// init_uart(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	// init_pwm();
@@ -360,13 +358,13 @@ void main(void)
 
 	if (vusb_digit >= VUSB_THRES_DIGIT && vusb_digit <= 4095)
 	{
-		//charger_plug_in_while_reboot = true;
+		charger_plug_in_while_reboot = true;
 	}
 
 	// /* Init flash memory and load NVM parameters to RAM */
 	// init_flash(GPIO_PIN_FLASH_CS1);
 	// init_flash(GPIO_PIN_FLASH_CS2);
-	// wdt_reset();
+	wdt_reset();
 	ValidateParameterInExernalFlash();
 
 	// /* Init propritary driver  which depents on loaded parameters*/
@@ -375,7 +373,7 @@ void main(void)
 	imu_init();
 	command_init();
 	// init_algorithms();
-	// wdt_reset();
+	wdt_reset();
 
 	/* Create power on event*/
 	NewEvent0x13();
