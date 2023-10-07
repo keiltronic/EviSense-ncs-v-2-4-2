@@ -2639,27 +2639,27 @@ static int cmd_anymotion_thr(const struct shell *shell, size_t argc, char **argv
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_stepdetection_trace(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_stepdetection_trace(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.stepdetection_verbose == false)
-//   {
-//     Parameter.stepdetection_verbose = true;
-//     shell_print(shell, "Enabled step detection verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.stepdetection_verbose = false;
-//     shell_print(shell, "Disabled step detection verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.stepdetection_verbose == false)
+  {
+    Parameter.stepdetection_verbose = true;
+    shell_print(shell, "Enabled step detection verbose mode");
+  }
+  else
+  {
+    Parameter.stepdetection_verbose = false;
+    shell_print(shell, "Disabled step detection verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -3070,17 +3070,17 @@ static int cmd_totaluptime(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_stepdetection_totalsteps(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_stepdetection_totalsteps(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_fprintf(shell, 0, "%d steps\n", System.TotalSteps);
-//   return 0;
-// }
+  shell_fprintf(shell, 0, "%d steps\n", System.TotalSteps);
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4567,12 +4567,12 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(imu, &imu, "Command set to change IMU settings", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(stepdetection,
-//                                  SHELL_CMD(verbose, NULL, "Prints current readings from step detection to console", cmd_stepdetection_trace),
-//                                  SHELL_CMD(totalsteps, NULL, "Prints total steps in this session to console", cmd_stepdetection_totalsteps),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(stepdetection, &stepdetection, "Command set to control and trace step detection algorithm", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(stepdetection,
+                                 SHELL_CMD(verbose, NULL, "Prints current readings from step detection to console", cmd_stepdetection_trace),
+                                 SHELL_CMD(totalsteps, NULL, "Prints total steps in this session to console", cmd_stepdetection_totalsteps),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(stepdetection, &stepdetection, "Command set to control and trace step detection algorithm", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(fota,
 //                                  SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),

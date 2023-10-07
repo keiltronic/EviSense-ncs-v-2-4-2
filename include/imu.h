@@ -21,8 +21,11 @@
 #include "i2c.h"
 #include "system_mem.h"
 #include "led.h"
+#include "stepdetection.h"
 
 #define BMX160_NODE DT_NODELABEL(bmx160)
+#define IMU_INT1_NODE DT_ALIAS(imuint1)
+#define IMU_INT2_NODE DT_ALIAS(imuint2)
 
 #define GRAVITY_EARTH 9.81
 
@@ -54,5 +57,7 @@ extern int8_t user_bmi160_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *r
 extern int8_t bmm150_aux_read(uint8_t id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 extern int8_t bmm150_aux_write(uint8_t id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 extern int8_t magnet_detection(void);
+extern void imu_int1_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins) ;
+extern void imu_int2_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins);
 
 #endif

@@ -26,6 +26,9 @@
 		lp5009enable = &lp5009_enable;
 		batterygauge = &max17201g;
 		watchdog0 = &wdt0;
+		imu = &bmx160;
+		imuint1 = &imuint1;
+		imuint2 = &imuint2;
 	};
 
 	leds {
@@ -52,6 +55,13 @@
 			gpios = <&gpio0 19 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "User button";
 		};
+		imuint1: imu_int1 {
+			gpios = <&gpio0 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
+
+		imuint2: imu_int2 {
+			gpios = <&gpio0 16 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
 	};
 
 	reset {
@@ -71,21 +81,6 @@
 &adc {
 	status = "okay";
 };
-
-/*&adc {
-	//compatible = "adc-controller";
-	status = "okay";
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	channel@0 {
-		reg = <0>;
-		zephyr,gain = "ADC_GAIN_1";
-		zephyr,reference = "ADC_REF_INTERNAL";
-		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
-		zephyr,resolution = <12>;
-	};
-};*/
 
 &gpiote {
 	status = "okay";
@@ -111,19 +106,19 @@
 	clock-frequency = <I2C_BITRATE_FAST>;
 
 	max17201g: max17201g@6c {
-		compatible = "maxim,max17201g";
+	//	compatible = "maxim,max17201g";
 		reg = <0x6c>;
 	};
 
 	lp5009: lp5009@14 {
-		compatible = "ti,lp5009";
+		//compatible = "ti,lp5009";
 		reg = <0x14>;
 	};
 
 	bmx160: bmx160@68 {
-		compatible = "bosch,bmx160";
+		//compatible = "bosch,bmx160";
 		reg = <0x68>;
-		int-gpios = <&gpio0 15 0>, <&gpio0 16 0>;
+	//	gpios = <&gpio0 15 0>, <&gpio0 16 0>;
 	};
 
 };

@@ -1,9 +1,9 @@
 /**
  * @file stepdetection.c
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 07 Oct 2023
  * @brief This file contains functions to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 /*!
@@ -21,6 +21,7 @@ uint16_t step_count_old = 0;
 void step_sequence_detection(void) {
   if (!step_sequence_running && (System.Steps >= STEP_SEQUENCE_MIN_STEPS)) {
     step_sequence_running = true;
+
     if (Parameter.stepdetection_verbose || Parameter.debug) {
     rtc_print_debug_timestamp();
       shell_print(shell_backend_uart_get_ptr(), "Step sequence started");
@@ -46,6 +47,7 @@ void step_sequence_detection(void) {
 
   /* Running step sequence finished (no further steps in the past seconds detected) */
   if (step_sequence_running && (step_sequence_post_timer >= STEP_SEQUENCE_RESET_DELAY)) {
+    
     if (Parameter.stepdetection_verbose || Parameter.debug) {
     rtc_print_debug_timestamp();
       shell_print(shell_backend_uart_get_ptr(), "Step sequence finished");

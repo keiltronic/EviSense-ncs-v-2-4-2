@@ -188,15 +188,15 @@ static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
       imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
  //     algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
 
-      // if (step_interrupt_triggered)
-      // {
-      //   if (Parameter.stepdetection_verbose || Parameter.debug)
-      //   {
-      //     rtc_print_debug_timestamp();
-      //     shell_print(shell_backend_uart_get_ptr(), "Step detected. Total step count: %d, step sequence count: %d", System.TotalSteps, System.Steps);
-      //   }
-      //   step_interrupt_triggered = false;
-      // }
+      if (step_interrupt_triggered)
+      {
+        if (Parameter.stepdetection_verbose || Parameter.debug)
+        {
+          rtc_print_debug_timestamp();
+          shell_print(shell_backend_uart_get_ptr(), "Step detected. Total step count: %d, step sequence count: %d", System.TotalSteps, System.Steps);
+        }
+        step_interrupt_triggered = false;
+      }
 
       if (trace_imu_flag)
       {
@@ -214,12 +214,12 @@ static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
+  while (1)
+  {
   //   if ((datalog_ReadOutisActive == false) && (battery_low_bat_notification == false) && (event_clearing_in_progress == false))
   //   {
   //     /* Scan only every x seconds to reduce power consumption */
@@ -240,9 +240,9 @@ void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
   //   }
   //   else
   //   {
-  //     k_msleep(Parameter.rfid_interval);
-  //   }
-  // }
+      k_msleep(Parameter.rfid_interval);
+ //   }
+  }
 }
 
 void epc_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -307,12 +307,12 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
   {
      wdt_reset(); // blocks watchdog activation
 
-    // /* Update step detection */
-    // if (datalog_ReadOutisActive == false)
-    // {
-    //   step_sequence_detection();
-    //   motion_detection();
-    // }
+    /* Update step detection */
+    if (datalog_ReadOutisActive == false)
+    {
+      step_sequence_detection();
+      motion_detection();
+    }
 
     // /* Clear the last seen room ids after some time */
     // if (last_seen_array_auto_clear_timer >= Parameter.last_seen_locations_auto_reset_time)
@@ -354,43 +354,43 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   /* Automatic device on frame detection */
-  //   if (Parameter.algocontrol_bymag_det == 1)
-  //   {
-  //     if (magnet_detection() > 0)
-  //     {
-  //       if (algorithm_lock == true)
-  //       {
-  //         algorithm_lock = false;
+  while (1)
+  {
+    // /* Automatic device on frame detection */
+    // if (Parameter.algocontrol_bymag_det == 1)
+    // {
+    //   if (magnet_detection() > 0)
+    //   {
+    //     if (algorithm_lock == true)
+    //     {
+    //       algorithm_lock = false;
 
-  //         rtc_print_debug_timestamp();
-  //         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device was placed on frame (magnet detected)\n");
-  //       }
-  //     }
-  //     else if (magnet_detection() == 0)
-  //     {
-  //       if (algorithm_lock == false)
-  //       {
-  //         algorithm_lock = true;
+    //       rtc_print_debug_timestamp();
+    //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device was placed on frame (magnet detected)\n");
+    //     }
+    //   }
+    //   else if (magnet_detection() == 0)
+    //   {
+    //     if (algorithm_lock == false)
+    //     {
+    //       algorithm_lock = true;
 
-  //         rtc_print_debug_timestamp();
-  //         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device not installed on frame (no magnet detected)\n");
-  //       }
-  //     }
-  //     else
-  //     {
-  //       /* do nothing */
-  //     }
-  //   }
+    //       rtc_print_debug_timestamp();
+    //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device not installed on frame (no magnet detected)\n");
+    //     }
+    //   }
+    //   else
+    //   {
+    //     /* do nothing */
+    //   }
+    // }
 
-  //   k_msleep(100);
-  // }
+    k_msleep(100);
+  }
 }
 
 void battery_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -423,14 +423,14 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // bool time_update_done = 1; // not done yet
+  bool time_update_done = 1; // not done yet
 
-  // while (1)
-  // {
+  while (1)
+  {
   //   if (datalog_ReadOutisActive == false)
   //   {
   //     /* Read date and time */
@@ -442,8 +442,8 @@ void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
   //     //   }
   //     // }
   //   }
-  //   k_msleep(1000);
-  // }
+    k_msleep(1000);
+  }
 }
 
 void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)

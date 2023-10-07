@@ -30,9 +30,49 @@ volatile uint32_t motion_reset_counter = 0;
 uint8_t mag_data[8] = {0};
 
 struct i2c_dt_spec imu_i2c = I2C_DT_SPEC_GET(BMX160_NODE);
+struct gpio_dt_spec imu_int1 = GPIO_DT_SPEC_GET(IMU_INT1_NODE, gpios);
+struct gpio_dt_spec imu_int2 = GPIO_DT_SPEC_GET(IMU_INT2_NODE, gpios);
+struct gpio_callback imu_int1_cb_data;
+struct gpio_callback imu_int2_cb_data;
 
 void imu_init(void)
 {
+  int16_t ret = 0;
+
+  /* Init int 1 interrup line */
+  ret = gpio_pin_interrupt_configure_dt(&imu_int1, GPIO_INT_EDGE_RISING); // Imu int 1
+
+  if (!device_is_ready(imu_int1.port))
+  {
+    return;
+  }
+
+  ret = gpio_pin_configure_dt(&imu_int1, GPIO_INPUT);
+  if (ret < 0)
+  {
+    return;
+  }
+  gpio_init_callback(&imu_int1_cb_data, imu_int1_cb, BIT(imu_int1.pin));
+  gpio_add_callback(imu_int1.port, &imu_int1_cb_data);
+
+  /* Init int 2 interrup line */
+  ret = gpio_pin_interrupt_configure_dt(&imu_int2, GPIO_INT_EDGE_FALLING); // Imu int 2
+
+  if (!device_is_ready(imu_int2.port))
+  {
+    return;
+  }
+
+  ret = gpio_pin_configure_dt(&imu_int2, GPIO_INPUT);
+  if (ret < 0)
+  {
+    return;
+  }
+
+  gpio_init_callback(&imu_int2_cb_data, imu_int2_cb, BIT(imu_int2.pin));
+  gpio_add_callback(imu_int2.port, &imu_int2_cb_data);
+
+  /* Init i2c device */
   if (!device_is_ready(imu_i2c.bus))
   {
     printk("I2C bus %s is not ready!\n\r", imu_i2c.bus->name);
@@ -464,18 +504,18 @@ void trace_imu(void)
   if (imu_IsInitialized)
   {
     rtc_print_debug_timestamp();
-  
+
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sensor time:%8.3fs; Acc x: %4.2f; y: %4.2f; z: %4.2f  m/s^2;\t Gyro x: %4.2f; y: %4.2f; z: %4.2f dps;\t Mag: x: %3d; y: %3d; z: %3d\n",
-           ((float)accel.sensortime * 0.000039),
-           acc_lsb_to_ms2(accel.x),
-           acc_lsb_to_ms2(accel.y),
-           acc_lsb_to_ms2(accel.z),
-           gyro_lsb_to_dps(gyro.x),
-           gyro_lsb_to_dps(gyro.y),
-           gyro_lsb_to_dps(gyro.z),
-           bmm150.data.x,
-           bmm150.data.y,
-           bmm150.data.z);
+                  ((float)accel.sensortime * 0.000039),
+                  acc_lsb_to_ms2(accel.x),
+                  acc_lsb_to_ms2(accel.y),
+                  acc_lsb_to_ms2(accel.z),
+                  gyro_lsb_to_dps(gyro.x),
+                  gyro_lsb_to_dps(gyro.y),
+                  gyro_lsb_to_dps(gyro.z),
+                  bmm150.data.x,
+                  bmm150.data.y,
+                  bmm150.data.z);
 
     // uint8_t index = 0;
     // for (index = 0; index < 8; index++) {
@@ -491,15 +531,15 @@ void trace_imu_reduced(void)
   {
     rtc_print_debug_timestamp();
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%4.2f;%d;%d;%d\n",
-           acc_lsb_to_ms2(accel.x),
-           acc_lsb_to_ms2(accel.y),
-           acc_lsb_to_ms2(accel.z),
-           gyro_lsb_to_dps(gyro.x),
-           gyro_lsb_to_dps(gyro.y),
-           gyro_lsb_to_dps(gyro.z),
-           bmm150.data.x,
-           bmm150.data.y,
-           bmm150.data.z);
+                  acc_lsb_to_ms2(accel.x),
+                  acc_lsb_to_ms2(accel.y),
+                  acc_lsb_to_ms2(accel.z),
+                  gyro_lsb_to_dps(gyro.x),
+                  gyro_lsb_to_dps(gyro.y),
+                  gyro_lsb_to_dps(gyro.z),
+                  bmm150.data.x,
+                  bmm150.data.y,
+                  bmm150.data.z);
   }
 }
 
@@ -520,7 +560,7 @@ void motion_detection(void)
         /* For debugging prupose */
         if (Parameter.enable_blue_dev_led == true)
         {
-          gpio_pin_set_dt(&dev_led, 1); // Enable blue dev led while booting
+          gpio_pin_set_dt(&dev_led, 1);
         }
         System.StatusInputs &= ~STATUSFLAG_MD; // Delete status entry
       }
@@ -676,4 +716,23 @@ void imu_enter_sleep(void)
     bmi160.aux_cfg.aux_odr = BMI160_AUX_ODR_50HZ;
     rslt += bmi160_set_aux_auto_mode(&bmm150_data_start, &bmi160);
   }
+}
+
+/*!
+ *  @brief This is the function description
+ */
+void imu_int1_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+  step_interrupt_triggered = true;
+  System.TotalSteps++;
+  System.Steps++;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+void imu_int2_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+  motion_detected = true;
+  motion_reset_counter = 0;
 }
