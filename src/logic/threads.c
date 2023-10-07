@@ -185,7 +185,7 @@ static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
   {
     if (datalog_ReadOutisActive == false)
     {
- //     imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
+      imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
  //     algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
 
       // if (step_interrupt_triggered)
@@ -198,15 +198,15 @@ static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
       //   step_interrupt_triggered = false;
       // }
 
-      // if (trace_imu_flag)
-      // {
-      //   trace_imu();
-      // }
+      if (trace_imu_flag)
+      {
+        trace_imu();
+      }
 
-      // if (trace_imu_reduced_flag)
-      // {
-      //   trace_imu_reduced();
-      // }
+      if (trace_imu_reduced_flag)
+      {
+        trace_imu_reduced();
+      }
     }
     k_msleep(Parameter.imu_interval);
   }

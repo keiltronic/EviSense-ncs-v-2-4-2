@@ -13,16 +13,16 @@
  * @{*/
 #include "commands.h"
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_trace(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   trace_imu_flag = !trace_imu_flag;
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_trace(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  trace_imu_flag = !trace_imu_flag;
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -44,16 +44,16 @@ static int cmd_read_usb_volt(const struct shell *shell, size_t argc, char **argv
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_trace_reduced(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-//   trace_imu_reduced_flag = !trace_imu_reduced_flag;
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_trace_reduced(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  trace_imu_reduced_flag = !trace_imu_reduced_flag;
+  return 0;
+}
 
  /*!
   *  @brief This is the function description
@@ -2549,95 +2549,95 @@ static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_imu_interval(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "IMU interval: %dms", Parameter.imu_interval);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) >= 1)
-//     {
-//       Parameter.imu_interval = atoi(argv[1]);
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Set IMU interval to %dms", Parameter.imu_interval);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set new IMU interval");
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_imu_interval(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "IMU interval: %dms", Parameter.imu_interval);
+  }
+  else
+  {
+    if (atoi(argv[1]) >= 1)
+    {
+      Parameter.imu_interval = atoi(argv[1]);
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Set IMU interval to %dms", Parameter.imu_interval);
+    }
+    else
+    {
+      shell_error(shell, "Could not set new IMU interval");
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_motion_reset_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_motion_reset_time(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d sec\n", Parameter.motion_reset_time);
-//   }
-//   else
-//   {
-//     Parameter.motion_reset_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.motion_reset_time);
-//   }
-//   return 0;
-// }
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d sec\n", Parameter.motion_reset_time);
+  }
+  else
+  {
+    Parameter.motion_reset_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.motion_reset_time);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_anymotion_duration(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_anymotion_duration(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.anymotion_duration);
-//   }
-//   else
-//   {
-//     Parameter.anymotion_duration = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     init_imu();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.anymotion_duration);
-//   }
-//   return 0;
-// }
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.anymotion_duration);
+  }
+  else
+  {
+    Parameter.anymotion_duration = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    imu_init();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.anymotion_duration);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_anymotion_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_anymotion_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.anymotion_thr);
-//   }
-//   else
-//   {
-//     Parameter.anymotion_thr = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     init_imu();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.anymotion_thr);
-//   }
-//   return 0;
-// }
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.anymotion_thr);
+  }
+  else
+  {
+    Parameter.anymotion_thr = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    imu_init();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.anymotion_thr);
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4556,16 +4556,16 @@ void command_init(void)
 //   );
 //   SHELL_CMD_REGISTER(rfid, &rfid, "Command set to change RFID settings", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(imu,
-//                                  SHELL_CMD(verbose, NULL, "Prints out the current acc, gyro and mag readings to console", cmd_trace),
-//                                  SHELL_CMD(trace, NULL, "Prints out the shorten list acc, gyro and mag readings to console", cmd_trace_reduced),
-//                                  SHELL_CMD(interval, NULL, "Set the interval for gathering new imu data", cmd_imu_interval),
-//                                  SHELL_CMD(motion_reset_time, NULL, "Set the time after which the device went to IDLE mode after a movement was detected.", cmd_motion_reset_time),
-//                                  SHELL_CMD(anymotion_dur, NULL, "Duration for any motion interrupt at IMU", cmd_anymotion_duration),
-//                                  SHELL_CMD(anymotion_thr, NULL, "Threshold for any motion interrupt at IMU", cmd_anymotion_thr),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(imu, &imu, "Command set to change IMU settings", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(imu,
+                                 SHELL_CMD(verbose, NULL, "Prints out the current acc, gyro and mag readings to console", cmd_trace),
+                                 SHELL_CMD(trace, NULL, "Prints out the shorten list acc, gyro and mag readings to console", cmd_trace_reduced),
+                                 SHELL_CMD(interval, NULL, "Set the interval for gathering new imu data", cmd_imu_interval),
+                                 SHELL_CMD(motion_reset_time, NULL, "Set the time after which the device went to IDLE mode after a movement was detected.", cmd_motion_reset_time),
+                                 SHELL_CMD(anymotion_dur, NULL, "Duration for any motion interrupt at IMU", cmd_anymotion_duration),
+                                 SHELL_CMD(anymotion_thr, NULL, "Threshold for any motion interrupt at IMU", cmd_anymotion_thr),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(imu, &imu, "Command set to change IMU settings", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(stepdetection,
 //                                  SHELL_CMD(verbose, NULL, "Prints current readings from step detection to console", cmd_stepdetection_trace),

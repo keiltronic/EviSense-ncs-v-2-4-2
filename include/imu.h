@@ -1,9 +1,9 @@
 /**
  * @file imu.h
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 07 Oct 2023
  * @brief This file contains functions headers to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 #ifndef IMU_H
@@ -11,6 +11,8 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
+#include <zephyr/devicetree.h>
+#include <zephyr/shell/shell.h>
 #include "bmi160.h"
 #include "bmi160_defs.h"
 #include "bmm150.h"
@@ -18,8 +20,11 @@
 #include "stdio.h"
 #include "i2c.h"
 #include "system_mem.h"
+#include "led.h"
 
-#define GRAVITY_EARTH           9.81
+#define BMX160_NODE DT_NODELABEL(bmx160)
+
+#define GRAVITY_EARTH 9.81
 
 extern struct bmi160_dev bmi160;
 extern struct bmm150_dev bmm150;
@@ -34,7 +39,7 @@ extern volatile uint8_t step_interrupt_triggered;
 extern volatile uint8_t motion_detected;
 extern volatile uint32_t motion_reset_counter;
 
-extern void init_imu(void);
+extern void imu_init(void);
 extern void imu_fetch_data(void);
 extern void trace_imu(void);
 extern void trace_imu_reduced(void);

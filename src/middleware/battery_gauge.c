@@ -217,7 +217,7 @@ void battery_gauge_CheckLowBat(void)
 
       /* Power on IMU and rfid module */
   //    RFID_PowerOn();
-  //    init_imu();
+      imu_init();
 
       /* Reset cellular connection flags */
     //  modem.connection_stat = false;

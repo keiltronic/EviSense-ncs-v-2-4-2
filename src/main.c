@@ -372,7 +372,7 @@ void main(void)
 	// /* Init propritary driver  which depents on loaded parameters*/
 	battery_gauge_init();
 	rgb_led_init();
-	// init_imu();
+	imu_init();
 	command_init();
 	// init_algorithms();
 	// wdt_reset();
@@ -410,14 +410,21 @@ void main(void)
 	// 	fota_reboot_while_usb_connected = true;
 	// }
 
-	if (Parameter.rfid_autoscan == true)
-	{
-		// 	RFID_autoscan_enabled = true;
-		// 	config_RFID();
-		// 	k_msleep(50);
-		// 	RFID_ScanEnable = true;
-		//	gpio_pin_set_dt(&dev_led, 0);
-	}
+	// 	if (Parameter.rfid_autoscan == true)
+	// {
+	// 	RFID_autoscan_enabled = true;
+	// 	config_RFID();
+	// 	k_msleep(50);
+	// 	RFID_ScanEnable = true;
+
+	// 	/* For debugging prupose enable blue dev led when motion detected*/
+	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
+	// }
+	// else
+	// {
+	// 	/* For debugging prupose enable blue dev led when motion detected*/
+	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
+	// }
 
 	// /* Set "device on frame" detection */
 	// k_msleep(100);
