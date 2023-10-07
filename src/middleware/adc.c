@@ -13,57 +13,71 @@
 
 #include "adc.h"
 
-struct device *adc_dev;
+static int16_t m_sample_buffer[BUFFER_SIZE];
+
+static const struct device *adc_dev;
 
 static const struct adc_channel_cfg m_1st_channel_cfg = {
     .gain = ADC_GAIN,
     .reference = ADC_REFERENCE,
     .acquisition_time = ADC_ACQUISITION_TIME,
     .channel_id = ADC_1ST_CHANNEL_ID,
-#if defined(CONFIG_ADC_CONFIGURABLE_INPUTS)
     .input_positive = ADC_1ST_CHANNEL_INPUT,
-#endif
 };
 
-static int16_t m_sample_buffer[BUFFER_SIZE];
+void adc_init(void)
+{
+  int err;
 
-void init_adc(void) {
+  adc_dev = DEVICE_DT_GET(ADC_NODE);
+  if (!adc_dev)
+  {
+    printk("Error getting adc failed\n");
 
-  uint16_t err;
-
-  adc_dev = device_get_binding("ADC_0");
-  if (!adc_dev) {
-    printk("device_get_binding ADC_0 failed\n");
+    return false;
   }
+
   err = adc_channel_setup(adc_dev, &m_1st_channel_cfg);
-  if (err) {
+  if (err)
+  {
     printk("Error in adc setup: %d\n", err);
+
+    return false;
   }
 
-  NRF_SAADC_NS->TASKS_CALIBRATEOFFSET = 1;
-
-  /* First ADC sample is not valid */
-  adc_sample(0);
+  return true;
 }
 
-uint16_t adc_sample(uint8_t channel) {
-  int ret;
+uint16_t adc_sample(uint8_t channel)
+{
+  int err;
+  uint16_t battery_voltage = 0;
 
   const struct adc_sequence sequence = {
-      .channels = BIT(channel),
+      .channels = BIT(ADC_1ST_CHANNEL_ID),
       .buffer = m_sample_buffer,
-      .buffer_size = sizeof(m_sample_buffer),
+      .buffer_size = sizeof(m_sample_buffer), // in bytes!
       .resolution = ADC_RESOLUTION,
   };
 
-  if (!adc_dev) {
+  if (!adc_dev)
+  {
     return -1;
   }
 
-  ret = adc_read(adc_dev, &sequence);
-  if (ret) {
-    printk("ADC read err: %d\n", ret);
+  err = adc_read(adc_dev, &sequence);
+  if (err)
+  {
+    printk("ADC read err: %d\n", err);
+    return err;
   }
-  
-  return m_sample_buffer[0];
+
+  float sample_value = 0;
+  for (int i = 0; i < BUFFER_SIZE; i++)
+  {
+    sample_value += (float)m_sample_buffer[i];
+  }
+  sample_value /= BUFFER_SIZE;
+
+  return (uint16_t) sample_value;
 }

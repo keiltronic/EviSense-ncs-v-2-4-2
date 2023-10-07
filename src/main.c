@@ -347,7 +347,8 @@ void main(void)
 	/* Init peripherals */
 	// init_watchdog();
 	// wdt_reset();
-	// init_adc();
+	//init_adc();
+	adc_init();
 	// init_i2c();
 	// init_spi();
 	// init_uart(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
@@ -355,12 +356,12 @@ void main(void)
 
 	/* Check if charger is pluged into the device while it is booting */
 	uint16_t vusb_digit = 0;
-	// vusb_digit = adc_sample(0);
+	vusb_digit = adc_sample(0);
 
-	// if (vusb_digit >= VUSB_THRES_DIGIT && vusb_digit <= 4095)
-	// {
-	// 	charger_plug_in_while_reboot = true;
-	// }
+	if (vusb_digit >= VUSB_THRES_DIGIT && vusb_digit <= 4095)
+	{
+		//charger_plug_in_while_reboot = true;
+	}
 
 	// /* Init flash memory and load NVM parameters to RAM */
 	// init_flash(GPIO_PIN_FLASH_CS1);
