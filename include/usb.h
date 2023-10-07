@@ -16,7 +16,6 @@
 #include "notification.h"
 
 extern void USB_CheckConnectionStatus(void);
-
 extern bool charger_plug_in_while_reboot;
 
 #endif

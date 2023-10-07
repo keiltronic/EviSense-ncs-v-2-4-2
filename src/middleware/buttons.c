@@ -82,11 +82,11 @@ void button_init(void)
 void button_monitor(void)
 {
   /* Check if any button is pressed (interrupt) and count press time*/
-  if (btn0_pressed == true)  
+  if (btn0_pressed == true)
     btn0_press_timer++;
-  
-  if (btn1_pressed == true)  
-    btn1_press_timer++;  
+
+  if (btn1_pressed == true)
+    btn1_press_timer++;
 
   /* ########### INTERNAL BUTTON ########################################################## */
   if (btn0_pressed == true && btn0_pressed_old == false)
@@ -126,9 +126,10 @@ void button_monitor(void)
     Device_PushRAMToFlash();
     Notification.next_state = NOTIFICATION_HIBERNATE;
     // lte_lc_power_off();
+    
     k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
-                    //     gpio_pin_set_raw(gpio_dev, GPIO_PIN_RST, 1);
-                    gpio_pin_set_dt(&reset_switch, 1);
+
+    gpio_pin_set_dt(&reset_switch, 1);
   }
 
   btn1_pressed_old = btn1_pressed;
@@ -160,5 +161,5 @@ void button1_pressed_cb(const struct device *dev, struct gpio_callback *cb, uint
   {
     btn1_press_counter++;
     btn1_press_timer = 0;
-  }  
+  }
 }

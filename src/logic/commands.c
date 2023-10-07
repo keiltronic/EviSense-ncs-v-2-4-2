@@ -24,25 +24,25 @@
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_read_usb_volt(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_read_usb_volt(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint16_t rslt = 0;
-//   rslt = adc_sample(0);
+  uint16_t rslt = 0;
+  rslt = adc_sample(0);
 
-//   float adc_voltage = 0.0;
-//   float usb_voltage = 0.0;
-//   adc_voltage = ((float)rslt * ADC_RES_UV) / 1000.0;
-//   usb_voltage = adc_voltage * (15600.0 / 10000.0); // voltage divider ratio
+  float adc_voltage = 0.0;
+  float usb_voltage = 0.0;
+  adc_voltage = ((float)rslt * ADC_RES_UV) / 1000.0;
+  usb_voltage = adc_voltage * (15600.0 / 10000.0); // voltage divider ratio
 
-//   shell_print(shell, "digit: %d, adc voltage: %2fmV, thres: %d, USB voltage: %2fmV", rslt, adc_voltage, VUSB_THRES_DIGIT, usb_voltage);
-//   return 0;
-// }
+  shell_print(shell, "digit: %d, adc voltage: %2fmV, thres: %d, USB voltage: %2fmV", rslt, adc_voltage, VUSB_THRES_DIGIT, usb_voltage);
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4339,11 +4339,11 @@ static int cmd_test3(const struct shell *shell, size_t argc, char **argv)
  */
 void command_init(void)
 {
-//   SHELL_STATIC_SUBCMD_SET_CREATE(adc,
-//                                  SHELL_CMD(usb, NULL, "Reads the usb voltage", cmd_read_usb_volt),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(adc, &adc, "Command set to control and read out adc data", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(adc,
+                                 SHELL_CMD(usb, NULL, "Reads the usb voltage", cmd_read_usb_volt),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(adc, &adc, "Command set to control and read out adc data", NULL);
 
 //   SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
 //                                  SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
