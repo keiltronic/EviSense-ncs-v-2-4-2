@@ -1,57 +1,57 @@
-// /**
-//  * @file aws_fota.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 27 Oct 2022
-//  * @brief This file contains all functions to do a firmware update over the air (FOTA)
-//  * @version 1.0.0
-//  */
+/**
+ * @file aws_fota.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 08 Oct 2023
+ * @brief This file contains all functions to do a firmware update over the air (FOTA)
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup FOTA
-//  * @brief This file contains all functions to do a firmware update over the air (FOTA)
-//  * @{*/
-// #include "aws_fota.h"
+/*!
+ * @defgroup FOTA
+ * @brief This file contains all functions to do a firmware update over the air (FOTA)
+ * @{*/
+#include "aws_fota.h"
 
-// // uint8_t client_id_buf[CLIENT_ID_LEN];
-// uint8_t client_id_buf[16];
-// uint8_t current_job_id[AWS_JOBS_JOB_ID_MAX_LEN];
+// uint8_t client_id_buf[CLIENT_ID_LEN];
+uint8_t client_id_buf[16];
+uint8_t current_job_id[AWS_JOBS_JOB_ID_MAX_LEN];
 
-// uint8_t aws_fota_process_state = AWS_FOTA_PROCESS_IDLE;
-// uint8_t fota_reboot_while_usb_connected = false;
-// uint8_t fota_is_connected = false;
-// uint32_t fota_connection_timer = 0;
-// uint8_t fota_download_in_progress = false;
+uint8_t aws_fota_process_state = AWS_FOTA_PROCESS_IDLE;
+uint8_t fota_reboot_while_usb_connected = false;
+uint8_t fota_is_connected = false;
+uint32_t fota_connection_timer = 0;
+uint8_t fota_download_in_progress = false;
 
-// /* Buffers for MQTT client. */
-// uint8_t rx_buffer[CONFIG_MQTT_MESSAGE_BUFFER_SIZE];
-// uint8_t tx_buffer[CONFIG_MQTT_MESSAGE_BUFFER_SIZE];
-// uint8_t payload_buf[CONFIG_MQTT_PAYLOAD_BUFFER_SIZE];
+/* Buffers for MQTT client. */
+uint8_t rx_buffer[CONFIG_MQTT_MESSAGE_BUFFER_SIZE];
+uint8_t tx_buffer[CONFIG_MQTT_MESSAGE_BUFFER_SIZE];
+uint8_t payload_buf[CONFIG_MQTT_PAYLOAD_BUFFER_SIZE];
 
-// /* The mqtt client struct */
-// struct mqtt_client client;
+/* The mqtt client struct */
+struct mqtt_client client;
 
-// /* MQTT Broker details. */
-// struct sockaddr_storage broker_storage;
-// struct sockaddr_storage coap_server;
+/* MQTT Broker details. */
+struct sockaddr_storage broker_storage;
+struct sockaddr_storage coap_server;
 
-// /* File descriptor */
-// struct pollfd fds;
+/* File descriptor */
+//struct pollfd fds;
 
-// /* Set to true when application should teardown and reboot */
-// bool do_reboot;
+/* Set to true when application should teardown and reboot */
+bool do_reboot;
 
-// /* Set to true when application should reconnect the LTE link*/
-// bool link_offline;
+/* Set to true when application should reconnect the LTE link*/
+bool link_offline;
 
-// #if defined(CONFIG_BSD_LIBRARY)
-// /**@brief Recoverable BSD library error. */
-// void bsd_recoverable_error_handler(uint32_t err)
-// {
-// 	rtc_print_debug_timestamp();
-// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "bsdlib recoverable error: %u\n", err);
-// }
+#if defined(CONFIG_BSD_LIBRARY)
+/**@brief Recoverable BSD library error. */
+void bsd_recoverable_error_handler(uint32_t err)
+{
+	rtc_print_debug_timestamp();
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "bsdlib recoverable error: %u\n", err);
+}
 
-// #endif /* defined(CONFIG_BSD_LIBRARY) */
+#endif /* defined(CONFIG_BSD_LIBRARY) */
 
 // #if !defined(CONFIG_USE_NRF_CLOUD)
 // /* Topic for updating shadow topic with version number */

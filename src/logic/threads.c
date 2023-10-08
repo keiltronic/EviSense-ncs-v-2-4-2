@@ -234,7 +234,7 @@ void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
     }
 
     /* rfid reader trigger interval depents on frame lift state */
-    if (frame_lift_flag[0] == 1)  // frame is lifted
+    if (frame_lift_flag[0] == 1) // frame is lifted
     {
       k_msleep(Parameter.rfid_interval_lifted);
     }
@@ -305,7 +305,7 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-     wdt_reset(); // blocks watchdog activation
+    wdt_reset(); // blocks watchdog activation
 
     /* Update step detection */
     if (datalog_ReadOutisActive == false)
@@ -336,17 +336,17 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
       last_seen_mop_auto_clear_timer++;
     }
 
-    // /* Update timer */
-    // if (initial_time_update == true)
-    // {
-    //   coap_last_transmission_timer++;
-    // }
+    /* Update timer */
+    if (initial_time_update == true)
+    {
+      coap_last_transmission_timer++;
+    }
 
-    // /* Sequence for notification demo */
-    // if (Parameter.notification_test == true)
-    // {
-    //   update_notification_demo();
-    // }
+    /* Sequence for notification demo */
+    if (Parameter.notification_test == true)
+    {
+      //   update_notification_demo();
+    }
 
     k_msleep(1000);
   }
@@ -382,10 +382,6 @@ void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
           rtc_print_debug_timestamp();
           shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device not installed on frame (no magnet detected)\n");
         }
-      }
-      else
-      {
-        /* do nothing */
       }
     }
 
@@ -431,26 +427,26 @@ void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     /* Read date and time */
-  //     // if (modem.connection_stat == true)
-  //     // {
-  //     //   if (time_update_done == 1)
-  //     //   {
-  //     //     time_update_done = rtc_fetch_date_time();
-  //     //   }
-  //     // }
-  //   }
+    //   if (datalog_ReadOutisActive == false)
+    //   {
+    //     /* Read date and time */
+    //     // if (modem.connection_stat == true)
+    //     // {
+    //     //   if (time_update_done == 1)
+    //     //   {
+    //     //     time_update_done = rtc_fetch_date_time();
+    //     //   }
+    //     // }
+    //   }
     k_msleep(1000);
   }
 }
 
 void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
   // int16_t err = 0;
 
@@ -558,16 +554,16 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-//   /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
-//   /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
+    /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
+    /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
 
-//   while (1)
-//   {
-//     /* Update FOTA process state machine*/
-//  //   aws_fota_statemachine();
+    while (1)
+    {
+      /* Update FOTA process state machine*/
+      //aws_fota_statemachine();
 
-//     k_msleep(100);
-//   }
+      k_msleep(100);
+    }
 }
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -652,7 +648,7 @@ void init_threads(void)
 
   tid = k_thread_create(&seconds_loop_data, seconds_loop_area, STACKSIZE_LARGE, seconds_loop_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
   k_thread_name_set(tid, "seconds-loop");
-  
+
   tid = k_thread_create(&button_data, button_area, STACKSIZE_SMALL, button_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
   k_thread_name_set(tid, "seconds-loop");
 }
