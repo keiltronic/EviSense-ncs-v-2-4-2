@@ -1,45 +1,45 @@
-// /**
-//  * @file coap.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 27 Oct 2022
-//  * @brief This file contains functions to establish a CoAP connection over DTLS and functions to create CoAP messages
-//  * @version 1.0.0
-//  */
+/**
+ * @file coap.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 08 Oct 2023
+ * @brief This file contains functions to establish a CoAP connection over DTLS and functions to create CoAP messages
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup Cloud
-//  * @brief This file contains functions to establish a CoAP connection over DTLS and functions to create CoAP messages
-//  * @{*/
+/*!
+ * @defgroup Cloud
+ * @brief This file contains functions to establish a CoAP connection over DTLS and functions to create CoAP messages
+ * @{*/
 
-// // https://github.com/nrfconnect/sdk-zephyr/blob/main/samples/net/sockets/echo_client/src/udp.c
-// // https://devzone.nordicsemi.com/f/nordic-q-a/80841/how-to-add-dtls-to-nrf-coap-client
+// https://github.com/nrfconnect/sdk-zephyr/blob/main/samples/net/sockets/echo_client/src/udp.c
+// https://devzone.nordicsemi.com/f/nordic-q-a/80841/how-to-add-dtls-to-nrf-coap-client
 
-// /*
-//  * Copyright (c) 2017 Linaro Limited
-//  *
-//  * SPDX-License-Identifier: Apache-2.0
-//  */
+/*
+ * Copyright (c) 2017 Linaro Limited
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-// /*
-//  For code samples, you can look at large_get() in zephyr/samples/net/sockets/coap_server/src/coap-server.c,
-//  send_block_wise_coap_request in zephyr/sampls/net/sockets/coap_client/src/coap-client.c and the CoAP implementation
-//  of the download_client in nrf/subsys/net/lib/download_client/src/coap.c.
-//  */
-// #include "coap.h"
+/*
+ For code samples, you can look at large_get() in zephyr/samples/net/sockets/coap_server/src/coap-server.c,
+ send_block_wise_coap_request in zephyr/sampls/net/sockets/coap_client/src/coap-client.c and the CoAP implementation
+ of the download_client in nrf/subsys/net/lib/download_client/src/coap.c.
+ */
+#include "coap.h"
 
-// struct sockaddr_storage server;
-// struct coap_packet request;
-// struct coap_block_context blk_ctx;
-// uint8_t data[MAX_COAP_MSG_LEN];
-// uint8_t trigger_tx = false;
-// time_t time_since_last_cloud_transmission;
+struct sockaddr_storage server;
+struct coap_packet request;
+struct coap_block_context blk_ctx;
+uint8_t data[MAX_COAP_MSG_LEN];
+uint8_t trigger_tx = false;
+time_t time_since_last_cloud_transmission;
 
-// int16_t coap_sock;
+int16_t coap_sock;
 
-// struct pollfd coap_fds[1];
-// int nfds;
+//struct pollfd coap_fds[1];
+int nfds;
 
-// char uri_path[] = "telemetry"; // Resource to use
+char uri_path[] = "telemetry"; // Resource to use
 
 // /*!
 //  * @brief Creates a DTLS CoAP socket to the Bosch IoT cloud

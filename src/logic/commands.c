@@ -885,7 +885,7 @@ static int cmd_search_rfid_record(const struct shell *shell, size_t argc, char *
 
     /* compute how long the work took (assumes no counter rollover) */
     cycles_spent = stop_time - start_time;
-   // nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
+    // nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
     nanoseconds_spent = k_cyc_to_ns_floor64(cycles_spent);
   }
   else
@@ -1578,11 +1578,11 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
   {
     rfid_trigger_enabled = true;
 
-  RFID_IsOn = true;
-  RFID_ScanEnable = true;
+    RFID_IsOn = true;
+    RFID_ScanEnable = true;
 
     if (RFID_IsOn == false)
-    {      
+    {
       config_RFID();
       RFID_TurnOn();
       k_msleep(100);
@@ -1595,8 +1595,8 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
   {
     rfid_trigger_enabled = false;
 
-      RFID_IsOn = false;
-  RFID_ScanEnable = false;
+    RFID_IsOn = false;
+    RFID_ScanEnable = false;
 
     System.RFID_TransparentMode = true;
     gpio_pin_set_dt(&rfid_trigger_pin, 1);
@@ -3080,244 +3080,244 @@ static int cmd_stepdetection_totalsteps(const struct shell *shell, size_t argc, 
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_algo_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_algo_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.algo_verbose == false)
-//   {
-//     Parameter.algo_verbose = true;
-//     shell_print(shell, "Algorithm debug verbose mode on");
-//   }
-//   else
-//   {
-//     Parameter.algo_verbose = false;
-//     shell_print(shell, "Algorithm debug verbose mode off");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.algo_verbose == false)
+  {
+    Parameter.algo_verbose = true;
+    shell_print(shell, "Algorithm debug verbose mode on");
+  }
+  else
+  {
+    Parameter.algo_verbose = false;
+    shell_print(shell, "Algorithm debug verbose mode off");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_enable_coveraged_per_mop_notification(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_enable_coveraged_per_mop_notification(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.enable_coveraged_per_mop_notification == false)
-//   {
-//     Parameter.enable_coveraged_per_mop_notification = true;
-//     shell_print(shell, "Enabled notification if coverage per mop is reached.");
-//   }
-//   else
-//   {
-//     Parameter.enable_coveraged_per_mop_notification = false;
-//     shell_print(shell, "Disabled notification if coverage per mop is reached.");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.enable_coveraged_per_mop_notification == false)
+  {
+    Parameter.enable_coveraged_per_mop_notification = true;
+    shell_print(shell, "Enabled notification if coverage per mop is reached.");
+  }
+  else
+  {
+    Parameter.enable_coveraged_per_mop_notification = false;
+    shell_print(shell, "Disabled notification if coverage per mop is reached.");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_algo_flag_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_algo_flag_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.algo_flag_verbose == false)
-//   {
-//     Parameter.algo_flag_verbose = true;
-//     shell_print(shell, "Algorithm flag verbose mode on");
-//   }
-//   else
-//   {
-//     Parameter.algo_flag_verbose = false;
-//     shell_print(shell, "Algorithm flag verbose mode off");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.algo_flag_verbose == false)
+  {
+    Parameter.algo_flag_verbose = true;
+    shell_print(shell, "Algorithm flag verbose mode on");
+  }
+  else
+  {
+    Parameter.algo_flag_verbose = false;
+    shell_print(shell, "Algorithm flag verbose mode off");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_current_shift_mop_check(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_current_shift_mop_check(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.current_shift_mop_check == false)
-//   {
-//     Parameter.current_shift_mop_check = true;
-//     shell_print(shell, "Used mop check in current shift activated.");
-//   }
-//   else
-//   {
-//     Parameter.current_shift_mop_check = false;
-//     shell_print(shell, "Used mop check in current shift deactivated.");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.current_shift_mop_check == false)
+  {
+    Parameter.current_shift_mop_check = true;
+    shell_print(shell, "Used mop check in current shift activated.");
+  }
+  else
+  {
+    Parameter.current_shift_mop_check = false;
+    shell_print(shell, "Used mop check in current shift deactivated.");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_id_refresh_timer(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.mop_id_refresh_timer);
-//   }
-//   else
-//   {
-//     Parameter.mop_id_refresh_timer = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.mop_id_refresh_timer);
-//   }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_id_refresh_timer(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.mop_id_refresh_timer);
+  }
+  else
+  {
+    Parameter.mop_id_refresh_timer = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.mop_id_refresh_timer);
+  }
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_hit_shock_mag_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.hit_shock_mag_thr);
-//   }
-//   else
-//   {
-//     Parameter.hit_shock_mag_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "hit_shock_mag_thr new value: %f\n", Parameter.hit_shock_mag_thr);
-//   }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_hit_shock_mag_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.hit_shock_mag_thr);
+  }
+  else
+  {
+    Parameter.hit_shock_mag_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "hit_shock_mag_thr new value: %f\n", Parameter.hit_shock_mag_thr);
+  }
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_algocontrol_bymag_det(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.algocontrol_bymag_det);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) > 0)
-//     {
-//       Parameter.algocontrol_bymag_det = 1;
-//     }
-//     else
-//     {
-//       Parameter.algocontrol_bymag_det = 0;
-//       algorithm_lock = false;
-//     }
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "algocontrol_bymag_det new value: %d\n", Parameter.algocontrol_bymag_det);
-//   }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_algocontrol_bymag_det(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.algocontrol_bymag_det);
+  }
+  else
+  {
+    if (atoi(argv[1]) > 0)
+    {
+      Parameter.algocontrol_bymag_det = 1;
+    }
+    else
+    {
+      Parameter.algocontrol_bymag_det = 0;
+      algorithm_lock = false;
+    }
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "algocontrol_bymag_det new value: %d\n", Parameter.algocontrol_bymag_det);
+  }
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mag_det_threshold(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "mag_det_threshold: %d uT", Parameter.mag_det_threshold);
-//   }
-//   else
-//   {
-//     Parameter.mag_det_threshold = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "New mag_det_threshold: %d uT", Parameter.mag_det_threshold);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mag_det_threshold(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "mag_det_threshold: %d uT", Parameter.mag_det_threshold);
+  }
+  else
+  {
+    Parameter.mag_det_threshold = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "New mag_det_threshold: %d uT", Parameter.mag_det_threshold);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mag_det_consecutive_samples(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "mag_det_consecutive_samples: %d", Parameter.mag_det_consecutive_samples);
-//   }
-//   else
-//   {
-//     Parameter.mag_det_consecutive_samples = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "New mag_det_consecutive_samples: %d", Parameter.mag_det_consecutive_samples);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mag_det_consecutive_samples(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "mag_det_consecutive_samples: %d", Parameter.mag_det_consecutive_samples);
+  }
+  else
+  {
+    Parameter.mag_det_consecutive_samples = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "New mag_det_consecutive_samples: %d", Parameter.mag_det_consecutive_samples);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_event1statistics_interval(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "event1statistics_interval: %d", Parameter.event1statistics_interval);
-//   }
-//   else
-//   {
-//     Parameter.event1statistics_interval = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "New event1statistics_interval: %d", Parameter.event1statistics_interval);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_event1statistics_interval(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "event1statistics_interval: %d", Parameter.event1statistics_interval);
+  }
+  else
+  {
+    Parameter.event1statistics_interval = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "New event1statistics_interval: %d", Parameter.event1statistics_interval);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_algo_settings(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_algo_settings(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_print(shell, "acc_noise_thr = %.2f", Parameter.acc_noise_thr);
-//   shell_print(shell, "gyr_noise_thr = %.2f", Parameter.gyr_noise_thr);
-//   shell_print(shell, "gyr_spin_thr = %.2f", Parameter.gyr_spin_thr);
-//   shell_print(shell, "mag_noise_thr = %.2f", Parameter.mag_noise_thr);
-//   shell_print(shell, "frame_handle_angle_thr = %.2f", Parameter.frame_handle_angle_thr);
-//   shell_print(shell, "floor_handle_angle_mopping_thr_min = %.2f", Parameter.floor_handle_angle_mopping_thr_min);
-//   shell_print(shell, "floor_handle_angle_mopping_thr_max = %.2f", Parameter.floor_handle_angle_mopping_thr_max);
-//   shell_print(shell, "floor_handle_angle_mopchange_thr = %.2f", Parameter.floor_handle_angle_mopchange_thr);
-//   shell_print(shell, "min_mopchange_duration = %ld", (uint32_t)Parameter.min_mopchange_duration);
-//   shell_print(shell, "min_mopframeflip_duration = %ld", (uint32_t)Parameter.min_mopframeflip_duration);
-//   shell_print(shell, "angle_smooth_factor = %.2f", Parameter.angle_smooth_factor);
-//   shell_print(shell, "gyr_smooth_factor = %.2f", Parameter.gyr_smooth_factor);
-//   shell_print(shell, "min_mopcycle_duration = %.2f", Parameter.min_mopcycle_duration);
-//   shell_print(shell, "max_mopcycle_duration = %.2f", Parameter.max_mopcycle_duration);
-//   shell_print(shell, "mop_width = %.2f", Parameter.mop_width);
-//   shell_print(shell, "mop_overlap = %.2f", Parameter.mop_overlap);
-//   shell_print(shell, "mopcycle_sequence_thr = %.2f", Parameter.mopcycle_sequence_thr);
-//   shell_print(shell, "peakfollower_update_delay = %ld", (uint32_t)Parameter.peakfollower_update_delay);
-//   shell_print(shell, "mop_rfid_detection_thr = %ld", (uint32_t)Parameter.mop_rfid_detection_thr);
-//   shell_print(shell, "mopping_coverage_per_mop_thr = %.2f", Parameter.mopping_coverage_per_mop_thr);
+  shell_print(shell, "acc_noise_thr = %.2f", Parameter.acc_noise_thr);
+  shell_print(shell, "gyr_noise_thr = %.2f", Parameter.gyr_noise_thr);
+  shell_print(shell, "gyr_spin_thr = %.2f", Parameter.gyr_spin_thr);
+  shell_print(shell, "mag_noise_thr = %.2f", Parameter.mag_noise_thr);
+  shell_print(shell, "frame_handle_angle_thr = %.2f", Parameter.frame_handle_angle_thr);
+  shell_print(shell, "floor_handle_angle_mopping_thr_min = %.2f", Parameter.floor_handle_angle_mopping_thr_min);
+  shell_print(shell, "floor_handle_angle_mopping_thr_max = %.2f", Parameter.floor_handle_angle_mopping_thr_max);
+  shell_print(shell, "floor_handle_angle_mopchange_thr = %.2f", Parameter.floor_handle_angle_mopchange_thr);
+  shell_print(shell, "min_mopchange_duration = %ld", (uint32_t)Parameter.min_mopchange_duration);
+  shell_print(shell, "min_mopframeflip_duration = %ld", (uint32_t)Parameter.min_mopframeflip_duration);
+  shell_print(shell, "angle_smooth_factor = %.2f", Parameter.angle_smooth_factor);
+  shell_print(shell, "gyr_smooth_factor = %.2f", Parameter.gyr_smooth_factor);
+  shell_print(shell, "min_mopcycle_duration = %.2f", Parameter.min_mopcycle_duration);
+  shell_print(shell, "max_mopcycle_duration = %.2f", Parameter.max_mopcycle_duration);
+  shell_print(shell, "mop_width = %.2f", Parameter.mop_width);
+  shell_print(shell, "mop_overlap = %.2f", Parameter.mop_overlap);
+  shell_print(shell, "mopcycle_sequence_thr = %.2f", Parameter.mopcycle_sequence_thr);
+  shell_print(shell, "peakfollower_update_delay = %ld", (uint32_t)Parameter.peakfollower_update_delay);
+  shell_print(shell, "mop_rfid_detection_thr = %ld", (uint32_t)Parameter.mop_rfid_detection_thr);
+  shell_print(shell, "mopping_coverage_per_mop_thr = %.2f", Parameter.mopping_coverage_per_mop_thr);
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -3404,305 +3404,305 @@ static int cmd_battery_gauge_report(const struct shell *shell, size_t argc, char
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_acc_noise_thr(const struct shell *shell, size_t argc, char **argv)
-// {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_acc_noise_thr(const struct shell *shell, size_t argc, char **argv)
+{
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.acc_noise_thr);
-//   }
-//   else
-//   {
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.acc_noise_thr);
+  }
+  else
+  {
 
-//     Parameter.acc_noise_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.acc_noise_thr);
-//   }
-//   return 0;
-// }
+    Parameter.acc_noise_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.acc_noise_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_gyr_noise_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.gyr_noise_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_gyr_noise_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.gyr_noise_thr);
+  }
+  else
+  {
 
-//     Parameter.gyr_noise_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_noise_thr);
-//   }
-//   return 0;
-// }
+    Parameter.gyr_noise_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_noise_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mag_noise_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.mag_noise_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mag_noise_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.mag_noise_thr);
+  }
+  else
+  {
 
-//     Parameter.mag_noise_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.mag_noise_thr);
-//   }
-//   return 0;
-// }
+    Parameter.mag_noise_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.mag_noise_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_gyr_spin_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.gyr_spin_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_gyr_spin_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.gyr_spin_thr);
+  }
+  else
+  {
 
-//     Parameter.gyr_spin_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_spin_thr);
-//   }
-//   return 0;
-// }
+    Parameter.gyr_spin_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_spin_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_frame_handle_angle_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.frame_handle_angle_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_frame_handle_angle_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.frame_handle_angle_thr);
+  }
+  else
+  {
 
-//     Parameter.frame_handle_angle_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.frame_handle_angle_thr);
-//   }
-//   return 0;
-// }
+    Parameter.frame_handle_angle_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.frame_handle_angle_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_floor_handle_angle_mopping_thr_min(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopping_thr_min);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_floor_handle_angle_mopping_thr_min(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopping_thr_min);
+  }
+  else
+  {
 
-//     Parameter.floor_handle_angle_mopping_thr_min = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopping_thr_min);
-//   }
-//   return 0;
-// }
+    Parameter.floor_handle_angle_mopping_thr_min = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopping_thr_min);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_floor_handle_angle_mopping_thr_max(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopping_thr_max);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_floor_handle_angle_mopping_thr_max(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopping_thr_max);
+  }
+  else
+  {
 
-//     Parameter.floor_handle_angle_mopping_thr_max = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopping_thr_max);
-//   }
-//   return 0;
-// }
+    Parameter.floor_handle_angle_mopping_thr_max = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopping_thr_max);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_floor_handle_angle_mopchange_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopchange_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_floor_handle_angle_mopchange_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.floor_handle_angle_mopchange_thr);
+  }
+  else
+  {
 
-//     Parameter.floor_handle_angle_mopchange_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopchange_thr);
-//   }
-//   return 0;
-// }
+    Parameter.floor_handle_angle_mopchange_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.floor_handle_angle_mopchange_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_min_mopchange_duration(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.min_mopchange_duration);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_min_mopchange_duration(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.min_mopchange_duration);
+  }
+  else
+  {
 
-//     Parameter.min_mopchange_duration = (int64_t)atol(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.min_mopchange_duration);
-//   }
-//   return 0;
-// }
+    Parameter.min_mopchange_duration = (int64_t)atol(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.min_mopchange_duration);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_min_mopframeflip_duration(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.min_mopframeflip_duration);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_min_mopframeflip_duration(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.min_mopframeflip_duration);
+  }
+  else
+  {
 
-//     Parameter.min_mopframeflip_duration = (int64_t)atol(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.min_mopframeflip_duration);
-//   }
-//   return 0;
-// }
+    Parameter.min_mopframeflip_duration = (int64_t)atol(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.min_mopframeflip_duration);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_angle_smooth_factor(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.angle_smooth_factor);
-//   }
-//   else
-//   {
-//     Parameter.angle_smooth_factor = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.angle_smooth_factor);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_angle_smooth_factor(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.angle_smooth_factor);
+  }
+  else
+  {
+    Parameter.angle_smooth_factor = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.angle_smooth_factor);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_gyr_smooth_factor(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.gyr_smooth_factor);
-//   }
-//   else
-//   {
-//     Parameter.gyr_smooth_factor = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_smooth_factor);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_gyr_smooth_factor(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.gyr_smooth_factor);
+  }
+  else
+  {
+    Parameter.gyr_smooth_factor = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.gyr_smooth_factor);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_min_mopcycle_duration(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.min_mopcycle_duration);
-//   }
-//   else
-//   {
-//     Parameter.min_mopcycle_duration = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.min_mopcycle_duration);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_min_mopcycle_duration(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.min_mopcycle_duration);
+  }
+  else
+  {
+    Parameter.min_mopcycle_duration = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.min_mopcycle_duration);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_max_mopcycle_duration(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.max_mopcycle_duration);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_max_mopcycle_duration(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.max_mopcycle_duration);
+  }
+  else
+  {
 
-//     Parameter.max_mopcycle_duration = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.max_mopcycle_duration);
-//   }
-//   return 0;
-// }
+    Parameter.max_mopcycle_duration = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.max_mopcycle_duration);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_max_sqm_coveraged_per_mop(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.max_sqm_coveraged_per_mop);
-//   }
-//   else
-//   {
-//     Parameter.max_sqm_coveraged_per_mop = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.max_sqm_coveraged_per_mop);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_max_sqm_coveraged_per_mop(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.max_sqm_coveraged_per_mop);
+  }
+  else
+  {
+    Parameter.max_sqm_coveraged_per_mop = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.max_sqm_coveraged_per_mop);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_width(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.mop_width);
-//   }
-//   else
-//   {
-//     Parameter.mop_width = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.mop_width);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_width(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.mop_width);
+  }
+  else
+  {
+    Parameter.mop_width = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.mop_width);
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -3842,156 +3842,156 @@ static int cmd_rfid_disable(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_overlap(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.mop_overlap);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_overlap(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.mop_overlap);
+  }
+  else
+  {
 
-//     Parameter.mop_overlap = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.mop_overlap);
-//   }
-//   return 0;
-// }
+    Parameter.mop_overlap = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.mop_overlap);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mopcycle_sequence_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.mopcycle_sequence_thr);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mopcycle_sequence_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.mopcycle_sequence_thr);
+  }
+  else
+  {
 
-//     Parameter.mopcycle_sequence_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.mopcycle_sequence_thr);
-//   }
-//   return 0;
-// }
+    Parameter.mopcycle_sequence_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.mopcycle_sequence_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_peakfollower_update_delay(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.peakfollower_update_delay);
-//   }
-//   else
-//   {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_peakfollower_update_delay(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", (uint32_t)Parameter.peakfollower_update_delay);
+  }
+  else
+  {
 
-//     Parameter.peakfollower_update_delay = (int64_t)atol(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.peakfollower_update_delay);
-//   }
-//   return 0;
-// }
+    Parameter.peakfollower_update_delay = (int64_t)atol(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", (uint32_t)Parameter.peakfollower_update_delay);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_rfid_detection_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.mop_rfid_detection_thr);
-//   }
-//   else
-//   {
-//     Parameter.mop_rfid_detection_thr = atol(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.mop_rfid_detection_thr);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_rfid_detection_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.mop_rfid_detection_thr);
+  }
+  else
+  {
+    Parameter.mop_rfid_detection_thr = atol(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.mop_rfid_detection_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mopping_coverage_per_mop_thr(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%f\n", Parameter.mopping_coverage_per_mop_thr);
-//   }
-//   else
-//   {
-//     Parameter.mopping_coverage_per_mop_thr = atof(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %f\n", Parameter.mopping_coverage_per_mop_thr);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mopping_coverage_per_mop_thr(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%f\n", Parameter.mopping_coverage_per_mop_thr);
+  }
+  else
+  {
+    Parameter.mopping_coverage_per_mop_thr = atof(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %f\n", Parameter.mopping_coverage_per_mop_thr);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_coap_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_coap_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.coap_verbose == false)
-//   {
-//     Parameter.coap_verbose = true;
-//     shell_print(shell, "Enabled CoAP verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.coap_verbose = false;
-//     shell_print(shell, "Disabled CoAP verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.coap_verbose == false)
+  {
+    Parameter.coap_verbose = true;
+    shell_print(shell, "Enabled CoAP verbose mode");
+  }
+  else
+  {
+    Parameter.coap_verbose = false;
+    shell_print(shell, "Disabled CoAP verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_protobuf_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_protobuf_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.protobuf_verbose == false)
-//   {
-//     Parameter.protobuf_verbose = true;
-//     shell_print(shell, "Enabled protobuf verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.protobuf_verbose = false;
-//     shell_print(shell, "Disabled protobuf verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.protobuf_verbose == false)
+  {
+    Parameter.protobuf_verbose = true;
+    shell_print(shell, "Enabled protobuf verbose mode");
+  }
+  else
+  {
+    Parameter.protobuf_verbose = false;
+    shell_print(shell, "Disabled protobuf verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_trigger_transmit(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_trigger_transmit(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   trigger_tx = true;
-//   shell_print(shell, "Triggered sending data");
+  trigger_tx = true;
+  shell_print(shell, "Triggered sending data");
 
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4343,42 +4343,42 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(adc, &adc, "Command set to control and read out adc data", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
-  //                                  SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
-  //                                  SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
-  //                                  SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
-  //                                  SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
-  //                                  SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
-  //                                  SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
-  //                                  SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
-  //                                  SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
-  //                                  SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
-  //                                  SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
-  //                                  SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
-  //                                  SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
-  //                                  SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
-  //                                  SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
-  //                                  SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
-  //                                  SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
-  //                                  SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
-  //                                  SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
-  //                                  SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
-  //                                  SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
-  //                                  SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
-  //                                  SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
-  //                                  SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
-  //                                  SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
-  //                                  SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
-  //                                  SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
-  //                                  SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
-  //                                  SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
-  //                                  SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
-  //                                  SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
-  //                                  SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
-  //                                  SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
+    SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
+                                   SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
+                                   SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
+                                   SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
+                                   SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
+                                   SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
+                                   SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
+                                   SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
+                                   SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
+                                   SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
+                                   SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
+                                   SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
+                                   SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
+                                   SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
+                                   SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
+                                   SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
+                                   SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
+                                   SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
+                                   SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
+                                   SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
+                                   SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
+                                   SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
+                                   SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
+                                   SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
+                                   SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
+                                   SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
+                                   SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
+                                   SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
+                                   SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
+                                   SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
+                                   SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
+                                   SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
+                                   SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
+                                   SHELL_SUBCMD_SET_END /* Array terminated. */
+    );
+    SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(battery,
                                  SHELL_CMD(voltage, NULL, "Returns the battery voltage", cmd_battery_voltage),
@@ -4450,40 +4450,40 @@ void command_init(void)
   //   );
   //   SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
 
-    SHELL_STATIC_SUBCMD_SET_CREATE(epc,
-                                   SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
-                                   SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
-                                   SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
-                                   SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
-                                   SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
-                                   SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
-                                   SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
-                                   SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
-                                   SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
-                                   SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
-                                   SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
-                                   SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
-                                   SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
-                                   SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
-                                   SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
-                                   SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
-                                   SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
-                                   SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
-                                   SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
-                                   SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
-                                   SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
-                                   SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
-                                   SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
-                                   SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
-                                   SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
-                                   SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
-                                   SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
-                                   SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
-                                   SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
-                                   SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
-                                   SHELL_SUBCMD_SET_END /* Array terminated. */
-    );
-    SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(epc,
+                                 SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
+                                 SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
+                                 SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
+                                 SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
+                                 SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
+                                 SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
+                                 SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
+                                 SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
+                                 SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
+                                 SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
+                                 SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
+                                 SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
+                                 SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
+                                 SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
+                                 SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
+                                 SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
+                                 SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
+                                 SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
+                                 SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
+                                 SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
+                                 SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
+                                 SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
+                                 SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
+                                 SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
+                                 SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
+                                 SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
+                                 SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
+                                 SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
+                                 SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
+                                 SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
 
   //   SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
   //                                  SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),

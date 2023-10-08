@@ -5,8 +5,6 @@
  * @brief This file contains functions headers to communicate with the pheripherals
  * @version 1.0.0
  */
-
-
 #ifndef RFID_H
 #define RFID_H
 

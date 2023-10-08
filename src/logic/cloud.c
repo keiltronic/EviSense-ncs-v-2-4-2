@@ -1,35 +1,35 @@
-// /**
-//  * @file cloud.c
-//  * @author Thomas Keilbach | keiltronic GmbH
-//  * @date 27 Oct 2022
-//  * @brief This file manges the connection to Bosch IoT cloud
-//  * @version 1.0.0
-//  */
+/**
+ * @file cloud.c
+ * @author Thomas Keilbach | keiltronic GmbH
+ * @date 08 Oct 2023
+ * @brief This file manges the connection to Bosch IoT cloud
+ * @version 2.0.0
+ */
 
-// /*!
-//  * @defgroup Cloud
-//  * @brief This file manges the connection to Bosch IoT cloud
-//  * @{*/
+/*!
+ * @defgroup Cloud
+ * @brief This file manges the connection to Bosch IoT cloud
+ * @{*/
 
-// /* https://github.com/protobuf-c/protobuf-c/wiki/Examples */
+/* https://github.com/protobuf-c/protobuf-c/wiki/Examples */
 
-// #include "cloud.h"
+#include "cloud.h"
 
-// int64_t memerror_upd_tsp = 0LL;
-// uint8_t Cloud_TestCredentials = false;
-// time_t timestamp_last_cloud_transmission = 0;
-// uint32_t coap_last_transmission_timer = 0;
+int64_t memerror_upd_tsp = 0LL;
+uint8_t Cloud_TestCredentials = false;
+time_t timestamp_last_cloud_transmission = 0;
+uint32_t coap_last_transmission_timer = 0;
 
-// /* Create UsageUpdate object which is send in first sync interval */
-// UsageUpdate myUsageUpdate = USAGE_UPDATE__INIT;
-// DeviceStatus myDeviceStatus = DEVICE_STATUS__INIT;
-// PackageDevice2Hub myPackageDevice2Hub = PACKAGE_DEVICE2_HUB__INIT;
-// ProtobufCBinaryData dataupdate_uuid;
-// ProtobufCBinaryData hubupdate_uuid;
-// ProtobufCBinaryData imei;
-// ProtobufCBinaryData current_location_epc;
-// ProtobufCBinaryData fw;
-// uint8_t fw_version[3];
+/* Create UsageUpdate object which is send in first sync interval */
+UsageUpdate myUsageUpdate = USAGE_UPDATE__INIT;
+DeviceStatus myDeviceStatus = DEVICE_STATUS__INIT;
+PackageDevice2Hub myPackageDevice2Hub = PACKAGE_DEVICE2_HUB__INIT;
+ProtobufCBinaryData dataupdate_uuid;
+ProtobufCBinaryData hubupdate_uuid;
+ProtobufCBinaryData imei;
+ProtobufCBinaryData current_location_epc;
+ProtobufCBinaryData fw;
+uint8_t fw_version[3];
 
 // /**
 //  * @brief Updates the DeviceStatusObject with the latest information

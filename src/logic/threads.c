@@ -186,7 +186,7 @@ static void imu_thread(void *dummy1, void *dummy2, void *dummy3)
     if (datalog_ReadOutisActive == false)
     {
       imu_fetch_data();            // fetch data from IMU (new samples from  accelerometer, gyrometer and magnetometer)
- //     algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
+      algorithm_execute_process(); // process main algorithm designed bei Dr. Theofanis Lambrou (check if device is moving, mopping; turn on of/rfid reader, etc..)
 
       if (step_interrupt_triggered)
       {
@@ -572,41 +572,41 @@ void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == true)
-  //   {
-  //     datalog_GetData();
-  //   }
-  //   k_msleep(1);
-  // }
+  while (1)
+  {
+    if (datalog_ReadOutisActive == true)
+    {
+      datalog_GetData();
+    }
+    k_msleep(1);
+  }
 }
 
 void autosave_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     k_msleep(3600000);
-  //     Device_PushRAMToFlash();
+  while (1)
+  {
+    if (datalog_ReadOutisActive == false)
+    {
+      k_msleep(3600000);
+      Device_PushRAMToFlash();
 
-  //     rtc_print_debug_timestamp();
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Autosave time expired. Saved device information in memory.\n");
-  //   }
-  //   else
-  //   {
-  //     k_msleep(1000);
-  //   }
-  // }
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Autosave time expired. Saved device information in memory.\n");
+    }
+    else
+    {
+      k_msleep(1000);
+    }
+  }
 }
 
 void init_threads(void)

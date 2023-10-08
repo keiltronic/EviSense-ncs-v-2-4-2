@@ -23,8 +23,8 @@ void enter_hibernate(void)
     /* Notify user with beep to release the button */
     Notification.next_state = NOTIFICATION_HIBERNATE;
 
-  //  rfid_power_off();
-   // imu_enter_sleep();
+    rfid_power_off();
+    imu_enter_sleep();
    
     /* Disable all GPIO pins */
   //  for (int i = 0; i < 32; i++)
@@ -40,7 +40,7 @@ void enter_hibernate(void)
     NRF_P0_NS->PIN_CNF[WAKEUP_PIN] = cnf | (GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos);
     // printk("PIN_CNF register for pin %d is %d \n", WAKEUP_PIN, NRF_P0_NS->PIN_CNF[WAKEUP_PIN]);
 
-    lte_lc_power_off();               // Send "AT+CFUN=0"
-    bsd_shutdown();                   // Method to gracefully shutdown the BSD library.
+  //  lte_lc_power_off();               // Send "AT+CFUN=0"
+   // bsd_shutdown();                   // Method to gracefully shutdown the BSD library.
     NRF_REGULATORS_NS->SYSTEMOFF = 1; // https://devzone.nordicsemi.com/f/nordic-q-a/47881/how-to-put-nrf9160-dk-in-deep-sleep-mode
 }
