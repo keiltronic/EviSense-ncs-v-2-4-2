@@ -12,7 +12,7 @@
  * @{*/
 #include "uart.h"
 
-//struct device *uart1;
+// struct device *uart1;
 struct uart_data_t
 {
   void *fifo_reserved;
@@ -26,6 +26,8 @@ volatile char uart1_RFIDResponse[UART1_BUFFERSIZE];
 static char uart_buf[32];
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 
+void print_uart(char *buf);
+
 volatile uint8_t uart1_TransmissionReady = false;
 volatile uint16_t uart1_TransmissionLength = 0;
 volatile uint16_t uart1_RFIDResponseTransmissionLength = 0;
@@ -35,27 +37,66 @@ volatile uint8_t EPC_string_end = false;
 
 struct device *uart1 = DEVICE_DT_GET(DT_NODELABEL(uart1));
 
+#define MSG_SIZE 32
+
+/* queue to store up to 10 messages (aligned to 4-byte boundary) */
+K_MSGQ_DEFINE(uart_msgq, MSG_SIZE, 10, 4);
+
+/* receive buffer used in UART ISR callback */
+static char rx_buf[MSG_SIZE];
+static int rx_buf_pos;
+
 /*!
  *  @brief This is the function description
  */
 // void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
 void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *user_data)
 {
-  uart_irq_update(rfid_module);
-  volatile int16_t data_length = 0;
 
+  if (!uart_irq_update(rfid_module))
+  {
+    return;
+  }
+
+  if (!uart_irq_rx_ready(rfid_module))
+  {
+    return;
+  }
+
+  //  uint8_t c;
+  //   /* read until FIFO empty */
+  //   while (uart_fifo_read(rfid_module, &c, 1) == 1)
+  //   {
+  //     if ((c == '\n' || c == '\r') && rx_buf_pos > 0)
+  //     {
+  //       /* terminate string */
+  //       rx_buf[rx_buf_pos] = '\0';
+
+  //       /* if queue is full, message is silently dropped */
+  //       k_msgq_put(&uart_msgq, &rx_buf, K_NO_WAIT);
+
+  //       /* reset the buffer (it was copied to the msgq) */
+  //       rx_buf_pos = 0;
+
+  //       printk("%s",rx_buf);
+  //     }
+  //     else if (rx_buf_pos < (sizeof(rx_buf) - 1))
+  //     {
+  //       rx_buf[rx_buf_pos++] = c;
+  //     }
+  //     /* else: characters beyond buffer size are dropped */
+  //   }
+
+  volatile int16_t data_length = 0;
   /* ----------- RX handling --------------------------------------------------------- */
 
   /* Received data */
-  if (uart_irq_rx_ready(rfid_module))
-  {
-    data_length = uart_fifo_read(rfid_module, uart_buf, sizeof(uart_buf));
+  data_length = uart_fifo_read(rfid_module, uart_buf, sizeof(uart_buf));
 
-    /* Append incoming byte-wise charackters to a full string to process it outside this ISR */
-    if (uart1_TransmissionLength < UART1_BUFFERSIZE)
-    {
-      uart1_InputBuffer[uart1_TransmissionLength++] = uart_buf[0];
-    }
+  /* Append incoming byte-wise charackters to a full string to process it outside this ISR */
+  if (uart1_TransmissionLength < UART1_BUFFERSIZE)
+  {
+    uart1_InputBuffer[uart1_TransmissionLength++] = uart_buf[0];
   }
 
   /* Fill input buffer, extract EPC tags from raw input buffer data */
@@ -68,10 +109,9 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *us
 
     if (uart_buf[0] == '\r')
     {
+      /* Print out raw data coming from rfid module */
       uart1_RFIDResponseFinished = true;
     }
-
-    /* Print out raw data coming from rfid module */
   }
   else if (System.RFID_TransparentMode == false && System.RFID_Sniff == true)
   {
@@ -156,7 +196,8 @@ void uart1_init(void)
     return;
   }
 
-  ret = uart_irq_callback_set(uart1, uart1_cb);
+  // ret = uart_irq_callback_set(uart1, uart1_cb);
+  ret = uart_irq_callback_user_data_set(uart1, uart1_cb, NULL);
   if (ret)
   {
     printk("UART1 cant install uart1 callback\n\r");
@@ -164,4 +205,18 @@ void uart1_init(void)
   }
 
   uart_irq_rx_enable(uart1);
+}
+
+/*
+ * Print a null-terminated string character by character to the UART interface
+ */
+void print_uart(char *buf)
+{
+  int msg_len = strlen(buf);
+
+  for (int i = 0; i < msg_len; i++)
+  {
+    //	uart_poll_out(uart, buf[i]);
+    printk("%c", buf[i]);
+  }
 }

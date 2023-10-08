@@ -97,7 +97,7 @@ void ValidateParameterInExernalFlash(void)
 	System_InitRAM();
 	Parameter_InitRAM();
 	Device_InitRAM();
-	// init_epc_mem();
+	epc_mem_init();
 	notification_init();
 	notification_init_action_matrix();
 
@@ -410,21 +410,21 @@ void main(void)
 	// 	fota_reboot_while_usb_connected = true;
 	// }
 
-	// 	if (Parameter.rfid_autoscan == true)
-	// {
-	// 	RFID_autoscan_enabled = true;
-	// 	config_RFID();
-	// 	k_msleep(50);
-	// 	RFID_ScanEnable = true;
+	if (Parameter.rfid_autoscan == true)
+	{
+		RFID_autoscan_enabled = true;
+		config_RFID();
+		k_msleep(50);
+		RFID_ScanEnable = true;
 
-	// 	/* For debugging prupose enable blue dev led when motion detected*/
-	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
-	// }
-	// else
-	// {
-	// 	/* For debugging prupose enable blue dev led when motion detected*/
-	// 	gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
-	// }
+		/* For debugging prupose enable blue dev led when motion detected*/
+		gpio_pin_set_dt(&dev_led, 0);
+	}
+	else
+	{
+		/* For debugging prupose enable blue dev led when motion detected*/
+		gpio_pin_set_dt(&dev_led, 1);
+	}
 
 	// /* Set "device on frame" detection */
 	// k_msleep(100);
@@ -454,5 +454,5 @@ void main(void)
 	System.boot_complete = true;
 
 	/* Disable blue dev led */
-	gpio_pin_set_dt(&dev_led, 0);
+	//gpio_pin_set_dt(&dev_led, 0);
 }

@@ -17,7 +17,8 @@
 #include "uart.h"
 #include "epc_mem.h"
 
-#define BOOSTER_ENABLE_NODE DT_ALIAS(boosterenable)
+extern struct gpio_dt_spec booster_enable_pin;
+extern struct gpio_dt_spec rfid_trigger_pin;
 
 /* Output power */
 #define RFID_TX_POWER_N2_DBM        "\nN1,00\r"

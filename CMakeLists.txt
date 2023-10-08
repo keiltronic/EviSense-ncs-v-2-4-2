@@ -40,7 +40,7 @@ target_sources(app PRIVATE src/flash/event_mem.c)
 target_sources(app PRIVATE src/flash/parameter_mem.c)
 target_sources(app PRIVATE src/flash/system_mem.c)
 
-#target_sources(app PRIVATE src/logic/algorithms.c)
+target_sources(app PRIVATE src/logic/algorithms.c)
 #target_sources(app PRIVATE src/logic/aws_fota.c)
 #target_sources(app PRIVATE src/logic/cloud.c)
 #target_sources(app PRIVATE src/logic/coap.c)

@@ -30,6 +30,7 @@
 		imuint1 = &imuint1;
 		imuint2 = &imuint2;
 		boosterenable = &booster_enable;
+		rfidtrigger = &rfid_trigger;
 	};
 
 	leds {
@@ -47,6 +48,11 @@
 		booster_enable: booster_en {
 			gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
 			label = "Boost converter enable pin";
+		};
+
+		rfid_trigger: rfid_trig {
+			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+			label = "rfid reader trigger signal";
 		};
 	};
 	

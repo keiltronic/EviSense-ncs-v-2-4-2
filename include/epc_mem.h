@@ -184,7 +184,7 @@ extern uint32_t last_seen_mop_auto_clear_timer;
 extern uint32_t last_seen_mop_id;
 
 extern void epc_process_tags(void);
-extern void init_epc_mem(void);
+extern void epc_mem_init(void);
 extern void EPC_Sort_last_seen(void);
 extern void EPC_Update_last_seen(char *epc_new_rfid_record);
 extern void EPC_Clear_last_seen(void);

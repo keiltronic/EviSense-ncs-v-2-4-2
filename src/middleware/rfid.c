@@ -18,7 +18,8 @@ uint8_t RFID_autoscan_enabled = false;
 uint8_t RFID_IsOn = false;
 uint8_t RFID_TriggeredRead = false;
 
-struct gpio_dt_spec booster_enable_pin = GPIO_DT_SPEC_GET(BOOSTER_ENABLE_NODE, gpios);
+struct gpio_dt_spec booster_enable_pin = GPIO_DT_SPEC_GET(DT_ALIAS(boosterenable), gpios);
+struct gpio_dt_spec rfid_trigger_pin = GPIO_DT_SPEC_GET(DT_ALIAS(rfidtrigger), gpios);
 
 /*!
  *  @brief This is the function description
@@ -26,13 +27,22 @@ struct gpio_dt_spec booster_enable_pin = GPIO_DT_SPEC_GET(BOOSTER_ENABLE_NODE, g
 void rfid_init(void)
 {
   int16_t ret = 0;
-  /* Init blue onboard led */
+
+  /* Init enable signal for boost converter */
   if (!device_is_ready(booster_enable_pin.port))
     printk("Could not initialize rfid module enable pin!\n\r");
 
   ret = gpio_pin_configure_dt(&booster_enable_pin, GPIO_OUTPUT_ACTIVE);
   if (ret < 0)
     printk("Could not configure rfid module enable pin!\n\r");
+
+  /* Init hardware signal for rfid trigger */
+  if (!device_is_ready(rfid_trigger_pin.port))
+    printk("Could not initialize rfid module trigger pin!\n\r");
+
+  ret = gpio_pin_configure_dt(&rfid_trigger_pin, GPIO_OUTPUT_ACTIVE);
+  if (ret < 0)
+    printk("Could not configure rfid module trigger pin!\n\r");
 }
 
 /*!
@@ -81,7 +91,7 @@ void rfid_power_on(void)
  */
 void config_RFID(void)
 {
-  //RFID_PowerOn();
+  // RFID_PowerOn();
   k_msleep(300);
   RFID_setFrequency(Parameter.rfid_frequency);
   k_msleep(200);

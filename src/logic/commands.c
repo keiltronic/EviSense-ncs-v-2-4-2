@@ -55,8 +55,8 @@ static int cmd_trace_reduced(const struct shell *shell, size_t argc, char **argv
   return 0;
 }
 
- /*!
-  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
  */
 static int cmd_factorysettings(const struct shell *shell, size_t argc, char **argv)
 {
@@ -76,7 +76,7 @@ static int cmd_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
- // lte_lc_power_off();
+  // lte_lc_power_off();
   sys_reboot(0);
   return 0;
 }
@@ -90,7 +90,7 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
-//  lte_lc_power_off();
+  //  lte_lc_power_off();
   gpio_pin_set_dt(&reset_switch, 1);
 
   return 0;
@@ -98,7 +98,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_flash_verbose(const struct shell *shell, size_t argc, char **argv)
@@ -122,7 +121,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **argv)
@@ -173,7 +171,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_flashtest(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -196,7 +193,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
@@ -225,7 +221,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **argv)
@@ -275,7 +270,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -306,7 +300,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -335,7 +328,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -355,7 +347,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
@@ -388,7 +379,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_writereg(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -408,7 +398,6 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_i2csan(const struct shell *shell, size_t argc, char **argv)
@@ -582,7 +571,6 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_i2cread(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -608,7 +596,6 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_i2cwrite(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -627,7 +614,6 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 // /*!
 //  *  @brief This is the function description
 
-
 //  */
 // static int cmd_datalog_clear(const struct shell *shell, size_t argc, char **argv)
 // {
@@ -645,7 +631,6 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 
 // /*!
 //  *  @brief This is the function description
-
 
 //  */
 // static int cmd_datalog_format(const struct shell *shell, size_t argc, char **argv)
@@ -1586,31 +1571,35 @@ static int cmd_rfid_sniff(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
 {
-  // /* If internal button S1 is pressed, switch to contiuous RFID reader mode */
+  static bool rfid_trigger_enabled = false;
 
-  // uint8_t rslt = 0;
+  if (rfid_trigger_enabled == false)
+  {
+    rfid_trigger_enabled = true;
+    System.RFID_TransparentMode = true;
+    System.RFID_Sniff = false;
 
-  // if (RFID_IsOn == false)
-  // {
-  //   config_RFID();
-  //   RFID_TurnOn();
-  //   k_msleep(100);
-  // }
+    if (RFID_IsOn == false)
+    {      
+      config_RFID();
+      RFID_TurnOn();
+      k_msleep(100);
+    }
 
-  // System.RFID_TransparentMode = true;
-  // rslt = gpio_pin_set_raw(gpio_dev, GPIO_PIN_RFID_TRIGGER, 0); // active low (switch on)
-  // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID continuous mode is active.\n");
+    gpio_pin_set_dt(&rfid_trigger_pin, 0);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode activated.\n");
+  }
+  else
+  {
+    rfid_trigger_enabled = false;
 
-  // if (RFID_autoscan_enabled == true)
-  // {
-  //   shell_execute_cmd(shell_backend_uart_get_ptr(), "rfid autoscan");
-  // }
+    System.RFID_TransparentMode = true;
+    gpio_pin_set_dt(&rfid_trigger_pin, 1);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
+  }
 
-  // Parameter.rfid_verbose = true;
-  // shell_print(shell, "Enabled RFID verbose mode");
-
-  // Parameter_PushRAMToFlash();
-  // return 0;
+  Parameter_PushRAMToFlash();
+  return 0;
 }
 
 /*!
@@ -1656,7 +1645,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      gpio_pin_set_dt(&dev_led, 1); 
+      gpio_pin_set_dt(&dev_led, 1);
     }
   }
   else
@@ -1670,7 +1659,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      gpio_pin_set_dt(&dev_led, 1); 
+      gpio_pin_set_dt(&dev_led, 1);
     }
   }
   Parameter_PushRAMToFlash();
@@ -1919,16 +1908,16 @@ static int cmd_enable_blue_dev_led(const struct shell *shell, size_t argc, char 
     shell_print(shell, "Enabled blue dev led");
 
     /* Switch blue led on if motion is already detected when enabling the blue led*/
-     if (motion_detected == true)
-     {
-    //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
-     }
+    if (motion_detected == true)
+    {
+      //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
+    }
   }
   else
   {
     Parameter.enable_blue_dev_led = false;
     shell_print(shell, "Disabled blue dev led");
- //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
+    //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
   }
   Parameter_PushRAMToFlash();
 
@@ -3761,7 +3750,7 @@ static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv
 
     if (Parameter.modem_disable == true)
     { /* Turn modem off */
-//      lte_lc_power_off();
+      //      lte_lc_power_off();
       k_msleep(500);
     }
     else
@@ -3769,7 +3758,7 @@ static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv
       /* Configure modem to use either LTE-M or NB-IoT */
       if (Parameter.network_connection_type == NB_IOT)
       {
-//err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+        // err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
 
         rtc_print_debug_timestamp();
         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
@@ -3782,7 +3771,7 @@ static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv
       }
       else
       {
-   //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+        //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
 
         if (err)
         {
@@ -3793,7 +3782,7 @@ static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv
       k_msleep(100);
 
       /* Turn modem on - it will automatically search for networks*/
-    //  lte_lc_normal();
+      //  lte_lc_normal();
     }
   }
   return 0;
@@ -3834,11 +3823,11 @@ static int cmd_rfid_disable(const struct shell *shell, size_t argc, char **argv)
 
     if (Parameter.rfid_disable == 1)
     {
-  //    rfid_power_off();
+      //    rfid_power_off();
     }
     else
     {
-   //   RFID_PowerOn();
+      //   RFID_PowerOn();
     }
   }
   return 0;
@@ -4285,17 +4274,17 @@ static int cmd_test1(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-//  Event_ClearCompleteFlash();
-rgb_led.blink_on_time = 200;  // ms
-        rgb_led.blink_off_time = 200; // ms
-        rgb_led.pos_slope = 0;        // ms
-        rgb_led.neg_slope = 0;        // ms
-        rgb_led.repeats = 2;
-        rgb_led.red_value = 0;
-        rgb_led.green_value = 0;
-        rgb_led.blue_value = 255;
-        rgb_led.brightness_value = 255;
-        led_next_state = FLASH;
+  //  Event_ClearCompleteFlash();
+  rgb_led.blink_on_time = 200;  // ms
+  rgb_led.blink_off_time = 200; // ms
+  rgb_led.pos_slope = 0;        // ms
+  rgb_led.neg_slope = 0;        // ms
+  rgb_led.repeats = 2;
+  rgb_led.red_value = 0;
+  rgb_led.green_value = 0;
+  rgb_led.blue_value = 255;
+  rgb_led.brightness_value = 255;
+  led_next_state = FLASH;
 
   return 0;
 }
@@ -4345,42 +4334,42 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(adc, &adc, "Command set to control and read out adc data", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
-//                                  SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
-//                                  SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
-//                                  SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
-//                                  SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
-//                                  SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
-//                                  SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
-//                                  SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
-//                                  SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
-//                                  SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
-//                                  SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
-//                                  SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
-//                                  SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
-//                                  SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
-//                                  SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
-//                                  SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
-//                                  SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
-//                                  SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
-//                                  SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
-//                                  SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
-//                                  SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
-//                                  SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
-//                                  SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
-//                                  SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
-//                                  SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
-//                                  SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
-//                                  SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
-//                                  SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
-//                                  SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
-//                                  SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
-//                                  SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
-//                                  SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
-//                                  SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
+  //                                  SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
+  //                                  SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
+  //                                  SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
+  //                                  SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
+  //                                  SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
+  //                                  SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
+  //                                  SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
+  //                                  SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
+  //                                  SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
+  //                                  SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
+  //                                  SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
+  //                                  SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
+  //                                  SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
+  //                                  SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
+  //                                  SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
+  //                                  SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
+  //                                  SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
+  //                                  SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
+  //                                  SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
+  //                                  SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
+  //                                  SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
+  //                                  SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
+  //                                  SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
+  //                                  SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
+  //                                  SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
+  //                                  SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
+  //                                  SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
+  //                                  SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
+  //                                  SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
+  //                                  SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
+  //                                  SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
+  //                                  SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(battery,
                                  SHELL_CMD(voltage, NULL, "Returns the battery voltage", cmd_battery_voltage),
@@ -4402,36 +4391,36 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(battery, &battery, "Command set to control and read out battery data", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(modem,
-//                                  SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
-//                                  SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
-//                                  SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
-//                                  SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
-//                                  SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
-//                                  SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
-//                                  SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
-//                                  SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
-//                                  SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
-//                                  SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
-//                                  SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
-//                                  SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
-//                                  SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
-//                                  SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
-//                                  SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(modem,
+  //                                  SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
+  //                                  SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
+  //                                  SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
+  //                                  SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
+  //                                  SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
+  //                                  SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
+  //                                  SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
+  //                                  SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
+  //                                  SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
+  //                                  SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
+  //                                  SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
+  //                                  SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
+  //                                  SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
+  //                                  SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
+  //                                  SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
-//                                  SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
-//                                  SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
-//                                  SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
-//                                  SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
-//                                  SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
-//                                  SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
+  //                                  SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
+  //                                  SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
+  //                                  SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
+  //                                  SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
+  //                                  SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
+  //                                  SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(events,
                                  SHELL_CMD(verbose, NULL, "Shows event debug information.", cmd_event_verbose),
@@ -4442,87 +4431,87 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(events, &events, "Commands to monitor events", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(datetime,
-//                                  SHELL_CMD(timestamp, NULL, "Prints out the current timestamp in ISO8601 format", cmd_timestamp),
-//                                  SHELL_CMD(unixtime, NULL, "Gets or sets unix epoch time. Changes in this value will effect all other time commands", cmd_unixtime),
-//                                  SHELL_CMD(time, NULL, "Get or set time. <hh>:<mm>:<ss>", cmd_time),
-//                                  SHELL_CMD(date, NULL, "Get or set date. <dd>:<mm>:<yyyy>", cmd_date),
-//                                  SHELL_CMD(weekday, NULL, "Get the weekday", cmd_weekday),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(datetime,
+  //                                  SHELL_CMD(timestamp, NULL, "Prints out the current timestamp in ISO8601 format", cmd_timestamp),
+  //                                  SHELL_CMD(unixtime, NULL, "Gets or sets unix epoch time. Changes in this value will effect all other time commands", cmd_unixtime),
+  //                                  SHELL_CMD(time, NULL, "Get or set time. <hh>:<mm>:<ss>", cmd_time),
+  //                                  SHELL_CMD(date, NULL, "Get or set date. <dd>:<mm>:<yyyy>", cmd_date),
+  //                                  SHELL_CMD(weekday, NULL, "Get the weekday", cmd_weekday),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(epc,
-//                                  SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
-//                                  SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
-//                                  SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
-//                                  SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
-//                                  SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
-//                                  SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
-//                                  SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
-//                                  SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
-//                                  SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
-//                                  SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
-//                                  SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
-//                                  SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
-//                                  SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
-//                                  SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
-//                                  SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
-//                                  SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
-//                                  SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
-//                                  SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
-//                                  SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
-//                                  SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
-//                                  SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
-//                                  SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
-//                                  SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
-//                                  SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
-//                                  SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
-//                                  SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
-//                                  SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
-//                                  SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
-//                                  SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
-//                                  SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(epc,
+  //                                  SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
+  //                                  SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
+  //                                  SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
+  //                                  SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
+  //                                  SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
+  //                                  SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
+  //                                  SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
+  //                                  SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
+  //                                  SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
+  //                                  SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
+  //                                  SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
+  //                                  SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
+  //                                  SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
+  //                                  SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
+  //                                  SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
+  //                                  SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
+  //                                  SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
+  //                                  SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
+  //                                  SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
+  //                                  SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
+  //                                  SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
+  //                                  SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
+  //                                  SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
+  //                                  SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
+  //                                  SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
+  //                                  SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
+  //                                  SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
+  //                                  SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
+  //                                  SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
+  //                                  SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
-//                                  SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),
-//                                  SHELL_CMD(read, NULL, "Prints out the entire log data to console. Parameter: <Start frame number> <End frame number>", cmd_datalog_get_data),
-//                                  SHELL_CMD(clear, NULL, "Clear only data log area in which data is stored", cmd_datalog_clear),
-//                                  SHELL_CMD(format, NULL, "Clear the entire data log", cmd_datalog_format),
-//                                  SHELL_CMD(interval, NULL, "Changes the storing interval of log frames (default 1000ms)", cmd_datalog_interval),
-//                                  SHELL_CMD(verbose, NULL, "Prints out every new frame which is stored in external flash also at console", cmd_datalog_sniff_frame),
-//                                  SHELL_CMD(enable, NULL, "Enables or disables data logging (time and event based)", cmd_datalog_enable),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(datalog, &datalog, "Command set to control the log data", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
+  //                                  SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),
+  //                                  SHELL_CMD(read, NULL, "Prints out the entire log data to console. Parameter: <Start frame number> <End frame number>", cmd_datalog_get_data),
+  //                                  SHELL_CMD(clear, NULL, "Clear only data log area in which data is stored", cmd_datalog_clear),
+  //                                  SHELL_CMD(format, NULL, "Clear the entire data log", cmd_datalog_format),
+  //                                  SHELL_CMD(interval, NULL, "Changes the storing interval of log frames (default 1000ms)", cmd_datalog_interval),
+  //                                  SHELL_CMD(verbose, NULL, "Prints out every new frame which is stored in external flash also at console", cmd_datalog_sniff_frame),
+  //                                  SHELL_CMD(enable, NULL, "Enables or disables data logging (time and event based)", cmd_datalog_enable),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(datalog, &datalog, "Command set to control the log data", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(i2c,
-//                                  SHELL_CMD(scan, NULL, "Scans the I2C bus for slave devices and returns their addresses", cmd_i2csan),
-//                                  SHELL_CMD(read, NULL, "Read a byte from a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>", cmd_i2cread),
-//                                  SHELL_CMD(write, NULL, "Write a byte to a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>, <VALUE>", cmd_i2cwrite),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(i2c, &i2c, "Command set for evaluating I2C bus slaves", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(i2c,
+  //                                  SHELL_CMD(scan, NULL, "Scans the I2C bus for slave devices and returns their addresses", cmd_i2csan),
+  //                                  SHELL_CMD(read, NULL, "Read a byte from a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>", cmd_i2cread),
+  //                                  SHELL_CMD(write, NULL, "Write a byte to a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>, <VALUE>", cmd_i2cwrite),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(i2c, &i2c, "Command set for evaluating I2C bus slaves", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(flash,
-//                                  SHELL_CMD(verbose, NULL, "Displays flash information", cmd_flash_verbose),
-//                                  SHELL_CMD(id, NULL, "Returns the device ID", cmd_flash_device_id),
-//                                  SHELL_CMD(check, NULL, "Start an integrety check.  Parameter: <CS_pin_no>", cmd_flashtest),
-//                                  SHELL_CMD(erasesector, NULL, "Erase the sector at a specific address.  Parameter: <CS_pin_no>", cmd_erasesector),
-//                                  SHELL_CMD(eraseall, NULL, "Erase the whole flash.  Parameter: <CS_pin_no>", cmd_eraseall),
-//                                  SHELL_CMD(read, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <start_adr in hex (e.g. 0x8000)> <length>", cmd_readrange),
-//                                  SHELL_CMD(read_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg_adr>", cmd_readreg),
-//                                  SHELL_CMD(write_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg> <data>", cmd_writereg),
-//                                  SHELL_CMD(status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetstatusreg),
-//                                  SHELL_CMD(flag_status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetflagstatusreg),
-//                                  SHELL_CMD(clear_flag_reg, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgclearflagreg),
-//                                  SHELL_CMD(reset, NULL, "Initialze a soft reset of flash memory.  Parameter: <CS_pin_no>", cmd_flashreset),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(flash, &flash, "Command set to check, erase and readout external flash memory", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(flash,
+  //                                  SHELL_CMD(verbose, NULL, "Displays flash information", cmd_flash_verbose),
+  //                                  SHELL_CMD(id, NULL, "Returns the device ID", cmd_flash_device_id),
+  //                                  SHELL_CMD(check, NULL, "Start an integrety check.  Parameter: <CS_pin_no>", cmd_flashtest),
+  //                                  SHELL_CMD(erasesector, NULL, "Erase the sector at a specific address.  Parameter: <CS_pin_no>", cmd_erasesector),
+  //                                  SHELL_CMD(eraseall, NULL, "Erase the whole flash.  Parameter: <CS_pin_no>", cmd_eraseall),
+  //                                  SHELL_CMD(read, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <start_adr in hex (e.g. 0x8000)> <length>", cmd_readrange),
+  //                                  SHELL_CMD(read_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg_adr>", cmd_readreg),
+  //                                  SHELL_CMD(write_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg> <data>", cmd_writereg),
+  //                                  SHELL_CMD(status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetstatusreg),
+  //                                  SHELL_CMD(flag_status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetflagstatusreg),
+  //                                  SHELL_CMD(clear_flag_reg, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgclearflagreg),
+  //                                  SHELL_CMD(reset, NULL, "Initialze a soft reset of flash memory.  Parameter: <CS_pin_no>", cmd_flashreset),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(flash, &flash, "Command set to check, erase and readout external flash memory", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(led,
                                  SHELL_CMD(color, NULL, "Color for rgb LED. Thre values need: <RED> <GREEN> <BLUE> (range 0-255)", cmd_led_color),
@@ -4574,15 +4563,15 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(stepdetection, &stepdetection, "Command set to control and trace step detection algorithm", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(fota,
-//                                  SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
-//                                  SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
-//                                  SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
-//                                  SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
-//                                  SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
+  //   SHELL_STATIC_SUBCMD_SET_CREATE(fota,
+  //                                  SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
+  //                                  SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
+  //                                  SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
+  //                                  SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
+  //                                  SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
+  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
+  //   );
+  //   SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(device,
                                  SHELL_CMD(factory_reset, NULL, "For development pruposes.", cmd_factorysettings),
@@ -4615,8 +4604,8 @@ void command_init(void)
   SHELL_CMD_REGISTER(notification, &notification, "help description", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(test,
-                             //    SHELL_CMD(notification, NULL, "PCB self test", cmd_test_notification),
-                           //      SHELL_CMD(pcb, NULL, "PCB self test", cmd_pcbtest),
+                                 //    SHELL_CMD(notification, NULL, "PCB self test", cmd_test_notification),
+                                 //      SHELL_CMD(pcb, NULL, "PCB self test", cmd_pcbtest),
                                  SHELL_CMD(0, NULL, "For development only", cmd_test0),
                                  SHELL_CMD(1, NULL, "For development only", cmd_test1),
                                  SHELL_CMD(2, NULL, "For development only", cmd_test2),
