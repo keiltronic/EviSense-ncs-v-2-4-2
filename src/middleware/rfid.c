@@ -91,7 +91,6 @@ void rfid_power_on(void)
  */
 void config_RFID(void)
 {
-  // RFID_PowerOn();
   k_msleep(300);
   RFID_setFrequency(Parameter.rfid_frequency);
   k_msleep(200);
@@ -130,8 +129,6 @@ void RFID_TriggerSingleScan(void)
 void rfid_trigger_multi_read(void)
 {
   uart_fifo_fill(uart1, "\nU\r", sizeof("\nU\r"));
-  // rtc_print_debug_timestamp();
-  // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Triggered RFID reader\n");
   RFID_TriggeredRead = true;
 }
 

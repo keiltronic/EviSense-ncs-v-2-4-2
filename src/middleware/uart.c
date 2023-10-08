@@ -37,10 +37,10 @@ volatile uint8_t EPC_string_end = false;
 
 struct device *uart1 = DEVICE_DT_GET(DT_NODELABEL(uart1));
 
-#define MSG_SIZE 32
+#define MSG_SIZE 64
 
 /* queue to store up to 10 messages (aligned to 4-byte boundary) */
-K_MSGQ_DEFINE(uart_msgq, MSG_SIZE, 10, 4);
+//K_MSGQ_DEFINE(uart_msgq, MSG_SIZE, 10, 4);
 
 /* receive buffer used in UART ISR callback */
 static char rx_buf[MSG_SIZE];
@@ -73,12 +73,10 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *us
   //       rx_buf[rx_buf_pos] = '\0';
 
   //       /* if queue is full, message is silently dropped */
-  //       k_msgq_put(&uart_msgq, &rx_buf, K_NO_WAIT);
+  //     //  k_msgq_put(&uart_msgq, &rx_buf, K_NO_WAIT);
 
   //       /* reset the buffer (it was copied to the msgq) */
   //       rx_buf_pos = 0;
-
-  //       printk("%s",rx_buf);
   //     }
   //     else if (rx_buf_pos < (sizeof(rx_buf) - 1))
   //     {
@@ -205,18 +203,4 @@ void uart1_init(void)
   }
 
   uart_irq_rx_enable(uart1);
-}
-
-/*
- * Print a null-terminated string character by character to the UART interface
- */
-void print_uart(char *buf)
-{
-  int msg_len = strlen(buf);
-
-  for (int i = 0; i < msg_len; i++)
-  {
-    //	uart_poll_out(uart, buf[i]);
-    printk("%c", buf[i]);
-  }
 }

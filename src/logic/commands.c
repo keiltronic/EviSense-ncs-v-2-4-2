@@ -648,442 +648,443 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  *  @syntax: cmd_add_rfid_record <id> <epc> <type>
-//  */
-// static int cmd_add_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 4)
-//   {
-//     RFID_RECORD new_rfid_record;
-//     memset(new_rfid_record.epc, 0, 21);
-
-//     SerializeCharToHex(argv[1], new_rfid_record.epc, (strlen(argv[1]) / 2));
-//     new_rfid_record.type = atoi(argv[2]);
-//     new_rfid_record.id = atoi(argv[3]);
-
-//     EPC_Memory_Write_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, EPC_last_rfid_record_index++);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_add_room_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 5)
-//   {
-//     ROOM_RECORD new_room_record;
-//     uint16_t index = 0;
-
-//     index = atoi(argv[1]);
-//     new_room_record.room_id = index;
-//     new_room_record.allowed_mop_colors = strtoul(argv[2], NULL, 16);     // convert the generated hex number string (base 16) to a decimal number
-//     new_room_record.allowed_mop_typegroups = strtoul(argv[3], NULL, 16); // convert the generated hex number string (base 16) to a decimal number
-//     new_room_record.wall_rfid_count = atoi(argv[4]);
-
-//     EPC_Memory_Write_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, index);
-//     EPC_last_room_record_index++;
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_add_mop_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 6)
-//   {
-//     MOP_RECORD new_mop_record;
-//     uint16_t index = 0;
-
-//     index = atoi(argv[1]);
-//     new_mop_record.mop_id = index;
-//     new_mop_record.mop_color = (uint8_t)strtoul(argv[2], NULL, 16);     // convert the generated hex number string (base 16) to a decimal number
-//     new_mop_record.mop_typegroup = (uint8_t)strtoul(argv[3], NULL, 16); // convert the generated hex number string (base 16) to a decimal number
-//     new_mop_record.mop_size = (uint8_t)atoi(argv[4]);
-//     new_mop_record.mop_sides = (uint8_t)atoi(argv[5]);
-
-//     EPC_Memory_Write_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, index);
-//     EPC_last_mop_record_index++;
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_read_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 2)
-//   {
-//     RFID_RECORD new_rfid_record;
-//     uint32_t index = 0;
-
-//     index = atol(argv[1]);
-
-//     EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, index);
-//     shell_print(shell, "epc: %s, type: %d, id: %d", DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_read_room_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 2)
-//   {
-
-//     ROOM_RECORD new_room_record;
-//     uint32_t index = 0;
-
-//     index = atol(argv[1]);
-
-//     EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, index);
-//     shell_print(shell, "id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_read_mop_record(const struct shell *shell, size_t argc, char **argv)
-// {
-
-//   if (argc == 2)
-//   {
-//     MOP_RECORD new_mop_record;
-//     uint32_t index = 0;
-
-//     index = atol(argv[1]);
-
-//     EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, index);
-//     shell_print(shell, "id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid command");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_epc_database(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   /* Clear RFID records */
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH);
-//   EPC_last_rfid_record_index = 0;
-
-//   k_msleep(100);
-
-//   /* Clear room records */
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH);
-//   EPC_last_room_record_index = 0;
-
-//   k_msleep(100);
-
-//   /* Clear mop records */
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH);
-//   EPC_last_mop_record_index = 0;
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH);
-//   EPC_last_rfid_record_index = 0;
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_room_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH);
-//   EPC_last_room_record_index = 0;
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_mop_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH);
-//   EPC_last_mop_record_index = 0;
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_search_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   EPC_BINARY_SERACH_RESULT myresult;
-
-//   uint32_t start_time;
-//   uint32_t stop_time;
-//   uint32_t cycles_spent;
-//   uint32_t nanoseconds_spent;
-
-//   if (argc == 2)
-//   {
-//     /* capture initial time stamp */
-//     start_time = k_cycle_get_32();
-
-//     /* Search rfid database for match */
-//     myresult = EPC_BinarySearch(GPIO_PIN_FLASH_CS2, argv[1], EPC_last_rfid_record_index);
-
-//     /* capture final time stamp */
-//     stop_time = k_cycle_get_32();
-
-//     /* compute how long the work took (assumes no counter rollover) */
-//     cycles_spent = stop_time - start_time;
-//     nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid rfid record");
-//   }
-
-//   /* Print out binary search result details */
-//   if (myresult.found == true)
-//   {
-//     shell_print(shell, "\nBinary search result: iterations: %d, time: %d usec", myresult.iterations_made, (nanoseconds_spent / 1000));
-//     /* Print out rfid, room and mop details */
-//     RFID_RECORD new_rfid_record;
-//     ROOM_RECORD new_room_record;
-//     MOP_RECORD new_mop_record;
-
-//     EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, myresult.epc_index);
-//     shell_print(shell, "RFID record index: %d, record: %s, type: %d, id: %d", myresult.epc_index, DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
-
-//     switch (new_rfid_record.type)
-//     {
-
-//     case RESERVER_TAG:
-//       break;
-
-//     case WALL_MOUNT_TAG:
-//       break;
-
-//     case ROOM_MOUNT_TAG:
-
-//       EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, new_rfid_record.id);
-//       shell_print(shell, "ROOM id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
-//       break;
-
-//     case WARNING_WALL_MOUNT_TAG:
-//       break;
-
-//     case MOP_TAG:
-
-//       EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, new_rfid_record.id);
-//       shell_print(shell, "MOP id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
-//       break;
-
-//     default:
-//       break;
-//     }
-//   }
-//   else
-//   {
-//     shell_print(shell, "RFID record not found in rfid record database");
-//   }
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_count_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   EPC_last_rfid_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH, RFID_RECORD_BYTE_LENGTH);
-//   shell_print(shell, "Last index number in wall records: %d", EPC_last_rfid_record_index);
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_count_room_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   EPC_last_room_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH, ROOM_RECORD_BYTE_LENGTH);
-//   shell_print(shell, "Last index number in room records: %d", EPC_last_room_record_index);
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_count_mop_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   EPC_last_mop_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH, MOP_RECORD_BYTE_LENGTH);
-//   shell_print(shell, "Last index number in mop records: %d", EPC_last_mop_record_index);
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_listall_rfid_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint16_t i = 0;
-
-//   RFID_RECORD new_rfid_record;
-
-//   for (i = 0; i < EPC_last_rfid_record_index; i++)
-//   {
-//     EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, i);
-//     shell_print(shell, "Index: %d, epc: %s, type: %d, id: %d", i, DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_listall_room_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint16_t i = 0;
-
-//   ROOM_RECORD new_room_record;
-
-//   for (i = 0; i < EPC_last_room_record_index; i++)
-//   {
-//     EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, i);
-//     shell_print(shell, "id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_listall_mop_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint16_t i = 0;
-
-//   MOP_RECORD new_mop_record;
-
-//   for (i = 0; i < EPC_last_mop_record_index; i++)
-//   {
-//     EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, i);
-//     shell_print(shell, "id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_epc_last_seen_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   uint16_t i = 0;
-//   struct tm *ptm;
-//   char buf[50] = {0};
-//   uint16_t milli = 0;
-
-//   float count_sum = 0.0;
-//   float percentage = 0.0;
-
-//   uint8_t sortet_array_index[EPC_LAST_SEEN_COUNT];
-//   memset(sortet_array_index, 0, EPC_LAST_SEEN_COUNT);
-
-//   /* Calculate total number of all seen tags */
-//   for (i = 0; i < EPC_LAST_SEEN_COUNT; i++)
-//   {
-//     count_sum += (float)EPC_last_seen_records[i].counts;
-//   }
-
-//   /* Sort array */
-//   bubblesort(EPC_last_seen_records, EPC_LAST_SEEN_COUNT);
-
-//   /* Print sorted array */
-//   for (i = (EPC_LAST_SEEN_COUNT - 1); i > 0; i--)
-//   {
-//     if (EPC_last_seen_records[i].counts != 0)
-//     {
-//       /* Fetch unix time stamp from event and convert it to human readable date and time in millisec resolution */
-//       int64_t timestamp = EPC_last_seen_records[i].timestamp;
-
-//       milli = timestamp % 1000LL; // Get only the millisec from the unix time stamp
-//       timestamp /= 1000LL;        // time.h can only handly timestamp in sec resolution, so cut the millisec
-
-//       /* convert from unix to local time */
-//       ptm = localtime(&timestamp);
-//       strftime(buf, 20, "%F %T", ptm);
-
-//       /* Calulate percentage ratio */
-//       percentage = (((float)EPC_last_seen_records[i].counts * 100.0) / count_sum);
-
-//       shell_print(shell, "%d: %s, last seen timestamp: %s:%03d, counts: %d, percentage: %3.2f\%", (EPC_LAST_SEEN_COUNT - i), EPC_last_seen_records[i].record.string, buf, milli, EPC_last_seen_records[i].counts, percentage);
-//     }
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_last_seen_record(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   EPC_Clear_last_seen();
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ *  @syntax: cmd_add_rfid_record <id> <epc> <type>
+ */
+static int cmd_add_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 4)
+  {
+    RFID_RECORD new_rfid_record;
+    memset(new_rfid_record.epc, 0, 21);
+
+    SerializeCharToHex(argv[1], new_rfid_record.epc, (strlen(argv[1]) / 2));
+    new_rfid_record.type = atoi(argv[2]);
+    new_rfid_record.id = atoi(argv[3]);
+
+    EPC_Memory_Write_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, EPC_last_rfid_record_index++);
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_add_room_record(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 5)
+  {
+    ROOM_RECORD new_room_record;
+    uint16_t index = 0;
+
+    index = atoi(argv[1]);
+    new_room_record.room_id = index;
+    new_room_record.allowed_mop_colors = strtoul(argv[2], NULL, 16);     // convert the generated hex number string (base 16) to a decimal number
+    new_room_record.allowed_mop_typegroups = strtoul(argv[3], NULL, 16); // convert the generated hex number string (base 16) to a decimal number
+    new_room_record.wall_rfid_count = atoi(argv[4]);
+
+    EPC_Memory_Write_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, index);
+    EPC_last_room_record_index++;
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_add_mop_record(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 6)
+  {
+    MOP_RECORD new_mop_record;
+    uint16_t index = 0;
+
+    index = atoi(argv[1]);
+    new_mop_record.mop_id = index;
+    new_mop_record.mop_color = (uint8_t)strtoul(argv[2], NULL, 16);     // convert the generated hex number string (base 16) to a decimal number
+    new_mop_record.mop_typegroup = (uint8_t)strtoul(argv[3], NULL, 16); // convert the generated hex number string (base 16) to a decimal number
+    new_mop_record.mop_size = (uint8_t)atoi(argv[4]);
+    new_mop_record.mop_sides = (uint8_t)atoi(argv[5]);
+
+    EPC_Memory_Write_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, index);
+    EPC_last_mop_record_index++;
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_read_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 2)
+  {
+    RFID_RECORD new_rfid_record;
+    uint32_t index = 0;
+
+    index = atol(argv[1]);
+
+    EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, index);
+    shell_print(shell, "epc: %s, type: %d, id: %d", DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_read_room_record(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 2)
+  {
+
+    ROOM_RECORD new_room_record;
+    uint32_t index = 0;
+
+    index = atol(argv[1]);
+
+    EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, index);
+    shell_print(shell, "id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_read_mop_record(const struct shell *shell, size_t argc, char **argv)
+{
+
+  if (argc == 2)
+  {
+    MOP_RECORD new_mop_record;
+    uint32_t index = 0;
+
+    index = atol(argv[1]);
+
+    EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, index);
+    shell_print(shell, "id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
+  }
+  else
+  {
+    shell_print(shell, "Invalid command");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_epc_database(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  /* Clear RFID records */
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH);
+  EPC_last_rfid_record_index = 0;
+
+  k_msleep(100);
+
+  /* Clear room records */
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH);
+  EPC_last_room_record_index = 0;
+
+  k_msleep(100);
+
+  /* Clear mop records */
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH);
+  EPC_last_mop_record_index = 0;
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH);
+  EPC_last_rfid_record_index = 0;
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_room_record(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH);
+  EPC_last_room_record_index = 0;
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_mop_record(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  EPC_Memory_Delete_All_Records(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH);
+  EPC_last_mop_record_index = 0;
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_search_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+  EPC_BINARY_SERACH_RESULT myresult;
+
+  uint32_t start_time;
+  uint32_t stop_time;
+  uint32_t cycles_spent;
+  uint32_t nanoseconds_spent;
+
+  if (argc == 2)
+  {
+    /* capture initial time stamp */
+    start_time = k_cycle_get_32();
+
+    /* Search rfid database for match */
+    myresult = EPC_BinarySearch(GPIO_PIN_FLASH_CS2, argv[1], EPC_last_rfid_record_index);
+
+    /* capture final time stamp */
+    stop_time = k_cycle_get_32();
+
+    /* compute how long the work took (assumes no counter rollover) */
+    cycles_spent = stop_time - start_time;
+   // nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
+    nanoseconds_spent = k_cyc_to_ns_floor64(cycles_spent);
+  }
+  else
+  {
+    shell_print(shell, "Invalid rfid record");
+  }
+
+  /* Print out binary search result details */
+  if (myresult.found == true)
+  {
+    shell_print(shell, "\nBinary search result: iterations: %d, time: %d usec", myresult.iterations_made, (nanoseconds_spent / 1000));
+    /* Print out rfid, room and mop details */
+    RFID_RECORD new_rfid_record;
+    ROOM_RECORD new_room_record;
+    MOP_RECORD new_mop_record;
+
+    EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, myresult.epc_index);
+    shell_print(shell, "RFID record index: %d, record: %s, type: %d, id: %d", myresult.epc_index, DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
+
+    switch (new_rfid_record.type)
+    {
+
+    case RESERVER_TAG:
+      break;
+
+    case WALL_MOUNT_TAG:
+      break;
+
+    case ROOM_MOUNT_TAG:
+
+      EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, new_rfid_record.id);
+      shell_print(shell, "ROOM id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
+      break;
+
+    case WARNING_WALL_MOUNT_TAG:
+      break;
+
+    case MOP_TAG:
+
+      EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, new_rfid_record.id);
+      shell_print(shell, "MOP id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
+      break;
+
+    default:
+      break;
+    }
+  }
+  else
+  {
+    shell_print(shell, "RFID record not found in rfid record database");
+  }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_count_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+  EPC_last_rfid_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH, RFID_RECORD_BYTE_LENGTH);
+  shell_print(shell, "Last index number in wall records: %d", EPC_last_rfid_record_index);
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_count_room_record(const struct shell *shell, size_t argc, char **argv)
+{
+  EPC_last_room_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH, ROOM_RECORD_BYTE_LENGTH);
+  shell_print(shell, "Last index number in room records: %d", EPC_last_room_record_index);
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_count_mop_record(const struct shell *shell, size_t argc, char **argv)
+{
+  EPC_last_mop_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH, MOP_RECORD_BYTE_LENGTH);
+  shell_print(shell, "Last index number in mop records: %d", EPC_last_mop_record_index);
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_listall_rfid_record(const struct shell *shell, size_t argc, char **argv)
+{
+  uint16_t i = 0;
+
+  RFID_RECORD new_rfid_record;
+
+  for (i = 0; i < EPC_last_rfid_record_index; i++)
+  {
+    EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, i);
+    shell_print(shell, "Index: %d, epc: %s, type: %d, id: %d", i, DeserializeHexToChar(new_rfid_record.epc, 20), new_rfid_record.type, new_rfid_record.id);
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_listall_room_record(const struct shell *shell, size_t argc, char **argv)
+{
+  uint16_t i = 0;
+
+  ROOM_RECORD new_room_record;
+
+  for (i = 0; i < EPC_last_room_record_index; i++)
+  {
+    EPC_Memory_Read_Room_Record(GPIO_PIN_FLASH_CS2, &new_room_record, i);
+    shell_print(shell, "id: %d, allowed_mop_colors: %X, allowed_mop_typegroups: %X, wall_rfid_count: %d", new_room_record.room_id, new_room_record.allowed_mop_colors, new_room_record.allowed_mop_typegroups, new_room_record.wall_rfid_count);
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_listall_mop_record(const struct shell *shell, size_t argc, char **argv)
+{
+  uint16_t i = 0;
+
+  MOP_RECORD new_mop_record;
+
+  for (i = 0; i < EPC_last_mop_record_index; i++)
+  {
+    EPC_Memory_Read_Mop_Record(GPIO_PIN_FLASH_CS2, &new_mop_record, i);
+    shell_print(shell, "id: %d, mop_color: %X, mop_typegroup: %X, mop_size: %d, mop_sides: %d", new_mop_record.mop_id, new_mop_record.mop_color, new_mop_record.mop_typegroup, new_mop_record.mop_size, new_mop_record.mop_sides);
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_epc_last_seen_record(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  uint16_t i = 0;
+  struct tm *ptm;
+  char buf[50] = {0};
+  uint16_t milli = 0;
+
+  float count_sum = 0.0;
+  float percentage = 0.0;
+
+  uint8_t sortet_array_index[EPC_LAST_SEEN_COUNT];
+  memset(sortet_array_index, 0, EPC_LAST_SEEN_COUNT);
+
+  /* Calculate total number of all seen tags */
+  for (i = 0; i < EPC_LAST_SEEN_COUNT; i++)
+  {
+    count_sum += (float)EPC_last_seen_records[i].counts;
+  }
+
+  /* Sort array */
+  bubblesort(EPC_last_seen_records, EPC_LAST_SEEN_COUNT);
+
+  /* Print sorted array */
+  for (i = (EPC_LAST_SEEN_COUNT - 1); i > 0; i--)
+  {
+    if (EPC_last_seen_records[i].counts != 0)
+    {
+      /* Fetch unix time stamp from event and convert it to human readable date and time in millisec resolution */
+      int64_t timestamp = EPC_last_seen_records[i].timestamp;
+
+      milli = timestamp % 1000LL; // Get only the millisec from the unix time stamp
+      timestamp /= 1000LL;        // time.h can only handly timestamp in sec resolution, so cut the millisec
+
+      /* convert from unix to local time */
+      ptm = localtime(&timestamp);
+      strftime(buf, 20, "%F %T", ptm);
+
+      /* Calulate percentage ratio */
+      percentage = (((float)EPC_last_seen_records[i].counts * 100.0) / count_sum);
+
+      shell_print(shell, "%d: %s, last seen timestamp: %s:%03d, counts: %d, percentage: %3.2f\%", (EPC_LAST_SEEN_COUNT - i), EPC_last_seen_records[i].record.string, buf, milli, EPC_last_seen_records[i].counts, percentage);
+    }
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_last_seen_record(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  EPC_Clear_last_seen();
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1367,164 +1368,164 @@ static int cmd_rfid_verbose(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_binary_search_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_binary_search_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.binary_search_verbose == false)
-//   {
-//     Parameter.binary_search_verbose = true;
-//     shell_print(shell, "Enabled binary search verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.binary_search_verbose = false;
-//     shell_print(shell, "Disabled binary search verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.binary_search_verbose == false)
+  {
+    Parameter.binary_search_verbose = true;
+    shell_print(shell, "Enabled binary search verbose mode");
+  }
+  else
+  {
+    Parameter.binary_search_verbose = false;
+    shell_print(shell, "Disabled binary search verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.mop_verbose == false)
-//   {
-//     Parameter.mop_verbose = true;
-//     shell_print(shell, "Enabled mop verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.mop_verbose = false;
-//     shell_print(shell, "Disabled mop verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.mop_verbose == false)
+  {
+    Parameter.mop_verbose = true;
+    shell_print(shell, "Enabled mop verbose mode");
+  }
+  else
+  {
+    Parameter.mop_verbose = false;
+    shell_print(shell, "Disabled mop verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_epc_raw_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_epc_raw_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.epc_raw_verbose == false)
-//   {
-//     Parameter.epc_raw_verbose = true;
-//     shell_print(shell, "Enabled epc raw verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.epc_raw_verbose = false;
-//     shell_print(shell, "Disabled epc raw verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.epc_raw_verbose == false)
+  {
+    Parameter.epc_raw_verbose = true;
+    shell_print(shell, "Enabled epc raw verbose mode");
+  }
+  else
+  {
+    Parameter.epc_raw_verbose = false;
+    shell_print(shell, "Disabled epc raw verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_epc_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_epc_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.epc_verbose == false)
-//   {
-//     Parameter.epc_verbose = true;
-//     shell_print(shell, "Enabled epc verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.epc_verbose = false;
-//     shell_print(shell, "Disabled epc verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.epc_verbose == false)
+  {
+    Parameter.epc_verbose = true;
+    shell_print(shell, "Enabled epc verbose mode");
+  }
+  else
+  {
+    Parameter.epc_verbose = false;
+    shell_print(shell, "Disabled epc verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_log_unkown_tags(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_log_unkown_tags(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.log_unkown_tags == false)
-//   {
-//     Parameter.log_unkown_tags = true;
-//     shell_print(shell, "Logging unkonw tags enabled.");
-//   }
-//   else
-//   {
-//     Parameter.log_unkown_tags = false;
-//     shell_print(shell, "Logging unkonw tags disabled.");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.log_unkown_tags == false)
+  {
+    Parameter.log_unkown_tags = true;
+    shell_print(shell, "Logging unkonw tags enabled.");
+  }
+  else
+  {
+    Parameter.log_unkown_tags = false;
+    shell_print(shell, "Logging unkonw tags disabled.");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_list_last_seen_mop_ids(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_list_last_seen_mop_ids(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint16_t i = 0;
+  uint16_t i = 0;
 
-//   for (i = 0; i < last_seen_mop_count; i++)
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Mop ID: %d\n", last_seen_mop_records_array[i].mop_id);
-//   }
-//   return 0;
-// }
+  for (i = 0; i < last_seen_mop_count; i++)
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Mop ID: %d\n", last_seen_mop_records_array[i].mop_id);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_clear_last_seen_mop_array(const struct shell *shell, size_t argc, char **argv)
-// {
-//   Mop_ClearLastSeenArray();
-//   shell_print(shell, "Last seen mop array cleard");
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_clear_last_seen_mop_array(const struct shell *shell, size_t argc, char **argv)
+{
+  Mop_ClearLastSeenArray();
+  shell_print(shell, "Last seen mop array cleard");
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_mop_array_auto_reset_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_mop_array_auto_reset_time(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.last_seen_mop_array_auto_reset_time);
-//   }
-//   else
-//   {
-//     Parameter.last_seen_mop_array_auto_reset_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.last_seen_mop_array_auto_reset_time);
-//   }
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.last_seen_mop_array_auto_reset_time);
+  }
+  else
+  {
+    Parameter.last_seen_mop_array_auto_reset_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.last_seen_mop_array_auto_reset_time);
+  }
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1544,14 +1545,14 @@ static int cmd_rfid_sniff(const struct shell *shell, size_t argc, char **argv)
     k_msleep(50);
     RFID_ScanEnable = true;
 
-    // if (frame_lift_flag[0] == 1) // frame is lifted
-    // {
-    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
-    // }
-    // else
-    // {
-    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
-    // }
+    if (frame_lift_flag[0] == 1) // frame is lifted
+    {
+      shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
+    }
+    else
+    {
+      shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
+    }
   }
   else
   {
@@ -1576,8 +1577,9 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
   if (rfid_trigger_enabled == false)
   {
     rfid_trigger_enabled = true;
-    System.RFID_TransparentMode = true;
-    System.RFID_Sniff = false;
+
+  RFID_IsOn = true;
+  RFID_ScanEnable = true;
 
     if (RFID_IsOn == false)
     {      
@@ -1592,6 +1594,9 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
   else
   {
     rfid_trigger_enabled = false;
+
+      RFID_IsOn = false;
+  RFID_ScanEnable = false;
 
     System.RFID_TransparentMode = true;
     gpio_pin_set_dt(&rfid_trigger_pin, 1);
@@ -1614,6 +1619,10 @@ static int cmd_rfid_singlescan(const struct shell *shell, size_t argc, char **ar
   k_msleep(50);
   rfid_trigger_multi_read();
   RFID_TurnOff();
+
+  RFID_IsOn = true;
+  RFID_ScanEnable = true;
+
   return 0;
 }
 
@@ -1633,14 +1642,14 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     k_msleep(50);
     RFID_ScanEnable = true;
 
-    // if (frame_lift_flag[0] == 1) // frame is lifted
-    // {
-    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
-    // }
-    // else
-    // {
-    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
-    // }
+    if (frame_lift_flag[0] == 1) // frame is lifted
+    {
+      shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
+    }
+    else
+    {
+      shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
+    }
 
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
@@ -4078,56 +4087,56 @@ static int cmd_clear_events(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_list_last_seen_location_records(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_list_last_seen_location_records(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint16_t i = 0;
+  uint16_t i = 0;
 
-//   for (i = 0; i < EPC_LAST_SEEN_COUNT; i++)
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "No: %d, epc: %s, type: %d:, id: %d\n", i, DeserializeHexToChar(room_wall_tag_last_seen[i].epc, 20), room_wall_tag_last_seen[i].type, room_wall_tag_last_seen[i].id);
-//   }
-//   return 0;
-// }
+  for (i = 0; i < EPC_LAST_SEEN_COUNT; i++)
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "No: %d, epc: %s, type: %d:, id: %d\n", i, DeserializeHexToChar(room_wall_tag_last_seen[i].epc, 20), room_wall_tag_last_seen[i].type, room_wall_tag_last_seen[i].id);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_list_last_seen_location_reset_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_list_last_seen_location_reset_time(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell, 0, "%d\n", Parameter.last_seen_locations_auto_reset_time);
-//   }
-//   else
-//   {
-//     Parameter.last_seen_locations_auto_reset_time = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_fprintf(shell, 0, "New value: %d\n", Parameter.last_seen_locations_auto_reset_time);
-//   }
-//   return 0;
-// }
+  if (argc == 1)
+  {
+    shell_fprintf(shell, 0, "%d\n", Parameter.last_seen_locations_auto_reset_time);
+  }
+  else
+  {
+    Parameter.last_seen_locations_auto_reset_time = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_fprintf(shell, 0, "New value: %d\n", Parameter.last_seen_locations_auto_reset_time);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_list_room_and_mop(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_list_room_and_mop(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Mop id: %d linked to room id: %d\n", current_room_to_mop_mapping.current_mop_id, current_room_to_mop_mapping.mop_linked_room_id);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Current mop epc: %s\n", DeserializeHexToChar(current_room_to_mop_mapping.current_mop_epc, 20));
-//   return 0;
-// }
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Mop id: %d linked to room id: %d\n", current_room_to_mop_mapping.current_mop_id, current_room_to_mop_mapping.mop_linked_room_id);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Current mop epc: %s\n", DeserializeHexToChar(current_room_to_mop_mapping.current_mop_epc, 20));
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4441,40 +4450,40 @@ void command_init(void)
   //   );
   //   SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(epc,
-  //                                  SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
-  //                                  SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
-  //                                  SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
-  //                                  SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
-  //                                  SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
-  //                                  SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
-  //                                  SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
-  //                                  SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
-  //                                  SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
-  //                                  SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
-  //                                  SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
-  //                                  SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
-  //                                  SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
-  //                                  SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
-  //                                  SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
-  //                                  SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
-  //                                  SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
-  //                                  SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
-  //                                  SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
-  //                                  SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
-  //                                  SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
-  //                                  SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
-  //                                  SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
-  //                                  SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
-  //                                  SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
-  //                                  SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
-  //                                  SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
-  //                                  SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
-  //                                  SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
-  //                                  SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
+    SHELL_STATIC_SUBCMD_SET_CREATE(epc,
+                                   SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
+                                   SHELL_CMD(add_room_record, NULL, "Add a new tag room record memory. Syntax: epc add_room_record <id> <color> <type> <rfid_count>", cmd_add_room_record),
+                                   SHELL_CMD(add_mop_record, NULL, "Add a new tag mop record memory. Syntax: epc add_mop_record <id> <color> <type> <size> <sides>", cmd_add_mop_record),
+                                   SHELL_CMD(read_rfid_record, NULL, "Read rfid tag at index. Syntax: epc read_rfid_record <index>", cmd_read_rfid_record),
+                                   SHELL_CMD(read_room_record, NULL, "Read room tag at index. Syntax: epc read_room_record <index>", cmd_read_room_record),
+                                   SHELL_CMD(read_mop_record, NULL, "Read mop tag at index. Syntax: epc read_mop_record <index>", cmd_read_mop_record),
+                                   SHELL_CMD(clear_rfid_record, NULL, "Clears complete rfid record list", cmd_clear_rfid_record),
+                                   SHELL_CMD(clear_room_record, NULL, "Clears complete room record list", cmd_clear_room_record),
+                                   SHELL_CMD(clear_mop_record, NULL, "Clears complete mop record list", cmd_clear_mop_record),
+                                   SHELL_CMD(clear_databases, NULL, "Clears complete epc data base (rfid records, room records and mop records)", cmd_clear_epc_database),
+                                   SHELL_CMD(search_rfid_record, NULL, "Search for rfid record and output related room and mop data.", cmd_search_rfid_record),
+                                   SHELL_CMD(count_rfid_record, NULL, "Returns the number of rfid records in rfid record database", cmd_count_rfid_record),
+                                   SHELL_CMD(count_room_record, NULL, "Returns the number of room records in room record database", cmd_count_room_record),
+                                   SHELL_CMD(count_mop_record, NULL, "Returns the number of mop records in mop record database", cmd_count_mop_record),
+                                   SHELL_CMD(listall_rfid_record, NULL, "Displays all rfid records entries in rfid record database", cmd_listall_rfid_record),
+                                   SHELL_CMD(listall_room_record, NULL, "Displays all room records entries in room record database", cmd_listall_room_record),
+                                   SHELL_CMD(listall_mop_record, NULL, "Displays all mop records entries in mop record database", cmd_listall_mop_record),
+                                   SHELL_CMD(last_seen_records, NULL, "Displays the last seen records", cmd_epc_last_seen_record),
+                                   SHELL_CMD(last_seen_location_tags, NULL, "Displays the last seen wall and room rfids", cmd_list_last_seen_location_records),
+                                   SHELL_CMD(last_seen_location_reset_time, NULL, "Auto reset time for last seen location array", cmd_list_last_seen_location_reset_time),
+                                   SHELL_CMD(clear_last_seen_records, NULL, "Clears the last seen records array", cmd_clear_last_seen_record),
+                                   SHELL_CMD(current_room_mop_linking, NULL, "Returns current mop and current room", cmd_list_room_and_mop),
+                                   SHELL_CMD(log_unkown_tags, NULL, "Returns current mop and current room", cmd_log_unkown_tags),
+                                   SHELL_CMD(list_last_seen_mop_ids, NULL, "Returns current mop and current room", cmd_list_last_seen_mop_ids),
+                                   SHELL_CMD(clear_last_seen_mop_array, NULL, "Clears complete room record list", cmd_clear_last_seen_mop_array),
+                                   SHELL_CMD(mop_array_auto_reset_time, NULL, "Auto reset time for last seen mob array", cmd_mop_array_auto_reset_time),
+                                   SHELL_CMD(verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_verbose),
+                                   SHELL_CMD(tag_verbose, NULL, "Shows the trimmed epc tag data comming from rfid module (40 byte long string)", cmd_epc_raw_verbose),
+                                   SHELL_CMD(binary_search_verbose, NULL, "Shows the statistics of the binary search algorithm", cmd_binary_search_verbose),
+                                   SHELL_CMD(mop_verbose, NULL, "Shows the live reading of the actually seen mop", cmd_mop_verbose),
+                                   SHELL_SUBCMD_SET_END /* Array terminated. */
+    );
+    SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
 
   //   SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
   //                                  SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),

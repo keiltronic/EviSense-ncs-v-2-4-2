@@ -234,14 +234,14 @@ void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
     }
 
     /* rfid reader trigger interval depents on frame lift state */
-    // if (frame_lift_flag[0] == 1)  // frame is lifted
-    // {
-    //   k_msleep(Parameter.rfid_interval_lifted);
-    // }
-    // else
-    // {
+    if (frame_lift_flag[0] == 1)  // frame is lifted
+    {
+      k_msleep(Parameter.rfid_interval_lifted);
+    }
+    else
+    {
       k_msleep(Parameter.rfid_interval);
-    //}
+    }
   }
 }
 
@@ -314,27 +314,27 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
       motion_detection();
     }
 
-    // /* Clear the last seen room ids after some time */
-    // if (last_seen_array_auto_clear_timer >= Parameter.last_seen_locations_auto_reset_time)
-    // {
-    //   clear_last_seen_room_id_array(EPC_LAST_SEEN_COUNT);
-    //   last_seen_array_auto_clear_timer = 0;
-    // }
-    // else
-    // {
-    //   last_seen_array_auto_clear_timer++;
-    // }
+    /* Clear the last seen room ids after some time */
+    if (last_seen_array_auto_clear_timer >= Parameter.last_seen_locations_auto_reset_time)
+    {
+      clear_last_seen_room_id_array(EPC_LAST_SEEN_COUNT);
+      last_seen_array_auto_clear_timer = 0;
+    }
+    else
+    {
+      last_seen_array_auto_clear_timer++;
+    }
 
-    // /* Clear the last seen mop ids after some time */
-    // if (last_seen_mop_auto_clear_timer >= Parameter.last_seen_mop_array_auto_reset_time)
-    // {
-    //   Mop_ClearLastSeenArray();
-    //   last_seen_mop_auto_clear_timer = 0;
-    // }
-    // else
-    // {
-    //   last_seen_mop_auto_clear_timer++;
-    // }
+    /* Clear the last seen mop ids after some time */
+    if (last_seen_mop_auto_clear_timer >= Parameter.last_seen_mop_array_auto_reset_time)
+    {
+      Mop_ClearLastSeenArray();
+      last_seen_mop_auto_clear_timer = 0;
+    }
+    else
+    {
+      last_seen_mop_auto_clear_timer++;
+    }
 
     // /* Update timer */
     // if (initial_time_update == true)
@@ -360,34 +360,34 @@ void magnet_detection_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-    // /* Automatic device on frame detection */
-    // if (Parameter.algocontrol_bymag_det == 1)
-    // {
-    //   if (magnet_detection() > 0)
-    //   {
-    //     if (algorithm_lock == true)
-    //     {
-    //       algorithm_lock = false;
+    /* Automatic device on frame detection */
+    if (Parameter.algocontrol_bymag_det == 1)
+    {
+      if (magnet_detection() > 0)
+      {
+        if (algorithm_lock == true)
+        {
+          algorithm_lock = false;
 
-    //       rtc_print_debug_timestamp();
-    //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device was placed on frame (magnet detected)\n");
-    //     }
-    //   }
-    //   else if (magnet_detection() == 0)
-    //   {
-    //     if (algorithm_lock == false)
-    //     {
-    //       algorithm_lock = true;
+          rtc_print_debug_timestamp();
+          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device was placed on frame (magnet detected)\n");
+        }
+      }
+      else if (magnet_detection() == 0)
+      {
+        if (algorithm_lock == false)
+        {
+          algorithm_lock = true;
 
-    //       rtc_print_debug_timestamp();
-    //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device not installed on frame (no magnet detected)\n");
-    //     }
-    //   }
-    //   else
-    //   {
-    //     /* do nothing */
-    //   }
-    // }
+          rtc_print_debug_timestamp();
+          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device not installed on frame (no magnet detected)\n");
+        }
+      }
+      else
+      {
+        /* do nothing */
+      }
+    }
 
     k_msleep(100);
   }

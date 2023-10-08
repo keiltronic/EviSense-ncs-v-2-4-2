@@ -241,7 +241,7 @@ void Mop_ClearLastSeenArray(void)
  */
 void EPC_Memory_Delete_All_Records(const uint8_t cs_pin, const uint32_t memory, const uint32_t len)
 {
-  flash_ClearBlock_4kB(cs_pin, memory, len);
+ // flash_ClearBlock_4kB(cs_pin, memory, len);
 }
 
 /**
