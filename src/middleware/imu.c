@@ -41,7 +41,6 @@ void imu_init(void)
 
   /* Init int 1 interrup line */
   ret = gpio_pin_interrupt_configure_dt(&imu_int1, GPIO_INT_EDGE_RISING); // Imu int 1
-
   if (!device_is_ready(imu_int1.port))
   {
     return;
@@ -57,7 +56,6 @@ void imu_init(void)
 
   /* Init int 2 interrup line */
   ret = gpio_pin_interrupt_configure_dt(&imu_int2, GPIO_INT_EDGE_FALLING); // Imu int 2
-
   if (!device_is_ready(imu_int2.port))
   {
     return;

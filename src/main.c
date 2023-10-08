@@ -188,22 +188,22 @@ void ValidateParameterInExernalFlash(void)
  */
 uint32_t memcheck_heap_freespace(void)
 {
-	// uint32_t blockSize = 8;
-	// uint32_t i = 1;
+	uint32_t blockSize = 8;
+	uint32_t i = 1;
 
-	// wdt_reset();
+	wdt_reset();
 
-	// while (true)
-	// {
-	// 	char *p = (char *)malloc(i * blockSize);
-	// 	if (p == NULL)
-	// 	{
-	// 		break;
-	// 	}
-	// 	free(p);
-	// 	++i;
-	// }
-	// return ((i - 1) * blockSize);
+	while (true)
+	{
+		char *p = (char *)malloc(i * blockSize);
+		if (p == NULL)
+		{
+			break;
+		}
+		free(p);
+		++i;
+	}
+	return ((i - 1) * blockSize);
 }
 
 /*!
@@ -246,10 +246,10 @@ void factorysettings(void)
 	// Device_PushRAMToFlash();
 	// Parameter_PushRAMToFlash();
 
-	// if (Parameter.rfid_disable == false)
-	// {
-	// 	config_RFID();
-	// }
+	if (Parameter.rfid_disable == false)
+	{
+		//	config_RFID();
+	}
 
 	// if (pcb_test_is_running == false)
 	// {
@@ -349,7 +349,7 @@ void main(void)
 	wdt_reset();
 	adc_init();
 	// init_spi();
-	// init_uart(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
+	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	// init_pwm();
 
 	/* Check if charger is pluged into the device while it is booting */

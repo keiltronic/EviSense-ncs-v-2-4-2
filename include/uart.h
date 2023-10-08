@@ -23,9 +23,9 @@
 #define EPC_CUT_OFF_START            4 // 4 byte PC
 #define EPC_CUT_OFF_END              4 // CRC 4 byte
 
-extern void init_uart(void);
+extern void uart1_init(void);
 
-extern struct device *uart1;
+//extern struct device *uart1;
 extern volatile char uart1_InputBuffer[UART1_BUFFERSIZE];
 extern volatile char uart1_RFIDResponse[UART1_BUFFERSIZE];
 extern volatile uint8_t uart1_TransmissionReady;
@@ -36,5 +36,8 @@ extern volatile uint8_t uart1_NewDataReceived;
 extern volatile uint8_t EPC_tag_buffer_rollover;
 extern volatile uint8_t EPC_extended_tag_buffer_rollover;
 extern volatile uint32_t tag_interrupt_counter;
+
+extern void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *user_data);
+extern struct device *uart1;
 
 #endif

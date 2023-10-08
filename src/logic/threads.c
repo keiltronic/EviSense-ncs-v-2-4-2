@@ -220,28 +220,28 @@ void rfid_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-  //   if ((datalog_ReadOutisActive == false) && (battery_low_bat_notification == false) && (event_clearing_in_progress == false))
-  //   {
-  //     /* Scan only every x seconds to reduce power consumption */
-  //     if (RFID_IsOn == true)
-  //     {
-  //       if (RFID_ScanEnable == true)
-  //       {
-  //         rfid_trigger_multi_read();
-  //         epc_extract_tags_from_buffer();
-  //       }
-  //     }
-  //   }
+    if ((datalog_ReadOutisActive == false) && (battery_low_bat_notification == false) && (event_clearing_in_progress == false))
+    {
+      /* Scan only every x seconds to reduce power consumption */
+      if (RFID_IsOn == true)
+      {
+        if (RFID_ScanEnable == true)
+        {
+          rfid_trigger_multi_read();
+          //epc_extract_tags_from_buffer();
+        }
+      }
+    }
 
-  //   // rfid reader trigger interval depents on frame lift state
-  //   if (frame_lift_flag[0] == 1)  // frame is lifted
-  //   {
-  //     k_msleep(Parameter.rfid_interval_lifted);
-  //   }
-  //   else
-  //   {
+    /* rfid reader trigger interval depents on frame lift state */
+    // if (frame_lift_flag[0] == 1)  // frame is lifted
+    // {
+    //   k_msleep(Parameter.rfid_interval_lifted);
+    // }
+    // else
+    // {
       k_msleep(Parameter.rfid_interval);
- //   }
+    //}
   }
 }
 

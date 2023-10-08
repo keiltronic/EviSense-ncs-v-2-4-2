@@ -12,7 +12,7 @@
  * @{*/
 #include "uart.h"
 
-struct device *uart1;
+//struct device *uart1;
 struct uart_data_t
 {
   void *fifo_reserved;
@@ -33,10 +33,13 @@ volatile uint8_t uart1_RFIDResponseFinished = false;
 volatile uint8_t EPC_string_start = false;
 volatile uint8_t EPC_string_end = false;
 
+struct device *uart1 = DEVICE_DT_GET(DT_NODELABEL(uart1));
+
 /*!
  *  @brief This is the function description
  */
-void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
+// void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
+void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *user_data)
 {
   uart_irq_update(rfid_module);
   volatile int16_t data_length = 0;
@@ -56,7 +59,7 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
   }
 
   /* Fill input buffer, extract EPC tags from raw input buffer data */
-  if (System.RFID_TransparentMode  == true && System.RFID_Sniff == false)
+  if (System.RFID_TransparentMode == true && System.RFID_Sniff == false)
   {
     if (uart_buf[0] != '\n' && uart_buf[0] != '\r')
     {
@@ -138,10 +141,27 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
 /*!
  *  @brief This is the function description
  */
-void init_uart(void)
+void uart1_init(void)
 {
-  uart1 = device_get_binding("UART_1");
+  // uart1 = device_get_binding("UART_1");
 
-  uart_irq_callback_set(uart1, uart1_cb);
+  // uart_irq_callback_set(uart1, uart1_cb);
+  // uart_irq_rx_enable(uart1);
+
+  int16_t ret = 0;
+
+  if (!device_is_ready(uart1))
+  {
+    printk("UART1 not ready\n\r");
+    return;
+  }
+
+  ret = uart_callback_set(uart1, uart1_cb, NULL);
+  if (ret)
+  {
+    printk("UART1 cant install uart1 callback\n\r");
+    return 1;
+  }
+
   uart_irq_rx_enable(uart1);
 }
