@@ -273,6 +273,8 @@ void main(void)
 	dev_led_init();
 	button_init();
 	gpio_pin_set_dt(&dev_led, 1); // Enable blue dev led while booting
+	rfid_init();
+	rfid_power_on();
 
 	Event_ClearArray();
 

@@ -17,6 +17,8 @@
 #include "uart.h"
 #include "epc_mem.h"
 
+#define BOOSTER_ENABLE_NODE DT_ALIAS(boosterenable)
+
 /* Output power */
 #define RFID_TX_POWER_N2_DBM        "\nN1,00\r"
 #define _N2_DBM                     0
@@ -105,8 +107,9 @@ extern void RFID_setOutputPower(int8_t tx_dbm);
 extern void RFID_setFrequency(uint8_t freq);
 extern int8_t RFID_getOutputPower(void);
 extern uint8_t RFID_getFrequency(void);
+
+extern void rfid_power_on(void);
 extern void rfid_power_off(void);
-extern void RFID_PowerOn(void);
 
 extern  uint8_t RFID_autoscan_enabled;
 extern  uint8_t RFID_IsOn;

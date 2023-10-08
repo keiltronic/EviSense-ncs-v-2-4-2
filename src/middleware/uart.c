@@ -156,7 +156,7 @@ void uart1_init(void)
     return;
   }
 
-  ret = uart_callback_set(uart1, uart1_cb, NULL);
+  ret = uart_irq_callback_set(uart1, uart1_cb);
   if (ret)
   {
     printk("UART1 cant install uart1 callback\n\r");

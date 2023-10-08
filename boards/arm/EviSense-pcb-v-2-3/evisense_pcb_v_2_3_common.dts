@@ -29,6 +29,7 @@
 		imu = &bmx160;
 		imuint1 = &imuint1;
 		imuint2 = &imuint2;
+		boosterenable = &booster_enable;
 	};
 
 	leds {
@@ -41,6 +42,11 @@
 		lp5009_enable: lp5009_en {
 			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
 			label = "LED driver enable pin";
+		};
+
+		booster_enable: booster_en {
+			gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+			label = "Boost converter enable pin";
 		};
 	};
 	

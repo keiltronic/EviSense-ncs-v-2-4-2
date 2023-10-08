@@ -18,49 +18,70 @@ uint8_t RFID_autoscan_enabled = false;
 uint8_t RFID_IsOn = false;
 uint8_t RFID_TriggeredRead = false;
 
+struct gpio_dt_spec booster_enable_pin = GPIO_DT_SPEC_GET(BOOSTER_ENABLE_NODE, gpios);
+
 /*!
  *  @brief This is the function description
  */
-void rfid_power_off(void)
+void rfid_init(void)
 {
-//   gpio_pin_set_raw(gpio_dev, GPIO_PIN_5V_EN, 1);
-//   gpio_pin_configure(gpio_dev, 7, GPIO_DISCONNECTED);
-//   gpio_pin_configure(gpio_dev, 8, GPIO_DISCONNECTED);
-//   gpio_pin_configure(gpio_dev, GPIO_PIN_RFID_TRIGGER, GPIO_DISCONNECTED);
+  int16_t ret = 0;
+  /* Init blue onboard led */
+  if (!device_is_ready(booster_enable_pin.port))
+    printk("Could not initialize rfid module enable pin!\n\r");
 
-//   /* Disable UARTE1 */
-//   NRF_UARTE1_NS->TASKS_STOPTX = 1;
-//   NRF_UARTE1_NS->TASKS_STOPRX = 1;
-//   NRF_UARTE1_NS->ENABLE = 0;
-
-//   RFID_IsOn = false;
+  ret = gpio_pin_configure_dt(&booster_enable_pin, GPIO_OUTPUT_ACTIVE);
+  if (ret < 0)
+    printk("Could not configure rfid module enable pin!\n\r");
 }
 
 /*!
  *  @brief This is the function description
  */
-void RFID_PowerOn(void)
+void rfid_power_off(void)
 {
-//   gpio_pin_set_raw(gpio_dev, GPIO_PIN_5V_EN, 0);
-//   gpio_pin_configure(gpio_dev, 7, GPIO_INPUT);
-//   gpio_pin_configure(gpio_dev, 8, GPIO_OUTPUT);
-//   gpio_pin_configure(gpio_dev, GPIO_PIN_RFID_TRIGGER, GPIO_OUTPUT);
-//   gpio_pin_set_raw(gpio_dev, GPIO_PIN_RFID_TRIGGER, 1);
+  gpio_pin_set_dt(&booster_enable_pin, 1);
 
-//   /* Enable UARTE1 */
-//   NRF_UARTE1_NS->ENABLE = 8;
-//   NRF_UARTE1_NS->TASKS_STARTRX = 1;
-//   NRF_UARTE1_NS->TASKS_STARTTX = 1;
+  //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_5V_EN, 1);
+  //   gpio_pin_configure(gpio_dev, 7, GPIO_DISCONNECTED);
+  //   gpio_pin_configure(gpio_dev, 8, GPIO_DISCONNECTED);
+  //   gpio_pin_configure(gpio_dev, GPIO_PIN_RFID_TRIGGER, GPIO_DISCONNECTED);
 
-//   RFID_IsOn = true;
- }
+  //   /* Disable UARTE1 */
+  //   NRF_UARTE1_NS->TASKS_STOPTX = 1;
+  //   NRF_UARTE1_NS->TASKS_STOPRX = 1;
+  //   NRF_UARTE1_NS->ENABLE = 0;
+
+  //   RFID_IsOn = false;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+void rfid_power_on(void)
+{
+  gpio_pin_set_dt(&booster_enable_pin, 0);
+
+  //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_5V_EN, 0);
+  //   gpio_pin_configure(gpio_dev, 7, GPIO_INPUT);
+  //   gpio_pin_configure(gpio_dev, 8, GPIO_OUTPUT);
+  //   gpio_pin_configure(gpio_dev, GPIO_PIN_RFID_TRIGGER, GPIO_OUTPUT);
+  //   gpio_pin_set_raw(gpio_dev, GPIO_PIN_RFID_TRIGGER, 1);
+
+  //   /* Enable UARTE1 */
+  //   NRF_UARTE1_NS->ENABLE = 8;
+  //   NRF_UARTE1_NS->TASKS_STARTRX = 1;
+  //   NRF_UARTE1_NS->TASKS_STARTTX = 1;
+
+  //   RFID_IsOn = true;
+}
 
 /*!
  *  @brief This is the function description
  */
 void config_RFID(void)
 {
-  RFID_PowerOn();
+  //RFID_PowerOn();
   k_msleep(300);
   RFID_setFrequency(Parameter.rfid_frequency);
   k_msleep(200);
@@ -99,8 +120,8 @@ void RFID_TriggerSingleScan(void)
 void rfid_trigger_multi_read(void)
 {
   uart_fifo_fill(uart1, "\nU\r", sizeof("\nU\r"));
- // rtc_print_debug_timestamp();
-  //shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Triggered RFID reader\n");
+  // rtc_print_debug_timestamp();
+  // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Triggered RFID reader\n");
   RFID_TriggeredRead = true;
 }
 

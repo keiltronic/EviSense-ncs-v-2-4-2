@@ -1100,28 +1100,28 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_blink_notification(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_blink_notification(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.rfid_blink_notification == false)
-//   {
-//     Parameter.rfid_blink_notification = true;
-//     shell_print(shell, "Enabled rfid confirmation led for all incoming epc tags");
-//   }
-//   else
-//   {
-//     Parameter.rfid_blink_notification = false;
-//     shell_print(shell, "Disabled rfid confirmation led for all incoming epc tags");
-//   }
-//   Parameter_PushRAMToFlash();
+  if (Parameter.rfid_blink_notification == false)
+  {
+    Parameter.rfid_blink_notification = true;
+    shell_print(shell, "Enabled rfid confirmation led for all incoming epc tags");
+  }
+  else
+  {
+    Parameter.rfid_blink_notification = false;
+    shell_print(shell, "Disabled rfid confirmation led for all incoming epc tags");
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1360,27 +1360,27 @@ static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t ar
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.rfid_verbose == false)
-//   {
-//     Parameter.rfid_verbose = true;
-//     shell_print(shell, "Enabled RFID verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.rfid_verbose = false;
-//     shell_print(shell, "Disabled RFID verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.rfid_verbose == false)
+  {
+    Parameter.rfid_verbose = true;
+    shell_print(shell, "Enabled RFID verbose mode");
+  }
+  else
+  {
+    Parameter.rfid_verbose = false;
+    shell_print(shell, "Disabled RFID verbose mode");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1541,286 +1541,286 @@ static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t ar
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_sniff(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_sniff(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (System.RFID_Sniff == false)
-//   {
-//     System.RFID_Sniff = true;
-//     shell_print(shell, "RFID module sniffer activated.");
+  if (System.RFID_Sniff == false)
+  {
+    System.RFID_Sniff = true;
+    shell_print(shell, "RFID module sniffer activated.");
 
-//     RFID_autoscan_enabled = true;
-//     config_RFID();
-//     k_msleep(50);
-//     RFID_ScanEnable = true;
+    RFID_autoscan_enabled = true;
+    config_RFID();
+    k_msleep(50);
+    RFID_ScanEnable = true;
 
-//     if (frame_lift_flag[0] == 1) // frame is lifted
-//     {
-//       shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
-//     }
-//     else
-//     {
-//       shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
-//     }
-//   }
-//   else
-//   {
-//     System.RFID_Sniff = false;
-//     shell_print(shell, "RFID module sniffer deactivated.");
+    // if (frame_lift_flag[0] == 1) // frame is lifted
+    // {
+    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
+    // }
+    // else
+    // {
+    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
+    // }
+  }
+  else
+  {
+    System.RFID_Sniff = false;
+    shell_print(shell, "RFID module sniffer deactivated.");
 
-//     RFID_autoscan_enabled = false;
-//     RFID_TurnOff();
-//     RFID_ScanEnable = false;
-//     shell_print(shell, "Disabled RFID auto scan");
-//   }
-//   return 0;
-// }
+    RFID_autoscan_enabled = false;
+    RFID_TurnOff();
+    RFID_ScanEnable = false;
+    shell_print(shell, "Disabled RFID auto scan");
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
-// {
-//   /* If internal button S1 is pressed, switch to contiuous RFID reader mode */
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
+{
+  // /* If internal button S1 is pressed, switch to contiuous RFID reader mode */
 
-//   uint8_t rslt = 0;
+  // uint8_t rslt = 0;
 
-//   if (RFID_IsOn == false)
-//   {
-//     config_RFID();
-//     RFID_TurnOn();
-//     k_msleep(100);
-//   }
+  // if (RFID_IsOn == false)
+  // {
+  //   config_RFID();
+  //   RFID_TurnOn();
+  //   k_msleep(100);
+  // }
 
-//   System.RFID_TransparentMode = true;
-//   rslt = gpio_pin_set_raw(gpio_dev, GPIO_PIN_RFID_TRIGGER, 0); // active low (switch on)
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID continuous mode is active.\n");
+  // System.RFID_TransparentMode = true;
+  // rslt = gpio_pin_set_raw(gpio_dev, GPIO_PIN_RFID_TRIGGER, 0); // active low (switch on)
+  // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID continuous mode is active.\n");
 
-//   if (RFID_autoscan_enabled == true)
-//   {
-//     shell_execute_cmd(shell_backend_uart_get_ptr(), "rfid autoscan");
-//   }
+  // if (RFID_autoscan_enabled == true)
+  // {
+  //   shell_execute_cmd(shell_backend_uart_get_ptr(), "rfid autoscan");
+  // }
 
-//   Parameter.rfid_verbose = true;
-//   shell_print(shell, "Enabled RFID verbose mode");
+  // Parameter.rfid_verbose = true;
+  // shell_print(shell, "Enabled RFID verbose mode");
 
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  // Parameter_PushRAMToFlash();
+  // return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_singlescan(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_singlescan(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   config_RFID();
-//   k_msleep(50);
-//   rfid_trigger_multi_read();
-//   RFID_TurnOff();
-//   return 0;
-// }
+  config_RFID();
+  k_msleep(50);
+  rfid_trigger_multi_read();
+  RFID_TurnOff();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.rfid_autoscan == false)
-//   {
-//     RFID_autoscan_enabled = true;
-//     Parameter.rfid_autoscan = true;
-//     config_RFID();
-//     k_msleep(50);
-//     RFID_ScanEnable = true;
+  if (Parameter.rfid_autoscan == false)
+  {
+    RFID_autoscan_enabled = true;
+    Parameter.rfid_autoscan = true;
+    config_RFID();
+    k_msleep(50);
+    RFID_ScanEnable = true;
 
-//     if (frame_lift_flag[0] == 1) // frame is lifted
-//     {
-//       shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
-//     }
-//     else
-//     {
-//       shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
-//     }
+    // if (frame_lift_flag[0] == 1) // frame is lifted
+    // {
+    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval_lifted);
+    // }
+    // else
+    // {
+    //   shell_print(shell, "Enabled RFID auto scan. Interval: %dms", Parameter.rfid_interval);
+    // }
 
-//     /* For debugging prupose enable blue dev led when motion detected*/
-//     if (Parameter.enable_blue_dev_led == true)
-//     {
-//       gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 0);
-//     }
-//   }
-//   else
-//   {
-//     Parameter.rfid_autoscan = false;
-//     RFID_autoscan_enabled = false;
-//     RFID_TurnOff();
-//     RFID_ScanEnable = false;
-//     shell_print(shell, "Disabled RFID auto scan");
+    /* For debugging prupose enable blue dev led when motion detected*/
+    if (Parameter.enable_blue_dev_led == true)
+    {
+      gpio_pin_set_dt(&dev_led, 1); 
+    }
+  }
+  else
+  {
+    Parameter.rfid_autoscan = false;
+    RFID_autoscan_enabled = false;
+    RFID_TurnOff();
+    RFID_ScanEnable = false;
+    shell_print(shell, "Disabled RFID auto scan");
 
-//     /* For debugging prupose enable blue dev led when motion detected*/
-//     if (Parameter.enable_blue_dev_led == true)
-//     {
-//       gpio_pin_set_raw(gpio_dev, GPIO_PIN_LED1, 1);
-//     }
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+    /* For debugging prupose enable blue dev led when motion detected*/
+    if (Parameter.enable_blue_dev_led == true)
+    {
+      gpio_pin_set_dt(&dev_led, 1); 
+    }
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_settings(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_settings(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   /* output power */
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Output power: \t\t\t\t%d dBm\n", RFID_getOutputPower());
+  /* output power */
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Output power: \t\t\t\t%d dBm\n", RFID_getOutputPower());
 
-//   /* Frequency band */
-//   int16_t freq = 0;
-//   freq = RFID_getFrequency();
+  /* Frequency band */
+  int16_t freq = 0;
+  freq = RFID_getFrequency();
 
-//   switch (freq)
-//   {
-//   case 1:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t01: US 902-925 MHz\n");
-//     break;
+  switch (freq)
+  {
+  case 1:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t01: US 902-925 MHz\n");
+    break;
 
-//   case 2:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t02: TW 922-928 MHz\n");
-//     break;
+  case 2:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t02: TW 922-928 MHz\n");
+    break;
 
-//   case 3:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t03: CN 920-925 MHz\n");
-//     break;
+  case 3:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t03: CN 920-925 MHz\n");
+    break;
 
-//   case 4:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t04: CN2 840-845 MHz\n");
-//     break;
+  case 4:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t04: CN2 840-845 MHz\n");
+    break;
 
-//   case 5:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t05: EU 865-868 MHz\n");
-//     break;
+  case 5:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t05: EU 865-868 MHz\n");
+    break;
 
-//   case 6:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t06: JP 916-921 MHz\n");
-//     break;
+  case 6:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t06: JP 916-921 MHz\n");
+    break;
 
-//   case 7:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t07: KR 917-921 MHz\n");
-//     break;
+  case 7:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t07: KR 917-921 MHz\n");
+    break;
 
-//   case 8:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t08: VN 918-923 MHz\n");
-//     break;
+  case 8:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Frequency band: \t\t\t08: VN 918-923 MHz\n");
+    break;
 
-//   default:
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Unknown frequency band\n");
-//     break;
-//   }
-//   return 0;
-// }
+  default:
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Unknown frequency band\n");
+    break;
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_interval(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "RFID scanning interval: %dms", Parameter.rfid_interval);
-//   }
-//   else
-//   {
-//     Parameter.rfid_interval = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "Set RFID scanning interval to %dms", Parameter.rfid_interval);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_interval(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "RFID scanning interval: %dms", Parameter.rfid_interval);
+  }
+  else
+  {
+    Parameter.rfid_interval = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "Set RFID scanning interval to %dms", Parameter.rfid_interval);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_interval_lifted(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "RFID scanning interval: %dms", Parameter.rfid_interval_lifted);
-//   }
-//   else
-//   {
-//     Parameter.rfid_interval_lifted = atoi(argv[1]);
-//     Parameter_PushRAMToFlash();
-//     shell_print(shell, "Set RFID scanning interval to %dms", Parameter.rfid_interval_lifted);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_interval_lifted(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "RFID scanning interval: %dms", Parameter.rfid_interval_lifted);
+  }
+  else
+  {
+    Parameter.rfid_interval_lifted = atoi(argv[1]);
+    Parameter_PushRAMToFlash();
+    shell_print(shell, "Set RFID scanning interval to %dms", Parameter.rfid_interval_lifted);
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_output_power(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\n", Parameter.rfid_output_power);
-//   }
-//   else
-//   {
-//     if ((atoi(argv[1]) >= -2) && (atoi(argv[1]) <= 27))
-//     {
-//       Parameter.rfid_output_power = atoi(argv[1]);
-//       RFID_setOutputPower(atoi(argv[1]));
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_output_power(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\n", Parameter.rfid_output_power);
+  }
+  else
+  {
+    if ((atoi(argv[1]) >= -2) && (atoi(argv[1]) <= 27))
+    {
+      Parameter.rfid_output_power = atoi(argv[1]);
+      RFID_setOutputPower(atoi(argv[1]));
 
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Set output power when NOT lifted to %ddBm", Parameter.rfid_output_power);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set new RFID output power");
-//     }
-//   }
-//   return 0;
-// }
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Set output power when NOT lifted to %ddBm", Parameter.rfid_output_power);
+    }
+    else
+    {
+      shell_error(shell, "Could not set new RFID output power");
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_output_power_lifted(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\n", Parameter.rfid_output_power_lifted);
-//   }
-//   else
-//   {
-//     if ((atoi(argv[1]) >= -2) && (atoi(argv[1]) <= 27))
-//     {
-//       Parameter.rfid_output_power_lifted = atoi(argv[1]);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_output_power_lifted(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\n", Parameter.rfid_output_power_lifted);
+  }
+  else
+  {
+    if ((atoi(argv[1]) >= -2) && (atoi(argv[1]) <= 27))
+    {
+      Parameter.rfid_output_power_lifted = atoi(argv[1]);
 
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Set output power when lifted to %ddBm", Parameter.rfid_output_power_lifted);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Could not set new RFID output power");
-//     }
-//   }
-//   return 0;
-// }
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Set output power when lifted to %ddBm", Parameter.rfid_output_power_lifted);
+    }
+    else
+    {
+      shell_error(shell, "Could not set new RFID output power");
+    }
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -2381,150 +2381,150 @@ static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_command(const struct shell *shell, size_t argc, char **argv)
-// {
-//   char command[8];
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_command(const struct shell *shell, size_t argc, char **argv)
+{
+  char command[8];
 
-//   if (argc == 2)
-//   {
+  if (argc == 2)
+  {
 
-//     System.RFID_TransparentMode = true;
+    System.RFID_TransparentMode = true;
 
-//     if (RFID_IsOn == false)
-//     {
-//       RFID_TurnOn();
-//       config_RFID();
-//       k_msleep(500);
-//     }
+    if (RFID_IsOn == false)
+    {
+      RFID_TurnOn();
+      config_RFID();
+      k_msleep(500);
+    }
 
-//     // System.RFID_TransparentMode = true;
-//     memset(uart1_RFIDResponse, '\0', sizeof(uart1_RFIDResponse));
-//     uart1_RFIDResponseTransmissionLength = 0;
-//     uart1_RFIDResponseFinished = false;
+    // System.RFID_TransparentMode = true;
+    memset(uart1_RFIDResponse, '\0', sizeof(uart1_RFIDResponse));
+    uart1_RFIDResponseTransmissionLength = 0;
+    uart1_RFIDResponseFinished = false;
 
-//     /* Build a command with \n and \r signs which the RFID reader IC can understand */
-//     strcpy(command, "\n");
-//     strcat(command, argv[1]);
-//     strcat(command, "\r");
+    /* Build a command with \n and \r signs which the RFID reader IC can understand */
+    strcpy(command, "\n");
+    strcat(command, argv[1]);
+    strcat(command, "\r");
 
-//     uart_fifo_fill(uart1, command, sizeof(command) - 1);
+    uart_fifo_fill(uart1, command, sizeof(command) - 1);
 
-//     /* Record uart input coming from rfid module for 1000 ms */
-//     while (!uart1_RFIDResponseFinished)
-//     {
-//     }
+    /* Record uart input coming from rfid module for 1000 ms */
+    while (!uart1_RFIDResponseFinished)
+    {
+    }
 
-//     System.RFID_TransparentMode = false;
+    System.RFID_TransparentMode = false;
 
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s\n", uart1_RFIDResponse);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s\n", uart1_RFIDResponse);
 
-//     memset(uart1_RFIDResponse, '\0', sizeof(uart1_RFIDResponse));
-//     uart1_RFIDResponseTransmissionLength = 0;
-//     uart1_RFIDResponseFinished = false;
-//   }
-//   else
-//   {
-//     shell_error(shell, "RFID command not valid.");
-//   }
-//   return 0;
-// }
+    memset(uart1_RFIDResponse, '\0', sizeof(uart1_RFIDResponse));
+    uart1_RFIDResponseTransmissionLength = 0;
+    uart1_RFIDResponseFinished = false;
+  }
+  else
+  {
+    shell_error(shell, "RFID command not valid.");
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_rfid_frequency(const struct shell *shell, size_t argc, char **argv)
-// {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_rfid_frequency(const struct shell *shell, size_t argc, char **argv)
+{
 
-//   if (argc == 1)
-//   {
+  if (argc == 1)
+  {
 
-//     int16_t freq = 0;
-//     freq = RFID_getFrequency();
+    int16_t freq = 0;
+    freq = RFID_getFrequency();
 
-//     switch (freq)
-//     {
-//     case 1:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "01: US 902-925 MHz\n");
-//       break;
+    switch (freq)
+    {
+    case 1:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "01: US 902-925 MHz\n");
+      break;
 
-//     case 2:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "02: TW 922-928 MHz\n");
-//       break;
+    case 2:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "02: TW 922-928 MHz\n");
+      break;
 
-//     case 3:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "03: CN 920-925 MHz\n");
-//       break;
+    case 3:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "03: CN 920-925 MHz\n");
+      break;
 
-//     case 4:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "04: CN2 840-845 MHz\n");
-//       break;
+    case 4:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "04: CN2 840-845 MHz\n");
+      break;
 
-//     case 5:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "05: EU 865-868 MHz\n");
-//       break;
+    case 5:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "05: EU 865-868 MHz\n");
+      break;
 
-//     case 6:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "06: JP 916-921 MHz\n");
-//       break;
+    case 6:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "06: JP 916-921 MHz\n");
+      break;
 
-//     case 7:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "07: KR 917-921 MHz\n");
-//       break;
+    case 7:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "07: KR 917-921 MHz\n");
+      break;
 
-//     case 8:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "08: VN 918-923 MHz\n");
-//       break;
+    case 8:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "08: VN 918-923 MHz\n");
+      break;
 
-//     default:
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Unknown frequency band\n");
-//       break;
-//     }
-//   }
-//   else
-//   {
-//     if ((atoi(argv[1]) > 0) && (atoi(argv[1]) <= 8))
-//     {
-//       Parameter.rfid_frequency = atoi(argv[1]);
-//       RFID_setFrequency(Parameter.rfid_frequency);
-//       Parameter_PushRAMToFlash();
-//     }
+    default:
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Unknown frequency band\n");
+      break;
+    }
+  }
+  else
+  {
+    if ((atoi(argv[1]) > 0) && (atoi(argv[1]) <= 8))
+    {
+      Parameter.rfid_frequency = atoi(argv[1]);
+      RFID_setFrequency(Parameter.rfid_frequency);
+      Parameter_PushRAMToFlash();
+    }
 
-//     switch (Parameter.rfid_frequency)
-//     {
-//     case 1:
-//       shell_print(shell, "Set frequency to US standard");
-//       break;
-//     case 2:
-//       shell_print(shell, "Set frequency to TW standard");
-//       break;
-//     case 3:
-//       shell_print(shell, "Set frequency to CN standard");
-//       break;
-//     case 4:
-//       shell_print(shell, "Set frequency to CN2 standard");
-//       break;
-//     case 5:
-//       shell_print(shell, "Set frequency to EU standard");
-//       break;
-//     case 6:
-//       shell_print(shell, "Set frequency to JP standard");
-//       break;
-//     case 7:
-//       shell_print(shell, "Set frequency to KR standard");
-//       break;
-//     case 8:
-//       shell_print(shell, "Set frequency to VN standard");
-//       break;
-//     default:
-//       shell_error(shell, "Could not set new frequency");
-//       break;
-//     }
-//   }
-//   return 0;
-// }
+    switch (Parameter.rfid_frequency)
+    {
+    case 1:
+      shell_print(shell, "Set frequency to US standard");
+      break;
+    case 2:
+      shell_print(shell, "Set frequency to TW standard");
+      break;
+    case 3:
+      shell_print(shell, "Set frequency to CN standard");
+      break;
+    case 4:
+      shell_print(shell, "Set frequency to CN2 standard");
+      break;
+    case 5:
+      shell_print(shell, "Set frequency to EU standard");
+      break;
+    case 6:
+      shell_print(shell, "Set frequency to JP standard");
+      break;
+    case 7:
+      shell_print(shell, "Set frequency to KR standard");
+      break;
+    case 8:
+      shell_print(shell, "Set frequency to VN standard");
+      break;
+    default:
+      shell_error(shell, "Could not set new frequency");
+      break;
+    }
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4537,24 +4537,24 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(buzzer, &buzzer, "Command set to change the buzzer settings", NULL);
 
-//   SHELL_STATIC_SUBCMD_SET_CREATE(rfid,
-//                                  SHELL_CMD(settings, NULL, "Inquire the current settings from RFID module", cmd_rfid_settings),
-//                                  SHELL_CMD(interval, NULL, "Read interval for EPC in mopping state", cmd_rfid_interval),
-//                                  SHELL_CMD(interval_lifted, NULL, "Read interval for EPC when frame is lifted", cmd_rfid_interval_lifted),
-//                                  SHELL_CMD(output_power, NULL, "Sets the output power of the RFID module when not lifted (-2 to 25dBm)", cmd_rfid_output_power),
-//                                  SHELL_CMD(output_power_lifted, NULL, "Sets the output power of the RFID module when lifted (-2 to 25dBm)", cmd_output_power_lifted),
-//                                  SHELL_CMD(interval, NULL, "Sets the scan interval of the RFID module when not lifted (-2 to 25dBm)", cmd_rfid_interval),
-//                                  SHELL_CMD(frequency, NULL, "Sets the reader frequency.", cmd_rfid_frequency),
-//                                  SHELL_CMD(verbose, NULL, "Print found EPC tag to console", cmd_rfid_verbose),
-//                                  SHELL_CMD(sniff, NULL, "Displays the raw unfiltered incomming data from rfid module", cmd_rfid_sniff),
-//                                  SHELL_CMD(trigger, NULL, "Reads automatically EPC tags by settings the autotrigger pin at RFID module", cmd_rfid_trigger),
-//                                  SHELL_CMD(singlescan, NULL, "Triggers a single scan for EPC tags", cmd_rfid_singlescan),
-//                                  SHELL_CMD(autoscan, NULL, "Reads automatically EPC tags with given interval", cmd_rfid_autoscan),
-//                                  SHELL_CMD(command, NULL, "Writes a direct command to RFID module", cmd_rfid_command),
-//                                  SHELL_CMD(blink_notification, NULL, "Main user led will blink blue when ever a tag was read", cmd_rfid_blink_notification),
-//                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-//   );
-//   SHELL_CMD_REGISTER(rfid, &rfid, "Command set to change RFID settings", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(rfid,
+                                 SHELL_CMD(settings, NULL, "Inquire the current settings from RFID module", cmd_rfid_settings),
+                                 SHELL_CMD(interval, NULL, "Read interval for EPC in mopping state", cmd_rfid_interval),
+                                 SHELL_CMD(interval_lifted, NULL, "Read interval for EPC when frame is lifted", cmd_rfid_interval_lifted),
+                                 SHELL_CMD(output_power, NULL, "Sets the output power of the RFID module when not lifted (-2 to 25dBm)", cmd_rfid_output_power),
+                                 SHELL_CMD(output_power_lifted, NULL, "Sets the output power of the RFID module when lifted (-2 to 25dBm)", cmd_output_power_lifted),
+                                 SHELL_CMD(interval, NULL, "Sets the scan interval of the RFID module when not lifted (-2 to 25dBm)", cmd_rfid_interval),
+                                 SHELL_CMD(frequency, NULL, "Sets the reader frequency.", cmd_rfid_frequency),
+                                 SHELL_CMD(verbose, NULL, "Print found EPC tag to console", cmd_rfid_verbose),
+                                 SHELL_CMD(sniff, NULL, "Displays the raw unfiltered incomming data from rfid module", cmd_rfid_sniff),
+                                 SHELL_CMD(trigger, NULL, "Reads automatically EPC tags by settings the autotrigger pin at RFID module", cmd_rfid_trigger),
+                                 SHELL_CMD(singlescan, NULL, "Triggers a single scan for EPC tags", cmd_rfid_singlescan),
+                                 SHELL_CMD(autoscan, NULL, "Reads automatically EPC tags with given interval", cmd_rfid_autoscan),
+                                 SHELL_CMD(command, NULL, "Writes a direct command to RFID module", cmd_rfid_command),
+                                 SHELL_CMD(blink_notification, NULL, "Main user led will blink blue when ever a tag was read", cmd_rfid_blink_notification),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(rfid, &rfid, "Command set to change RFID settings", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(imu,
                                  SHELL_CMD(verbose, NULL, "Prints out the current acc, gyro and mag readings to console", cmd_trace),
