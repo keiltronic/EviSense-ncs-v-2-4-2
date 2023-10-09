@@ -16,7 +16,6 @@
 #include "battery_gauge.h"
 #include "events.h"
 #include "hibernate.h"
-#include "interrupts.h"
 #include "led.h"
 #include "hard_reset.h"
 

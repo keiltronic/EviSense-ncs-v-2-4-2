@@ -29,9 +29,10 @@ volatile uint8_t motion_detected_old = false;
 volatile uint32_t motion_reset_counter = 0;
 uint8_t mag_data[8] = {0};
 
-struct i2c_dt_spec imu_i2c = I2C_DT_SPEC_GET(BMX160_NODE);
-struct gpio_dt_spec imu_int1 = GPIO_DT_SPEC_GET(IMU_INT1_NODE, gpios);
-struct gpio_dt_spec imu_int2 = GPIO_DT_SPEC_GET(IMU_INT2_NODE, gpios);
+
+struct i2c_dt_spec imu_i2c = I2C_DT_SPEC_GET(DT_NODELABEL(bmx160));
+struct gpio_dt_spec imu_int1 = GPIO_DT_SPEC_GET(DT_ALIAS(imuint1), gpios);
+struct gpio_dt_spec imu_int2 = GPIO_DT_SPEC_GET(DT_ALIAS(imuint2), gpios);
 struct gpio_callback imu_int1_cb_data;
 struct gpio_callback imu_int2_cb_data;
 
@@ -40,7 +41,7 @@ void imu_init(void)
   int16_t ret = 0;
 
   /* Init int 1 interrup line */
-  ret = gpio_pin_interrupt_configure_dt(&imu_int1, GPIO_INT_EDGE_RISING); // Imu int 1
+  ret = gpio_pin_interrupt_configure_dt(&imu_int1, GPIO_INT_EDGE_BOTH); // GPIO_INT_EDGE_RISING Imu int 1
   if (!device_is_ready(imu_int1.port))
   {
     return;
@@ -55,7 +56,7 @@ void imu_init(void)
   gpio_add_callback(imu_int1.port, &imu_int1_cb_data);
 
   /* Init int 2 interrup line */
-  ret = gpio_pin_interrupt_configure_dt(&imu_int2, GPIO_INT_EDGE_FALLING); // Imu int 2
+  ret = gpio_pin_interrupt_configure_dt(&imu_int2, GPIO_INT_EDGE_BOTH); // GPIO_INT_EDGE_FALLINGImu int 2
   if (!device_is_ready(imu_int2.port))
   {
     return;

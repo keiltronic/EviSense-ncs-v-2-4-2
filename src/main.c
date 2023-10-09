@@ -426,33 +426,33 @@ void main(void)
 		gpio_pin_set_dt(&dev_led, 1);
 	}
 
-	// /* Set "device on frame" detection */
-	// k_msleep(100);
-	// if (Parameter.algocontrol_bymag_det == 0)
-	// {
-	// 	rtc_print_debug_timestamp();
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Mop algorithm is unlocked (mop magnet detection deactivated, mop algorithm is running)\n");
-	// 	algorithm_lock = false;
-	// }
-	// else
-	// {
-	// 	rtc_print_debug_timestamp();
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Automatic device on frame detecion activated\n");
-	// }
+	/* Set "device on frame" detection */
+	k_msleep(100);
+	if (Parameter.algocontrol_bymag_det == 0)
+	{
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Mop algorithm is unlocked (mop magnet detection deactivated, mop algorithm is running)\n");
+		algorithm_lock = false;
+	}
+	else
+	{
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Automatic device on frame detecion activated\n");
+	}
 
-	// if (Parameter.notification_test == true)
-	// {
-	// 	notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_LOWEST);
-	// }
+	if (Parameter.notification_test == true)
+	{
+		notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_LOWEST);
+	}
 
-	// /* Clean event storage region in external flash */
-	// rtc_print_debug_timestamp();
-	// shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
-	// Event_ClearCompleteFlash();
+	/* Clean event storage region in external flash */
+	rtc_print_debug_timestamp();
+	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
+	Event_ClearCompleteFlash();
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;
 
-	/* Disable blue dev led */
-	//gpio_pin_set_dt(&dev_led, 0);
+	/* Disable blue dev led after boot cocmpleteI*/
+	gpio_pin_set_dt(&dev_led, 0);
 }

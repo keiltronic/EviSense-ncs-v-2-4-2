@@ -14,6 +14,7 @@
 #include <zephyr/device.h>
 #include "battery_gauge.h"
 #include "notification.h"
+#include "hard_reset.h"
 
 extern void USB_CheckConnectionStatus(void);
 extern bool charger_plug_in_while_reboot;

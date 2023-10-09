@@ -23,10 +23,6 @@
 #include "led.h"
 #include "stepdetection.h"
 
-#define BMX160_NODE DT_NODELABEL(bmx160)
-#define IMU_INT1_NODE DT_ALIAS(imuint1)
-#define IMU_INT2_NODE DT_ALIAS(imuint2)
-
 #define GRAVITY_EARTH 9.81
 
 extern struct bmi160_dev bmi160;

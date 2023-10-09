@@ -12,7 +12,6 @@
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
-#include "interrupts.h"
 #include "spi.h"
 
 #define GPIO_PIN_5V_EN          0

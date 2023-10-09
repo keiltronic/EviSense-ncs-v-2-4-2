@@ -91,7 +91,7 @@ void Parameter_InitRAM(void)
   Parameter.network_connection_type = LTE_M; // LTE_M NB_IOT
   Parameter.mop_id_refresh_timer = 45;
   Parameter.hit_shock_mag_thr = 2.5;
-  Parameter.algocontrol_bymag_det = 1;
+  Parameter.algocontrol_bymag_det = 0;
   Parameter.mag_det_threshold = 120;
   Parameter.mag_det_consecutive_samples = 30; // unit: 100ms
   Parameter.notification_test = false;

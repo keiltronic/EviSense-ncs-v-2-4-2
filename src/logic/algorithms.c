@@ -646,7 +646,7 @@ void algorithm_execute_process(void)
                     /* For debugging prupose enable blue dev led when motion detected*/
                     if ((Parameter.enable_blue_dev_led == true))
                     {
-                        gpio_pin_set_dt(&dev_led, 0); // Enable blue dev led while booting
+                        gpio_pin_set_dt(&dev_led, 1); // Enable blue dev led while booting
                     }
 
                     if (Parameter.debug == true || Parameter.algo_verbose == true)
@@ -664,7 +664,7 @@ void algorithm_execute_process(void)
                 /* For debugging prupose disable blue dev led when motion detected*/
                 if (Parameter.enable_blue_dev_led == true)
                 {
-                    gpio_pin_set_dt(&dev_led, 1);
+                    gpio_pin_set_dt(&dev_led, 0);
                 }
 
                 if (RFID_IsOn == true)
