@@ -1598,7 +1598,9 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
     RFID_IsOn = false;
     RFID_ScanEnable = false;
 
-    System.RFID_TransparentMode = true;
+    RFID_TurnOff();
+
+   // System.RFID_TransparentMode = true;
     gpio_pin_set_dt(&rfid_trigger_pin, 1);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
   }
@@ -4343,42 +4345,42 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(adc, &adc, "Command set to control and read out adc data", NULL);
 
-    SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
-                                   SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
-                                   SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
-                                   SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
-                                   SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
-                                   SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
-                                   SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
-                                   SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
-                                   SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
-                                   SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
-                                   SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
-                                   SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
-                                   SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
-                                   SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
-                                   SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
-                                   SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
-                                   SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
-                                   SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
-                                   SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
-                                   SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
-                                   SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
-                                   SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
-                                   SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
-                                   SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
-                                   SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
-                                   SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
-                                   SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
-                                   SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
-                                   SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
-                                   SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
-                                   SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
-                                   SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
-                                   SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
-                                   SHELL_SUBCMD_SET_END /* Array terminated. */
-    );
-    SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(algorithm,
+                                 SHELL_CMD(acc_noise_thr, NULL, "m/s^2 - Noise thres for Acc data", cmd_acc_noise_thr),
+                                 SHELL_CMD(gyr_noise_thr, NULL, "deg/s  - Noise thres for Gyr data", cmd_gyr_noise_thr),
+                                 SHELL_CMD(mag_noise_thr, NULL, "uT - thres to remove earth magnetic field", cmd_mag_noise_thr),
+                                 SHELL_CMD(gyr_spin_thr, NULL, "deg - min handle rotation degrees for S-shape mopping detection", cmd_gyr_spin_thr),
+                                 SHELL_CMD(frame_handle_angle_thr, NULL, "deg - thres to detect frame flip.", cmd_frame_handle_angle_thr),
+                                 SHELL_CMD(floor_handle_angle_mopping_thr_min, NULL, "deg - min handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_min),
+                                 SHELL_CMD(floor_handle_angle_mopping_thr_max, NULL, "deg - max handle inclination for mopping detection.", cmd_floor_handle_angle_mopping_thr_max),
+                                 SHELL_CMD(floor_handle_angle_mopchange_thr, NULL, "deg - thres to enable mop change detection.", cmd_floor_handle_angle_mopchange_thr),
+                                 SHELL_CMD(min_mopchange_duration, NULL, "sec - thres to enable mop change detection.", cmd_min_mopchange_duration),
+                                 SHELL_CMD(min_mopframeflip_duration, NULL, "sec - thres to enable mop frame flip", cmd_min_mopframeflip_duration),
+                                 SHELL_CMD(angle_smooth_factor, NULL, "exp filter factor to estimate inclination angles (ie 0.1->recent)", cmd_angle_smooth_factor),
+                                 SHELL_CMD(gyr_smooth_factor, NULL, "exp filter factor for Gyro based feature values", cmd_gyr_smooth_factor),
+                                 SHELL_CMD(min_mopcycle_duration, NULL, "sec - min duration of mop cycle - fast mopping", cmd_min_mopcycle_duration),
+                                 SHELL_CMD(max_mopcycle_duration, NULL, "sec - max duration of mop cycle - slow mopping", cmd_max_mopcycle_duration),
+                                 SHELL_CMD(enable_coveraged_per_mop_notification, NULL, "Enable notification if mop reached max sqm coverage", cmd_enable_coveraged_per_mop_notification),
+                                 SHELL_CMD(max_sqm_coveraged_per_mop, NULL, "m2 - max m2 to trigger notifications (for 2-sided mops)", cmd_max_sqm_coveraged_per_mop),
+                                 SHELL_CMD(mop_width, NULL, "m - width of the mop frame", cmd_mop_width),
+                                 SHELL_CMD(mop_overlap, NULL, "in precentage during mopping", cmd_mop_overlap),
+                                 SHELL_CMD(mopcycle_sequence_thr, NULL, "num of mop cycles needed to set mopping flag", cmd_mopcycle_sequence_thr),
+                                 SHELL_CMD(peakfollower_update_delay, NULL, "secs - period to update signal peak", cmd_peakfollower_update_delay),
+                                 SHELL_CMD(mop_rfid_detection_thr, NULL, "num of sequential scans to confirm mop", cmd_mop_rfid_detection_thr),
+                                 SHELL_CMD(mopping_coverage_per_mop_thr, NULL, "m - min thr to confirm unchipped mop", cmd_mopping_coverage_per_mop_thr),
+                                 SHELL_CMD(verbose, NULL, "Show algorithm debug information", cmd_algo_verbose),
+                                 SHELL_CMD(flag_verbose, NULL, "Show algorithm flag information", cmd_algo_flag_verbose),
+                                 SHELL_CMD(settings, NULL, "Show all algorithm parameters", cmd_algo_settings),
+                                 SHELL_CMD(current_shift_mop_check, NULL, "enables check for 'mop was already used in current shift'", cmd_current_shift_mop_check),
+                                 SHELL_CMD(mop_id_refresh_timer, NULL, "sec to release the current registered mop id", cmd_mop_id_refresh_timer),
+                                 SHELL_CMD(hit_shock_mag_thr, NULL, "thres for shock detection", cmd_hit_shock_mag_thr),
+                                 SHELL_CMD(algocontrol_bymag_det, NULL, "Enables magnet detection to unlock algorithm", cmd_algocontrol_bymag_det),
+                                 SHELL_CMD(mag_det_threshold, NULL, "uT - mag field strength for magnet detection", cmd_mag_det_threshold),
+                                 SHELL_CMD(mag_det_consecutive_samples, NULL, "Consecutive samples for mag detection", cmd_mag_det_consecutive_samples),
+                                 SHELL_CMD(event1statistics_interval, NULL, "Calculation interval for Event0x01", cmd_event1statistics_interval),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(algorithm, &algorithm, "Command set to control moping algorithms", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(battery,
                                  SHELL_CMD(voltage, NULL, "Returns the battery voltage", cmd_battery_voltage),

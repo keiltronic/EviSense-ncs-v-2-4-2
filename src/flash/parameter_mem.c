@@ -69,7 +69,7 @@ void Parameter_InitRAM(void)
   Parameter.log_unkown_tags = true;
   Parameter.last_seen_locations_auto_reset_time = 5;     // in seconds
   Parameter.last_seen_mop_array_auto_reset_time = 20000; // => 30000=8.3h in seconds
-  Parameter.enable_blue_dev_led = false;
+  Parameter.enable_blue_dev_led = true;
   Parameter.notification_verbose = false;
   Parameter.notifications_while_usb_connected = false;
   Parameter.enable_rfid_confirmation_blinking = false;
@@ -91,7 +91,7 @@ void Parameter_InitRAM(void)
   Parameter.network_connection_type = LTE_M; // LTE_M NB_IOT
   Parameter.mop_id_refresh_timer = 45;
   Parameter.hit_shock_mag_thr = 2.5;
-  Parameter.algocontrol_bymag_det = 0;
+  Parameter.algocontrol_bymag_det = false;
   Parameter.mag_det_threshold = 120;
   Parameter.mag_det_consecutive_samples = 30; // unit: 100ms
   Parameter.notification_test = false;

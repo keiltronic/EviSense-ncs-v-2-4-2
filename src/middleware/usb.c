@@ -18,8 +18,8 @@ void USB_PluggedIn(void)
 {
   battery_gauge_UpdateData();
 
-  // rfid_power_off();
-  //RFID_TurnOff();
+  rfid_power_off();
+  RFID_TurnOff();
   if ((Total_mops_used >= 1) && (mopping_coverage_per_mop > 1.0))
   {
      NewEvent0x1C(current_room_to_mop_mapping.current_mop_id, mopping_coverage_side1, mopping_coverage_side2);
@@ -59,7 +59,7 @@ void USB_Unplugged(void)
   Notification.next_state = NOTIFICATION_CLEAR;
 
   algo_reset_variables();
-//  EPC_Clear_last_seen();
+  EPC_Clear_last_seen();
   reset_room_to_mop_mapping();
 
   /* Clear list of last seen mobs */
@@ -75,7 +75,7 @@ void USB_Unplugged(void)
   k_msleep(10);
 
   /* Clear all stored events from previous shift */
- // Event_ClearCompleteFlash(); // clears all stored events in external flash
+  Event_ClearCompleteFlash(); // clears all stored events in external flash
 
   /* Add event in event array which is send to cloud in next sync interval */
   NewEvent0x10(); // USB plugged off

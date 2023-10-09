@@ -119,7 +119,15 @@ void RFID_TurnOn(void)
  */
 void RFID_TriggerSingleScan(void)
 {
-  uart_fifo_fill(uart1, "\nQ\r", sizeof("\nQ\r"));
+    int16_t err = 0;
+  uint16_t i = 0;
+
+  uint8_t tx_buf[] = {"\nQ\r"};
+
+  for (i = 0; i < sizeof(tx_buf); i++)
+  {
+    uart_poll_out(uart1, tx_buf[i]);
+  }
   RFID_TriggeredRead = true;
 }
 
@@ -128,7 +136,15 @@ void RFID_TriggerSingleScan(void)
  */
 void rfid_trigger_multi_read(void)
 {
-  uart_fifo_fill(uart1, "\nU\r", sizeof("\nU\r"));
+  int16_t err = 0;
+  uint16_t i = 0;
+
+  uint8_t tx_buf[] = {"\nU\r"};
+
+  for (i = 0; i < sizeof(tx_buf); i++)
+  {
+    uart_poll_out(uart1, tx_buf[i]);
+  }
   RFID_TriggeredRead = true;
 }
 

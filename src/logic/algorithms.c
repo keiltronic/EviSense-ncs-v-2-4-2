@@ -638,8 +638,9 @@ void algorithm_execute_process(void)
             {
                 if (RFID_IsOn == false)
                 {
-                    // config_RFID();
                     RFID_TurnOn();
+                    config_RFID();
+
                     k_msleep(5);
                     RFID_ScanEnable = true; // Starts sending EPC multitag command to rfid module in given intervall
 

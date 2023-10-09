@@ -63,28 +63,6 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *us
     return;
   }
 
-  //  uint8_t c;
-  //   /* read until FIFO empty */
-  //   while (uart_fifo_read(rfid_module, &c, 1) == 1)
-  //   {
-  //     if ((c == '\n' || c == '\r') && rx_buf_pos > 0)
-  //     {
-  //       /* terminate string */
-  //       rx_buf[rx_buf_pos] = '\0';
-
-  //       /* if queue is full, message is silently dropped */
-  //     //  k_msgq_put(&uart_msgq, &rx_buf, K_NO_WAIT);
-
-  //       /* reset the buffer (it was copied to the msgq) */
-  //       rx_buf_pos = 0;
-  //     }
-  //     else if (rx_buf_pos < (sizeof(rx_buf) - 1))
-  //     {
-  //       rx_buf[rx_buf_pos++] = c;
-  //     }
-  //     /* else: characters beyond buffer size are dropped */
-  //   }
-
   volatile int16_t data_length = 0;
   /* ----------- RX handling --------------------------------------------------------- */
 
