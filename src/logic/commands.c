@@ -1822,88 +1822,88 @@ static int cmd_output_power_lifted(const struct shell *shell, size_t argc, char 
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_write(const struct shell *shell, size_t argc, char **argv)
-// {
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_write(const struct shell *shell, size_t argc, char **argv)
+{
 
-//   enum at_cmd_state at_state;
-//   static char buf[2048];
-//   int16_t err = 0;
+  // enum at_cmd_state at_state;
+  // static char buf[2048];
+  // int16_t err = 0;
 
-//   // List all available AT commands
-//   if (argc == 2)
-//   {
+  // // List all available AT commands
+  // if (argc == 2)
+  // {
 
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sending command: %s\n", argv[1]);
+  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sending command: %s\n", argv[1]);
 
-//     err = at_cmd_write(argv[1], buf, sizeof(buf), &at_state);
-//     if (err < 0)
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "AT command error: %d\n", err);
-//     }
-//     else
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s", buf);
-//     }
-//   }
-//   else
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Invalid modem command");
-//   }
+  //   err = at_cmd_write(argv[1], buf, sizeof(buf), &at_state);
+  //   if (err < 0)
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "AT command error: %d\n", err);
+  //   }
+  //   else
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s", buf);
+  //   }
+  // }
+  // else
+  // {
+  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Invalid modem command");
+  // }
 
-//   return 0;
-// }
+  // return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_initialize(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_initialize(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Starting reset modem NVM values. Please wait.\n");
-//   modem_initial_setup();
-//   return 0;
-// }
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Starting reset modem NVM values. Please wait.\n");
+  modem_initial_setup();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_imei(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_imei(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   /* IMEI number - https://www.imei.info/*/
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "IMEI number: %s", modem.IMEI);
-//   return 0;
-// }
+  /* IMEI number - https://www.imei.info/*/
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "IMEI number: %s", modem.IMEI);
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.modem_verbose == false)
-//   {
-//     Parameter.modem_verbose = true;
-//     shell_print(shell, "Enabled modem verbose mode");
-//   }
-//   else
-//   {
-//     Parameter.modem_verbose = false;
-//     shell_print(shell, "Disabled modem verbose mode");
-//   }
-//   Parameter_PushRAMToFlash();
+  if (Parameter.modem_verbose == false)
+  {
+    Parameter.modem_verbose = true;
+    shell_print(shell, "Enabled modem verbose mode");
+  }
+  else
+  {
+    Parameter.modem_verbose = false;
+    shell_print(shell, "Disabled modem verbose mode");
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1958,428 +1958,428 @@ static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_version(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-//   uint8_t err = 0;
-
-//   enum at_cmd_state at_state;
-//   err = at_cmd_write("AT+CGMR", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
-
-//   if (err)
-//   {
-//     shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
-//     return err;
-//   }
-//   else
-//   {
-//     shell_print(shell, "%s", modem_at_recv_buf);
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_providers(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   shell_warn(shell, "IMPORTANT: This command will block the device and shell until the modem get the result. This task may take severals minutes!");
-
-//   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-//   uint8_t err = 0;
-//   enum at_cmd_state at_state;
-
-//   /* Check connection status */
-//   err = at_cmd_write("AT+COPS=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
-
-//   if (!err)
-//   {
-//     shell_print(shell, "%s", modem_at_recv_buf);
-//   }
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_bands(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-//   uint8_t err = 0;
-//   enum at_cmd_state at_state;
-
-//   /* Check connection status */
-//   err = at_cmd_write("AT%XCBAND=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
-
-//   if (!err)
-//   {
-//     shell_print(shell, "%s", modem_at_recv_buf);
-//   }
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_list_keys(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-//   uint8_t err = 0;
-
-//   enum at_cmd_state at_state;
-//   err = at_cmd_write("AT%CMNG=1", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
-
-//   if (err)
-//   {
-//     shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
-//     return err;
-//   }
-//   else
-//   {
-//     shell_print(shell, "%s", modem_at_recv_buf);
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
-// {
-//   enum lte_lc_func_mode mode;
-//   uint8_t value = 0;
-//   int8_t err = 0;
-
-//   if (argc == 1)
-//   {
-//     err = lte_lc_func_mode_get(&mode);
-//     if (err == 0)
-//     {
-//       switch (mode)
-//       {
-//       case LTE_LC_FUNC_MODE_POWER_OFF:
-//         shell_fprintf(shell, 0, "Modem is powered off (AT+CFUN=0)\n");
-
-//         /* Add event in event array which is send to cloud in next sync interval */
-//         NewEvent0x0C(); // Connection down event
-//         break;
-
-//       case LTE_LC_FUNC_MODE_NORMAL:
-//         shell_fprintf(shell, 0, "Modem is in normal mode (AT+CFUN=1)\n");
-//         break;
-
-//       case LTE_LC_FUNC_MODE_OFFLINE:
-
-//         shell_fprintf(shell, 0, "Modem is offline (AT+CFUN=4)\n");
-
-//         /* Add event in event array which is send to cloud in next sync interval */
-//         NewEvent0x0C(); // Connection down event
-//         break;
-
-//       default:
-//         break;
-//       }
-//     }
-//   }
-//   else
-//   {
-//     value = atoi(argv[1]);
-
-//     if (value == 0)
-//     {
-//       lte_lc_power_off();
-//       shell_fprintf(shell, 0, "Set modem to powered off mode (AT+CFUN=0)\n");
-//     }
-//     else if (value == 1)
-//     {
-//       lte_lc_normal();
-//       shell_fprintf(shell, 0, "Set modem to normal mode (AT+CFUN=1)\n");
-//     }
-//     else if (value == 4)
-//     {
-//       lte_lc_offline();
-//       shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
-//     }
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_connection_type(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     switch (Parameter.network_connection_type)
-//     {
-//     case LTE_M:
-//       shell_print(shell, "Network connection type: LTE-M");
-//       break;
-
-//     case NB_IOT:
-//       shell_print(shell, "Network connection type: NB_IoT");
-//       break;
-
-//     default:
-//       shell_print(shell, "Invalid type set.");
-//       break;
-//     }
-//   }
-//   else
-//   {
-//     switch (atoi(argv[1]))
-//     {
-
-//     case LTE_M:
-
-//       Parameter.network_connection_type = LTE_M;
-
-//       /* Turn modem off */
-//       lte_lc_power_off();
-//       k_msleep(500);
-
-//       /* Set modem to use LTE-M*/
-//       lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
-//       k_msleep(500);
-
-//       /* Turn modem on - it will automatically search for networks*/
-//       lte_lc_normal();
-
-//       shell_print(shell, "Set network connection type to LTE-M");
-//       break;
-
-//     case NB_IOT:
-
-//       Parameter.network_connection_type = NB_IOT;
-//       /* Turn modem off */
-//       lte_lc_power_off();
-//       k_msleep(500);
-
-//       /* Set modem to use LTE-M*/
-//       lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
-//       k_msleep(500);
-
-//       /* Turn modem on - it will automatically search for networks*/
-//       lte_lc_normal();
-
-//       shell_print(shell, "Set network connection type to NB_IoT");
-//       break;
-
-//     default:
-//       shell_print(shell, "Invalid type.");
-//       break;
-//     }
-
-//     shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
-//     Parameter_PushRAMToFlash();
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_add_psk_identity(const struct shell *shell, size_t argc, char **argv)
-// {
-//   nrf_sec_tag_t mytag = PSK_TAG;
-//   char buf[200];
-//   int16_t err = 0;
-//   enum at_cmd_state at_state;
-//   enum lte_lc_func_mode mode;
-
-//   err = lte_lc_func_mode_get(&mode);
-
-//   if (mode == LTE_LC_FUNC_MODE_OFFLINE)
-//   {
-//     /**** WRITE PRE-SHARED KEY IDENTITY ***/
-//     strcpy(buf, argv[1]); // key
-//     err = modem_key_mgmt_write(mytag, MODEM_KEY_MGMT_CRED_TYPE_IDENTITY, buf, strlen(buf));
-//     if (err != 0)
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "key write error: %d\n", err);
-//     }
-//     else
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Added psk identity successfully\n");
-//     }
-//   }
-//   else
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Modem is not offline. Please execute command 'modem mode 4' before\n");
-//   }
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_add_psk_key(const struct shell *shell, size_t argc, char **argv)
-// {
-//   nrf_sec_tag_t mytag = PSK_TAG;
-//   char buf[100];
-//   int16_t err = 0;
-//   enum at_cmd_state at_state;
-//   enum lte_lc_func_mode mode;
-
-//   err = lte_lc_func_mode_get(&mode);
-
-//   if (mode == LTE_LC_FUNC_MODE_OFFLINE)
-//   {
-//     /**** WRITE PRE-SHARED KEY ***/
-//     convert_ASCII_text_in_hexadecimal_string(buf, argv[1]);
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\n%s\n", buf);
-
-//     err = modem_key_mgmt_write(mytag, MODEM_KEY_MGMT_CRED_TYPE_PSK, buf, strlen(buf));
-//     if (err != 0)
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "key write error: %d\n", err);
-//     }
-//     else
-//     {
-//       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Added pre shared key successfully\n");
-//     }
-//   }
-//   else
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Modem is not offline. Please execute command 'modem mode 4' before\n");
-//   }
-
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_settings(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   modem_print_settings();
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_rssi(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   if (modem.connection_stat == true)
-//   {
-//     shell_fprintf(shell, 0, "RSSI: %ddBm\n", get_signal_strength());
-//   }
-//   else
-//   {
-//     shell_fprintf(shell, 0, "LTE not connected\n");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   int16_t err = 0;
-//   enum lte_lc_nw_reg_status status;
-//   enum lte_lc_func_mode mode;
-
-//   err = lte_lc_func_mode_get(&mode);
-
-//   if (err == 0)
-//   {
-//     switch (mode)
-//     {
-
-//     case LTE_LC_FUNC_MODE_POWER_OFF:
-//       shell_fprintf(shell, 0, "Modem powered off (AT+CFUN=0)\n");
-//       break;
-
-//     case LTE_LC_FUNC_MODE_NORMAL:
-//       shell_fprintf(shell, 0, "Modem normal mode (AT+CFUN=1)\n");
-//       break;
-
-//     case LTE_LC_FUNC_MODE_OFFLINE:
-//       shell_fprintf(shell, 0, "Modem offline (AT+CFUN=4)\n");
-//       break;
-
-//     default:
-//       break;
-//     }
-//   }
-
-//   err = lte_lc_nw_reg_status_get(&status);
-
-//   if (err == 0)
-//   {
-//     switch (status)
-//     {
-
-//     case LTE_LC_NW_REG_NOT_REGISTERED:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_NOT_REGISTERED\n");
-//       break;
-
-//     case LTE_LC_NW_REG_REGISTERED_HOME:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_HOME\n");
-//       break;
-
-//     case LTE_LC_NW_REG_SEARCHING:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_SEARCHING\n");
-//       break;
-
-//     case LTE_LC_NW_REG_REGISTRATION_DENIED:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTRATION_DENIED\n");
-//       break;
-
-//     case LTE_LC_NW_REG_UNKNOWN:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UNKNOWN\n");
-//       break;
-
-//     case LTE_LC_NW_REG_REGISTERED_ROAMING:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
-//       break;
-
-//     case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
-//       break;
-
-//     case LTE_LC_NW_REG_UICC_FAIL:
-//       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UICC_FAIL\n");
-//       break;
-
-//     default:
-//       break;
-//     }
-//   }
-//   else
-//   {
-//     printk("ERROR: %d. Could not read network registration status.\n", err);
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_version(const struct shell *shell, size_t argc, char **argv)
+{
+  // ARG_UNUSED(argc);
+  // ARG_UNUSED(argv);
+
+  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  // uint8_t err = 0;
+
+  // enum at_cmd_state at_state;
+  // err = at_cmd_write("AT+CGMR", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+
+  // if (err)
+  // {
+  //   shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
+  //   return err;
+  // }
+  // else
+  // {
+  //   shell_print(shell, "%s", modem_at_recv_buf);
+  // }
+  // return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_providers(const struct shell *shell, size_t argc, char **argv)
+{
+  // ARG_UNUSED(argc);
+  // ARG_UNUSED(argv);
+
+  // shell_warn(shell, "IMPORTANT: This command will block the device and shell until the modem get the result. This task may take severals minutes!");
+
+  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  // uint8_t err = 0;
+  // enum at_cmd_state at_state;
+
+  // /* Check connection status */
+  // err = at_cmd_write("AT+COPS=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+
+  // if (!err)
+  // {
+  //   shell_print(shell, "%s", modem_at_recv_buf);
+  // }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_bands(const struct shell *shell, size_t argc, char **argv)
+{
+  // ARG_UNUSED(argc);
+  // ARG_UNUSED(argv);
+
+  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  // uint8_t err = 0;
+  // enum at_cmd_state at_state;
+
+  // /* Check connection status */
+  // err = at_cmd_write("AT%XCBAND=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+
+  // if (!err)
+  // {
+  //   shell_print(shell, "%s", modem_at_recv_buf);
+  // }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_list_keys(const struct shell *shell, size_t argc, char **argv)
+{
+  // ARG_UNUSED(argc);
+  // ARG_UNUSED(argv);
+
+  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  // uint8_t err = 0;
+
+  // enum at_cmd_state at_state;
+  // err = at_cmd_write("AT%CMNG=1", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+
+  // if (err)
+  // {
+  //   shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
+  //   return err;
+  // }
+  // else
+  // {
+  //   shell_print(shell, "%s", modem_at_recv_buf);
+  // }
+  // return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
+{
+  // enum lte_lc_func_mode mode;
+  // uint8_t value = 0;
+  // int8_t err = 0;
+
+  // if (argc == 1)
+  // {
+  //   err = lte_lc_func_mode_get(&mode);
+  //   if (err == 0)
+  //   {
+  //     switch (mode)
+  //     {
+  //     case LTE_LC_FUNC_MODE_POWER_OFF:
+  //       shell_fprintf(shell, 0, "Modem is powered off (AT+CFUN=0)\n");
+
+  //       /* Add event in event array which is send to cloud in next sync interval */
+  //       NewEvent0x0C(); // Connection down event
+  //       break;
+
+  //     case LTE_LC_FUNC_MODE_NORMAL:
+  //       shell_fprintf(shell, 0, "Modem is in normal mode (AT+CFUN=1)\n");
+  //       break;
+
+  //     case LTE_LC_FUNC_MODE_OFFLINE:
+
+  //       shell_fprintf(shell, 0, "Modem is offline (AT+CFUN=4)\n");
+
+  //       /* Add event in event array which is send to cloud in next sync interval */
+  //       NewEvent0x0C(); // Connection down event
+  //       break;
+
+  //     default:
+  //       break;
+  //     }
+  //   }
+  // }
+  // else
+  // {
+  //   value = atoi(argv[1]);
+
+  //   if (value == 0)
+  //   {
+  //     lte_lc_power_off();
+  //     shell_fprintf(shell, 0, "Set modem to powered off mode (AT+CFUN=0)\n");
+  //   }
+  //   else if (value == 1)
+  //   {
+  //     lte_lc_normal();
+  //     shell_fprintf(shell, 0, "Set modem to normal mode (AT+CFUN=1)\n");
+  //   }
+  //   else if (value == 4)
+  //   {
+  //     lte_lc_offline();
+  //     shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
+  //   }
+  // }
+  // return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_connection_type(const struct shell *shell, size_t argc, char **argv)
+{
+  // if (argc == 1)
+  // {
+  //   switch (Parameter.network_connection_type)
+  //   {
+  //   case LTE_M:
+  //     shell_print(shell, "Network connection type: LTE-M");
+  //     break;
+
+  //   case NB_IOT:
+  //     shell_print(shell, "Network connection type: NB_IoT");
+  //     break;
+
+  //   default:
+  //     shell_print(shell, "Invalid type set.");
+  //     break;
+  //   }
+  // }
+  // else
+  // {
+  //   switch (atoi(argv[1]))
+  //   {
+
+  //   case LTE_M:
+
+  //     Parameter.network_connection_type = LTE_M;
+
+  //     /* Turn modem off */
+  //     lte_lc_power_off();
+  //     k_msleep(500);
+
+  //     /* Set modem to use LTE-M*/
+  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+  //     k_msleep(500);
+
+  //     /* Turn modem on - it will automatically search for networks*/
+  //     lte_lc_normal();
+
+  //     shell_print(shell, "Set network connection type to LTE-M");
+  //     break;
+
+  //   case NB_IOT:
+
+  //     Parameter.network_connection_type = NB_IOT;
+  //     /* Turn modem off */
+  //     lte_lc_power_off();
+  //     k_msleep(500);
+
+  //     /* Set modem to use LTE-M*/
+  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+  //     k_msleep(500);
+
+  //     /* Turn modem on - it will automatically search for networks*/
+  //     lte_lc_normal();
+
+  //     shell_print(shell, "Set network connection type to NB_IoT");
+  //     break;
+
+  //   default:
+  //     shell_print(shell, "Invalid type.");
+  //     break;
+  //   }
+
+  //   shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
+  //   Parameter_PushRAMToFlash();
+  // }
+  // return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_add_psk_identity(const struct shell *shell, size_t argc, char **argv)
+{
+  // nrf_sec_tag_t mytag = PSK_TAG;
+  // char buf[200];
+  // int16_t err = 0;
+  // enum at_cmd_state at_state;
+  // enum lte_lc_func_mode mode;
+
+  // err = lte_lc_func_mode_get(&mode);
+
+  // if (mode == LTE_LC_FUNC_MODE_OFFLINE)
+  // {
+  //   /**** WRITE PRE-SHARED KEY IDENTITY ***/
+  //   strcpy(buf, argv[1]); // key
+  //   err = modem_key_mgmt_write(mytag, MODEM_KEY_MGMT_CRED_TYPE_IDENTITY, buf, strlen(buf));
+  //   if (err != 0)
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "key write error: %d\n", err);
+  //   }
+  //   else
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Added psk identity successfully\n");
+  //   }
+  // }
+  // else
+  // {
+  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Modem is not offline. Please execute command 'modem mode 4' before\n");
+  // }
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_add_psk_key(const struct shell *shell, size_t argc, char **argv)
+{
+  // nrf_sec_tag_t mytag = PSK_TAG;
+  // char buf[100];
+  // int16_t err = 0;
+  // enum at_cmd_state at_state;
+  // enum lte_lc_func_mode mode;
+
+  // err = lte_lc_func_mode_get(&mode);
+
+  // if (mode == LTE_LC_FUNC_MODE_OFFLINE)
+  // {
+  //   /**** WRITE PRE-SHARED KEY ***/
+  //   convert_ASCII_text_in_hexadecimal_string(buf, argv[1]);
+  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\n%s\n", buf);
+
+  //   err = modem_key_mgmt_write(mytag, MODEM_KEY_MGMT_CRED_TYPE_PSK, buf, strlen(buf));
+  //   if (err != 0)
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "key write error: %d\n", err);
+  //   }
+  //   else
+  //   {
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Added pre shared key successfully\n");
+  //   }
+  // }
+  // else
+  // {
+  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Modem is not offline. Please execute command 'modem mode 4' before\n");
+  // }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_settings(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  modem_print_settings();
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_rssi(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  if (modem.connection_stat == true)
+  {
+    shell_fprintf(shell, 0, "RSSI: %ddBm\n", get_signal_strength());
+  }
+  else
+  {
+    shell_fprintf(shell, 0, "LTE not connected\n");
+  }
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
+{
+  // ARG_UNUSED(argc);
+  // ARG_UNUSED(argv);
+
+   int16_t err = 0;
+  // enum lte_lc_nw_reg_status status;
+  // enum lte_lc_func_mode mode;
+
+  // err = lte_lc_func_mode_get(&mode);
+
+  if (err == 0)
+  {
+    // switch (mode)
+    // {
+
+    // case LTE_LC_FUNC_MODE_POWER_OFF:
+    //   shell_fprintf(shell, 0, "Modem powered off (AT+CFUN=0)\n");
+    //   break;
+
+    // case LTE_LC_FUNC_MODE_NORMAL:
+    //   shell_fprintf(shell, 0, "Modem normal mode (AT+CFUN=1)\n");
+    //   break;
+
+    // case LTE_LC_FUNC_MODE_OFFLINE:
+    //   shell_fprintf(shell, 0, "Modem offline (AT+CFUN=4)\n");
+    //   break;
+
+    // default:
+    //   break;
+    // }
+  }
+
+ // err = lte_lc_nw_reg_status_get(&status);
+
+  if (err == 0)
+  {
+    // switch (status)
+    // {
+
+    // case LTE_LC_NW_REG_NOT_REGISTERED:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_NOT_REGISTERED\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_REGISTERED_HOME:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_HOME\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_SEARCHING:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_SEARCHING\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_REGISTRATION_DENIED:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTRATION_DENIED\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_UNKNOWN:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UNKNOWN\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_REGISTERED_ROAMING:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
+    //   break;
+
+    // case LTE_LC_NW_REG_UICC_FAIL:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UICC_FAIL\n");
+    //   break;
+
+    // default:
+    //   break;
+    //  }
+  }
+  else
+  {
+    printk("ERROR: %d. Could not read network registration status.\n", err);
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -4402,25 +4402,25 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(battery, &battery, "Command set to control and read out battery data", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(modem,
-  //                                  SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
-  //                                  SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
-  //                                  SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
-  //                                  SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
-  //                                  SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
-  //                                  SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
-  //                                  SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
-  //                                  SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
-  //                                  SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
-  //                                  SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
-  //                                  SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
-  //                                  SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
-  //                                  SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
-  //                                  SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
-  //                                  SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
+    SHELL_STATIC_SUBCMD_SET_CREATE(modem,
+                                   SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
+                                   SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
+                                   SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
+                                   SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
+                                   SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
+                                   SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
+                                   SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
+                                   SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
+                                   SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
+                                   SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
+                                   SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
+                                   SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
+                                   SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
+                                   SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
+                                   SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
+                                   SHELL_SUBCMD_SET_END /* Array terminated. */
+    );
+    SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
 
   //   SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
   //                                  SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),

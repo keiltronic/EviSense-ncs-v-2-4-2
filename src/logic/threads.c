@@ -427,17 +427,17 @@ void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-    //   if (datalog_ReadOutisActive == false)
-    //   {
-    //     /* Read date and time */
-    //     // if (modem.connection_stat == true)
-    //     // {
-    //     //   if (time_update_done == 1)
-    //     //   {
-    //     //     time_update_done = rtc_fetch_date_time();
-    //     //   }
-    //     // }
-    //   }
+      if (datalog_ReadOutisActive == false)
+      {
+        /* Read date and time */
+         if (modem.connection_stat == true)
+         {
+            //if (time_update_done == 1)
+         //   {
+         //     time_update_done = rtc_fetch_date_time();
+          //  }
+         }
+       }
     k_msleep(1000);
   }
 }

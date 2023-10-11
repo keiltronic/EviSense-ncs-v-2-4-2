@@ -60,7 +60,7 @@
 #include <time.h>
 #include <zephyr/kernel.h>
 #include <zephyr/shell/shell.h>
-// #include "algorithms.h"
+#include "algorithms.h"
 // #include "battery_gauge.h"
 // #include "cloud.h"
 // #include "coap.h"
@@ -71,9 +71,9 @@
 #include "gpio.h"
 #include "i2c.h"
 #include "led.h"
-// #include "modem.h"
+#include "modem.h"
 // #include "notification.h"
-// #include "parameter_mem.h"
+#include "parameter_mem.h"
 // #include "pwm.h"
 // #include "rfid.h"
 #include "rtc.h"
@@ -100,6 +100,9 @@ void ValidateParameterInExernalFlash(void)
 	epc_mem_init();
 	notification_init();
 	notification_init_action_matrix();
+
+	/* Init modem */
+	modem_init();
 
 	/* Fetch modem version */
 	// modem_update_information();
