@@ -193,10 +193,11 @@ void battery_gauge_CheckLowBat(void)
       Notification.next_state = NOTIFICATION_LOWBAT;
 
       /* Disable the 5V booster and enable it again if the voltage goes above the threshold voltage */
-  //    imu_enter_sleep();
-  //    rfid_power_off();
- //     lte_lc_offline(); // Send "AT+CFUN=4"
+      imu_enter_sleep();
+      rfid_power_off();
+     // lte_lc_offline(); // Send "AT+CFUN=4"
                         //   bsd_shutdown();     // Method to gracefully shutdown the BSD library.
+                        nrf_modem_lib_shutdown();
 
       System.StatusOutputs |= STATUSFLAG_LB;
 
@@ -216,16 +217,16 @@ void battery_gauge_CheckLowBat(void)
       }
 
       /* Power on IMU and rfid module */
-  //    RFID_PowerOn();
+      RFID_PowerOn();
       imu_init();
 
       /* Reset cellular connection flags */
-    //  modem.connection_stat = false;
-   //   modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
-  //    modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
+      modem.connection_stat = false;
+      modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
+      modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
 
       /* Turn modem on - it will automatically search for networks*/
-  //    lte_lc_normal();
+      lte_lc_normal();
     }
   }
 }

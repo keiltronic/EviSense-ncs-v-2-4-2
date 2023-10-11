@@ -42,5 +42,6 @@ void enter_hibernate(void)
 
   //  lte_lc_power_off();               // Send "AT+CFUN=0"
    // bsd_shutdown();                   // Method to gracefully shutdown the BSD library.
+   nrf_modem_lib_shutdown();
     NRF_REGULATORS_NS->SYSTEMOFF = 1; // https://devzone.nordicsemi.com/f/nordic-q-a/47881/how-to-put-nrf9160-dk-in-deep-sleep-mode
 }

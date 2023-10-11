@@ -22,7 +22,7 @@ void USB_PluggedIn(void)
   RFID_TurnOff();
   if ((Total_mops_used >= 1) && (mopping_coverage_per_mop > 1.0))
   {
-     NewEvent0x1C(current_room_to_mop_mapping.current_mop_id, mopping_coverage_side1, mopping_coverage_side2);
+    NewEvent0x1C(current_room_to_mop_mapping.current_mop_id, mopping_coverage_side1, mopping_coverage_side2);
   }
 
   /* Add event in event array which is send to cloud in next sync interval */
@@ -39,7 +39,7 @@ void USB_PluggedIn(void)
   motion_state[0] = IDLE_STATE;
 
   /* Force logic to send data immediately */
- // coap_last_transmission_timer = Parameter.cloud_sync_interval_idle + Parameter.cloud_sync_interval_moving;
+  // coap_last_transmission_timer = Parameter.cloud_sync_interval_idle + Parameter.cloud_sync_interval_moving;
 
   Device_PushRAMToFlash(); // store operating time
 }
@@ -65,10 +65,10 @@ void USB_Unplugged(void)
   /* Clear list of last seen mobs */
   Mop_ClearLastSeenArray();
 
-//   if (aws_fota_process_state != AWS_FOTA_PROCESS_IDLE)
-//   {
-//     aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
-//   }
+  //   if (aws_fota_process_state != AWS_FOTA_PROCESS_IDLE)
+  //   {
+  //     aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
+  //   }
 
   Device_PushRAMToFlash(); // store operating time
 
@@ -121,7 +121,8 @@ void USB_CheckConnectionStatus(void)
 
       /* Do a hard reboot */
       Device_PushRAMToFlash();
-      lte_lc_power_off();
+      // lte_lc_power_off();
+      nrf_modem_lib_shutdown();
 
       k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
       gpio_pin_set_dt(&reset_switch, 1);
@@ -138,10 +139,10 @@ void USB_CheckConnectionStatus(void)
 
       /* Do a hard reboot */
       Device_PushRAMToFlash();
-   //   lte_lc_power_off();
+      lte_lc_power_off();
 
       k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
-     gpio_pin_set_dt(&reset_switch, 1);
+      gpio_pin_set_dt(&reset_switch, 1);
     }
   }
 

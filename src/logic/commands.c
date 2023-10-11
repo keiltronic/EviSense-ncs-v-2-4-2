@@ -76,7 +76,7 @@ static int cmd_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
-  // lte_lc_power_off();
+   nrf_modem_lib_shutdown();
   sys_reboot(0);
   return 0;
 }
@@ -90,7 +90,7 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
-  //  lte_lc_power_off();
+    lte_lc_power_off();
   gpio_pin_set_dt(&reset_switch, 1);
 
   return 0;
@@ -3761,7 +3761,7 @@ static int cmd_modem_disable(const struct shell *shell, size_t argc, char **argv
 
     if (Parameter.modem_disable == true)
     { /* Turn modem off */
-      //      lte_lc_power_off();
+      lte_lc_power_off();
       k_msleep(500);
     }
     else

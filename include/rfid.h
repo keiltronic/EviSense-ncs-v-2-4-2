@@ -97,6 +97,7 @@ extern struct gpio_dt_spec rfid_trigger_pin;
 /* Functions */
 extern void config_RFID(void);extern void RFID_TriggerSingleScan(void);
 extern void rfid_trigger_multi_read(void);
+extern void rfid_init(void);
 extern void RFID_TurnOff(void);
 extern void RFID_TurnOn(void);
 

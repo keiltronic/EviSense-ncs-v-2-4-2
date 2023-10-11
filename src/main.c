@@ -81,6 +81,7 @@
 #include "system_mem.h"
 #include "threads.h"
 #include "uart.h"
+#include "rfid.h"
 // #include "usb.h"
 // #include "aws_fota.h"
 // #include "test.h"
@@ -272,17 +273,19 @@ void main(void)
 	uint32_t reset_reason = 0;
 	int16_t err = 0;
 
+	/* Init some variables */
+	modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
+	modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
+
+	/* Init functions */
 	hard_reset_init();
 	dev_led_init();
 	button_init();
+	init_rtc();
 	gpio_pin_set_dt(&dev_led, 1); // Enable blue dev led while booting
 	rfid_init();
 	rfid_power_on();
-
 	Event_ClearArray();
-
-	// // at_cmd_init();
-	init_rtc();
 
 	k_msleep(50);
 
@@ -372,20 +375,20 @@ void main(void)
 	wdt_reset();
 	ValidateParameterInExernalFlash();
 
-	// /* Init propritary driver  which depents on loaded parameters*/
+	/* Init propritary driver  which depents on loaded parameters*/
 	battery_gauge_init();
 	rgb_led_init();
 	imu_init();
 	command_init();
-	// init_algorithms();
+//	init_algorithms();
 	wdt_reset();
 
 	/* Create power on event*/
 	NewEvent0x13();
 
-	// /* All initializations were successful mark image as working so that we
-	//  * will not revert upon reboot.
-	//  */
+	/* All initializations were successful mark image as working so that we
+	 * will not revert upon reboot.
+	 */
 	// err = boot_write_img_confirmed();
 
 	// if (err < 0)
@@ -396,18 +399,14 @@ void main(void)
 	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: boot_write_img not confirmed err %d\n", err);
 	// }
 
-	// /* Init some variables */
-	// modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
-	// modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
-
-	// /* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
-	// wdt_reset();
+	/* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
+	wdt_reset();
 	init_threads();
 
-	// k_msleep(100);
+	k_msleep(100);
 
-	// /* Allow FOTA connection to server only after reboot and if USB is connected (charging)*/
-	// wdt_reset();
+	/* Allow FOTA connection to server only after reboot and if USB is connected (charging)*/
+	wdt_reset();
 	// if (System.charger_connected == true)
 	// {
 	// 	fota_reboot_while_usb_connected = true;
@@ -431,6 +430,7 @@ void main(void)
 
 	/* Set "device on frame" detection */
 	k_msleep(100);
+
 	if (Parameter.algocontrol_bymag_det == 0)
 	{
 		rtc_print_debug_timestamp();

@@ -28,61 +28,61 @@ uint8_t i2c_ok = false;
 
 uint8_t test_pcb(void)
 {
-//     pcb_test_is_running = true;
-//     char device_imei[16];
-//     char iccid[50];
-//     uint16_t len = 0;
+    pcb_test_is_running = true;
+    char device_imei[16];
+    char iccid[50];
+    uint16_t len = 0;
 
-//     memset(device_imei, 0, sizeof(device_imei));
-//     strncpy(device_imei, modem.IMEI, 15);
+    memset(device_imei, 0, sizeof(device_imei));
+    strncpy(device_imei, modem.IMEI, 15);
 
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "\n\n=======================================\nRoH PCB Check is starting...\n\n"); // green
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Check connectivity: ");                                                          // blue
-//     modem_update_information();
-//     k_msleep(100);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "\n\n=======================================\nRoH PCB Check is starting...\n\n"); // green
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Check connectivity: ");                                                          // blue
+    modem_update_information();
+    k_msleep(100);
 
-//     if (modem.registration_status[0] == LTE_LC_NW_REG_UICC_FAIL)
-//     {
-//         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "No sim card detected.\n");
-//         sim_ok = false;
-//     }
-//     else
-//     {
-//         sim_ok = true;
+    if (modem.registration_status[0] == LTE_LC_NW_REG_UICC_FAIL)
+    {
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "No sim card detected.\n");
+        sim_ok = false;
+    }
+    else
+    {
+        sim_ok = true;
 
-//         if (modem.connection_stat == true)
-//         {
-//             memset(iccid, 0, sizeof(iccid));
-//             len = strlen(modem.UICCID);
-//             strncpy(iccid, modem.UICCID, (len - 3)); // this removes \r and \n at the end of modem.UICCID
+        if (modem.connection_stat == true)
+        {
+            memset(iccid, 0, sizeof(iccid));
+            len = strlen(modem.UICCID);
+            strncpy(iccid, modem.UICCID, (len - 3)); // this removes \r and \n at the end of modem.UICCID
 
-//             if (modem.RSSI > 0)
-//             {
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Can not connect to the network, RSSI:%d dBm, IMEI:\t%s\n", modem.RSSI, modem.IMEI);
-//             }
-//             else
-//             {
-//                 uint8_t testc = 0;
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Connected to network successfully, RSSI:%d dBm, IMEI:\t%s\n", modem.RSSI, device_imei);
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\tRSSI:\t");
+            if (modem.RSSI > 0)
+            {
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Can not connect to the network, RSSI:%d dBm, IMEI:\t%s\n", modem.RSSI, modem.IMEI);
+            }
+            else
+            {
+                uint8_t testc = 0;
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Connected to network successfully, RSSI:%d dBm, IMEI:\t%s\n", modem.RSSI, device_imei);
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\tRSSI:\t");
 
-//                 connectivity_ok = true;
+                connectivity_ok = true;
 
-//                 for (testc = 0; testc < 5; testc++)
-//                 {
-//                     modem_update_information();
-//                     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\t", modem.RSSI);
-//                     k_msleep(1000);
-//                 }
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\n");
-//             }
-//         }
-//         else
-//         {
-//             connectivity_ok = false;
-//             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "No connection established. If this problem persists, check if the sim card is activated and if the antenna circuit is working.\n");
-//         }
-//     }
+                for (testc = 0; testc < 5; testc++)
+                {
+                    modem_update_information();
+                    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d dBm\t", modem.RSSI);
+                    k_msleep(1000);
+                }
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "\n");
+            }
+        }
+        else
+        {
+            connectivity_ok = false;
+            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "No connection established. If this problem persists, check if the sim card is activated and if the antenna circuit is working.\n");
+        }
+    }
 
 //     ///////////////////////////////////
 //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Check Buzzer and LEDs: "); // blue

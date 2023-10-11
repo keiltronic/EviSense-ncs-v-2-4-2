@@ -20,6 +20,7 @@
 //#include <net/socket.h>
 #include <modem/lte_lc.h>
 //#include <modem/at_cmd.h>
+#include <nrf_modem_at.h>
 #include <modem/at_cmd_parser.h>
 #include "events.h"
 #include "rtc.h"
@@ -45,7 +46,7 @@ typedef struct
   uint8_t band;
   uint8_t temp;
   char version[20]; // modem firmware version
-  int16_t registration_status[2];
+  enum lte_lc_nw_reg_status registration_status[2];
 } MODEM;
 
 extern MODEM modem;

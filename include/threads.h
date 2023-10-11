@@ -28,6 +28,7 @@
 #include "cloud.h"
 #include "test.h"
 #include "hibernate.h"
+#include "buttons.h"
 
 /* size of stack area used by each thread */
 #define STACKSIZE_LARGE 3072

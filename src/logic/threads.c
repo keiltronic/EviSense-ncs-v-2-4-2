@@ -397,9 +397,9 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-    // if (datalog_ReadOutisActive == false)
-    // {
-    //  // USB_CheckConnectionStatus();
+     if (datalog_ReadOutisActive == false)
+     {
+       USB_CheckConnectionStatus();
     //   battery_gauge_UpdateData();
 
     //   if (battery_charge_status_delay == 0)
@@ -412,7 +412,7 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
     //     battery_charge_status_delay--;
     //   }
     //   battery_gauge_CheckLowBat();
-    // }
+     }
     k_msleep(100);
   }
 }
@@ -427,17 +427,17 @@ void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-      if (datalog_ReadOutisActive == false)
+    if (datalog_ReadOutisActive == false)
+    {
+      /* Read date and time */
+      if (modem.connection_stat == true)
       {
-        /* Read date and time */
-         if (modem.connection_stat == true)
-         {
-            //if (time_update_done == 1)
-         //   {
-         //     time_update_done = rtc_fetch_date_time();
-          //  }
-         }
-       }
+        // if (time_update_done == 1)
+        //   {
+        //     time_update_done = rtc_fetch_date_time();
+        //  }
+      }
+    }
     k_msleep(1000);
   }
 }
@@ -448,122 +448,122 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
   ARG_UNUSED(dummy2);
   ARG_UNUSED(dummy3);
 
-  // int16_t err = 0;
+  int16_t err = 0;
 
-  // /* Turn modem off */
-  // lte_lc_power_off();
-  // k_msleep(500);
+  /* Turn modem off */
+  lte_lc_power_off();
+  k_msleep(500);
 
-  // // if (Parameter.modem_disable == false)
-  // // {
-  // //   /* Configure modem to use either LTE-M or NB-IoT */
-  // //   if (Parameter.network_connection_type == NB_IOT)
-  // //   {
-  // //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+  if (Parameter.modem_disable == false)
+  {
+    /* Configure modem to use either LTE-M or NB-IoT */
+    if (Parameter.network_connection_type == NB_IOT)
+    {
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
 
-  // //     rtc_print_debug_timestamp();
-  // //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
 
-  // //     if (err)
-  // //     {
-  // //       rtc_print_debug_timestamp();
-  // //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
-  // //     }
-  // //   }
-  // //   else
-  // //   {
-  // //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+      if (err)
+      {
+        rtc_print_debug_timestamp();
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
+      }
+    }
+    else
+    {
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
 
-  // //     if (err)
-  // //     {
-  // //       rtc_print_debug_timestamp();
-  // //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
-  // //     }
-  // //   }
-  // //   k_msleep(100);
+      if (err)
+      {
+        rtc_print_debug_timestamp();
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+      }
+    }
+    k_msleep(100);
 
-  // //   /* Turn modem on - it will automatically search for networks*/
-  // //   lte_lc_normal();
-  // // }
+    /* Turn modem on - it will automatically search for networks*/
+    lte_lc_normal();
+  }
 
-  // while (1)
-  // {
-  //   // /* Update registration status */
-  //   // if (Parameter.modem_disable == false)
-  //   // {
-  //   //   modem_update_registration_status(); // This function needs 1sec to execute
+  while (1)
+  {
+    /* Update registration status */
+    if (Parameter.modem_disable == false)
+    {
+      modem_update_registration_status(); // This function needs 1sec to execute
 
-  //   //   ///////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
+      //   //   ///////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
-  //   //   /* Send CoAP messages if cloud connection can be establised and device is in IDLE or MOVING state (while MOPPING no data gets send, credentials gets testet in cloud_init function) */
-  //   //   if (initial_time_update == true && modem.connection_stat == true && event_simulation_in_progress == false)
-  //   //   {
-  //   //     System.StatusOutputs |= STATUSFLAG_IC;
+      //   //   /* Send CoAP messages if cloud connection can be establised and device is in IDLE or MOVING state (while MOPPING no data gets send, credentials gets testet in cloud_init function) */
+      //   //   if (initial_time_update == true && modem.connection_stat == true && event_simulation_in_progress == false)
+      //   //   {
+      //   //     System.StatusOutputs |= STATUSFLAG_IC;
 
-  //   //     if ((motion_state[0] == MOVING_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_moving))
-  //   //     {
-  //   //       cloud_SendUsageUpdateObject();
-  //   //     }
-  //   //     else if ((motion_state[0] == IDLE_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_idle))
-  //   //     {
-  //   //       cloud_SendUsageUpdateObject();
-  //   //     }
-  //   //   }
-  //   //   else
-  //   //   {
-  //   //     System.StatusOutputs &= ~STATUSFLAG_IC;
-  //   //     coap_last_transmission_timer = 0;
-  //   //   }
+      //   //     if ((motion_state[0] == MOVING_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_moving))
+      //   //     {
+      //   //       cloud_SendUsageUpdateObject();
+      //   //     }
+      //   //     else if ((motion_state[0] == IDLE_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_idle))
+      //   //     {
+      //   //       cloud_SendUsageUpdateObject();
+      //   //     }
+      //   //   }
+      //   //   else
+      //   //   {
+      //   //     System.StatusOutputs &= ~STATUSFLAG_IC;
+      //   //     coap_last_transmission_timer = 0;
+      //   //   }
 
-  //   //   /* Manually send the current protobuf if triggered */
-  //   //   if ((modem.connection_stat == true) && (trigger_tx == true))
-  //   //   {
-  //   //     cloud_SendUsageUpdateObject();
-  //   //     trigger_tx = false;
-  //   //   }
+      //   //   /* Manually send the current protobuf if triggered */
+      //   //   if ((modem.connection_stat == true) && (trigger_tx == true))
+      //   //   {
+      //   //     cloud_SendUsageUpdateObject();
+      //   //     trigger_tx = false;
+      //   //   }
 
-  //   //   /* Connection to FOTA server should be only active for time x after the device was reboot while USB plugged in. */
-  //   //   if (fota_is_connected == true)
-  //   //   {
-  //   //     if ((fota_connection_timer == 0) && (fota_download_in_progress == false))
-  //   //     {
-  //   //       aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
-  //   //       fota_connection_timer = FOTA_CONNECTION_DURATION;
-  //   //       fota_is_connected = false;
-  //   //       fota_reboot_while_usb_connected = false;
+      //   //   /* Connection to FOTA server should be only active for time x after the device was reboot while USB plugged in. */
+      //   //   if (fota_is_connected == true)
+      //   //   {
+      //   //     if ((fota_connection_timer == 0) && (fota_download_in_progress == false))
+      //   //     {
+      //   //       aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
+      //   //       fota_connection_timer = FOTA_CONNECTION_DURATION;
+      //   //       fota_is_connected = false;
+      //   //       fota_reboot_while_usb_connected = false;
 
-  //   //       if (pcb_test_is_running == false)
-  //   //       {
-  //   //         rtc_print_debug_timestamp();
-  //   //         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Automatically disconneced FOTA service from server %d sec after boot\n", FOTA_CONNECTION_DURATION);
-  //   //       }
-  //   //     }
-  //   //     else
-  //   //     {
-  //   //       fota_connection_timer--;
-  //   //     }
-  //   //   }
-  //   //   else
-  //   //   {
-  //   //     fota_connection_timer = FOTA_CONNECTION_DURATION;
-  //   //   }
-  //   // }
-  //   k_msleep(1);
-  // }
+      //   //       if (pcb_test_is_running == false)
+      //   //       {
+      //   //         rtc_print_debug_timestamp();
+      //   //         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Automatically disconneced FOTA service from server %d sec after boot\n", FOTA_CONNECTION_DURATION);
+      //   //       }
+      //   //     }
+      //   //     else
+      //   //     {
+      //   //       fota_connection_timer--;
+      //   //     }
+      //   //   }
+      //   //   else
+      //   //   {
+      //   //     fota_connection_timer = FOTA_CONNECTION_DURATION;
+      //   //   }
+    }
+    k_msleep(1);
+  }
 }
 
 void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-    /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
-    /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
+  /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
+  /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
 
-    while (1)
-    {
-      /* Update FOTA process state machine*/
-      //aws_fota_statemachine();
+  while (1)
+  {
+    /* Update FOTA process state machine*/
+    // aws_fota_statemachine();
 
-      k_msleep(100);
-    }
+    k_msleep(100);
+  }
 }
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)

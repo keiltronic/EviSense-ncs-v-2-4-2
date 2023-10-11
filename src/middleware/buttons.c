@@ -125,7 +125,7 @@ void button_monitor(void)
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Device hard reboot via user button\n");
     Device_PushRAMToFlash();
     Notification.next_state = NOTIFICATION_HIBERNATE;
-    // lte_lc_power_off();
+    lte_lc_power_off();
     
     k_msleep(1000); // Delay the reboot to give the system enough time to o<uput the debug message on console
 
