@@ -48,7 +48,13 @@ void modem_initial_setup(void)
    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Starting initializing modem parameter, this takes a couple of seconds...\n");
 
    /* Set modem to flight mode */
-   lte_lc_offline();
+   // lte_lc_offline();
+   err = nrf_modem_at_printf("AT+CFUN=4");
+   if (err)
+   {
+      printk("AT+CFUN=4 failed\n");
+      return;
+   }
    k_msleep(500);
 
    /* Set pcb band filter information (R, L, C) */
@@ -98,11 +104,24 @@ void modem_initial_setup(void)
    k_msleep(100);
 
    /* Turn modem off to store configuration in its nonvolile memory */
-   lte_lc_power_off();
+   // lte_lc_power_off();
+   err = nrf_modem_at_printf("AT+CFUN=0");
+   if (err)
+   {
+      printk("AT+CFUN=0 failed\n");
+      return;
+   }
    k_msleep(500);
 
+   err = nrf_modem_at_printf("AT+CFUN=1");
+   if (err)
+   {
+      printk("AT+CFUN=1 failed\n");
+      return;
+   }
+
    /* Turn modem on - it will automatically search for networks*/
-   lte_lc_normal();
+   // lte_lc_normal();
 }
 
 const char *modem_get_imei(void)
@@ -302,7 +321,9 @@ void modem_update_registration_status(void)
 
       /* Save curretn registration status*/
       modem.registration_status[1] = modem.registration_status[0];
-   } else {
+   }
+   else
+   {
       printk("err\r\n");
    }
 }
@@ -316,7 +337,7 @@ void modem_update_information(void)
    memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
 
    /* Just send an AT command to emptyx the receive buffer at modem*/
-   err = nrf_modem_at_printf("AT"); 
+   err = nrf_modem_at_printf("AT");
 
    if (err == 0)
    {

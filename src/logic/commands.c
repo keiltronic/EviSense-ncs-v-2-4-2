@@ -1827,31 +1827,29 @@ static int cmd_output_power_lifted(const struct shell *shell, size_t argc, char 
  */
 static int cmd_modem_write(const struct shell *shell, size_t argc, char **argv)
 {
+  static char buf[2048];
+  int16_t err = 0;
 
-  // enum at_cmd_state at_state;
-  // static char buf[2048];
-  // int16_t err = 0;
+  // List all available AT commands
+  if (argc == 2)
+  {
 
-  // // List all available AT commands
-  // if (argc == 2)
-  // {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sending command: %s\n", argv[1]);
 
-  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Sending command: %s\n", argv[1]);
-
-  //   err = at_cmd_write(argv[1], buf, sizeof(buf), &at_state);
-  //   if (err < 0)
-  //   {
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "AT command error: %d\n", err);
-  //   }
-  //   else
-  //   {
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s", buf);
-  //   }
-  // }
-  // else
-  // {
-  //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Invalid modem command");
-  // }
+    err = nrf_modem_at_cmd(buf, sizeof(buf), argv[1]);
+    if (err < 0)
+    {
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "AT command error: %d\n", err);
+    }
+    else
+    {
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s", buf);
+    }
+  }
+  else
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Invalid modem command");
+  }
 
   return 0;
 }
@@ -4319,6 +4317,8 @@ static int cmd_test3(const struct shell *shell, size_t argc, char **argv)
 {
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
+
+  modem_initial_setup();
 
   return 0;
 }
