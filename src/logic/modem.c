@@ -21,8 +21,6 @@ void modem_init(void)
 {
    int16_t err = 0;
 
-   // nrf_modem_init();
-
    err = nrf_modem_lib_init();
 
    if (err < 0)
@@ -295,7 +293,6 @@ void modem_update_registration_status(void)
             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
 
             /* Connection details */
-          //  enum at_cmd_state at_state;
             memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
             err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
             rtc_print_debug_timestamp();
@@ -500,7 +497,7 @@ void modem_update_information(void)
 
    if (!err)
    {
-      strcpy(modem.version, modem_at_recv_buf);
+      strncpy(modem.version, modem_at_recv_buf, 18);
    }
    k_msleep(100);
 }

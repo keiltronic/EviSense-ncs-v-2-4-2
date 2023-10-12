@@ -1853,7 +1853,7 @@ static int cmd_modem_write(const struct shell *shell, size_t argc, char **argv)
   //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Invalid modem command");
   // }
 
-  // return 0;
+  return 0;
 }
 
 /*!
@@ -2118,7 +2118,7 @@ static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
   //     shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
   //   }
   // }
-  // return 0;
+   return 0;
 }
 
 /*!
@@ -2191,7 +2191,7 @@ static int cmd_connection_type(const struct shell *shell, size_t argc, char **ar
   //   shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
   //   Parameter_PushRAMToFlash();
   // }
-  // return 0;
+   return 0;
 }
 
 /*!
@@ -2225,6 +2225,7 @@ static int cmd_add_psk_identity(const struct shell *shell, size_t argc, char **a
   // {
   //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Modem is not offline. Please execute command 'modem mode 4' before\n");
   // }
+  return 0;
 }
 
 /*!

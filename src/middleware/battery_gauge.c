@@ -195,9 +195,9 @@ void battery_gauge_CheckLowBat(void)
       /* Disable the 5V booster and enable it again if the voltage goes above the threshold voltage */
       imu_enter_sleep();
       rfid_power_off();
-     // lte_lc_offline(); // Send "AT+CFUN=4"
-                        //   bsd_shutdown();     // Method to gracefully shutdown the BSD library.
-                        nrf_modem_lib_shutdown();
+      // lte_lc_offline(); // Send "AT+CFUN=4"
+      //   bsd_shutdown();     // Method to gracefully shutdown the BSD library.
+      nrf_modem_lib_shutdown();
 
       System.StatusOutputs |= STATUSFLAG_LB;
 
@@ -287,13 +287,13 @@ int8_t battery_remaining_non_volatile_updates(void)
   battery_gauge_write(MAX1720X_COMMAND_REG, 0xE2FA); // fuel gauge reset
   k_msleep(tRECALL);
 
- // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, 0x1ED, &readout, 2);
-    ret = i2c_burst_read_dt(&battery_i2c, 0x1ED, &readout, sizeof(readout));
-    if (ret != 0)
-    {
-      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, 0x1ED, ret);
-      return;
-    }
+  // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, 0x1ED, &readout, 2);
+  ret = i2c_burst_read_dt(&battery_i2c, 0x1ED, &readout, sizeof(readout));
+  if (ret != 0)
+  {
+    printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, 0x1ED, ret);
+    return;
+  }
 
   if (Parameter.battery_gauge_sniff_i2c == true)
   {

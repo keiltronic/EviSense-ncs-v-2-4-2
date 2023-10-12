@@ -39,17 +39,12 @@ struct device *uart1 = DEVICE_DT_GET(DT_NODELABEL(uart1));
 
 #define MSG_SIZE 64
 
-/* queue to store up to 10 messages (aligned to 4-byte boundary) */
-//K_MSGQ_DEFINE(uart_msgq, MSG_SIZE, 10, 4);
-
 /* receive buffer used in UART ISR callback */
 static char rx_buf[MSG_SIZE];
-static int rx_buf_pos;
 
 /*!
  *  @brief This is the function description
  */
-// void uart1_cb(const struct device *rfid_module, struct uart_event *evt)
 void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *user_data)
 {
 
@@ -159,11 +154,6 @@ void uart1_cb(const struct device *rfid_module, struct uart_event *evt, void *us
  */
 void uart1_init(void)
 {
-  // uart1 = device_get_binding("UART_1");
-
-  // uart_irq_callback_set(uart1, uart1_cb);
-  // uart_irq_rx_enable(uart1);
-
   int16_t ret = 0;
 
   if (!device_is_ready(uart1))
@@ -172,12 +162,11 @@ void uart1_init(void)
     return;
   }
 
-  // ret = uart_irq_callback_set(uart1, uart1_cb);
   ret = uart_irq_callback_user_data_set(uart1, uart1_cb, NULL);
   if (ret)
   {
     printk("UART1 cant install uart1 callback\n\r");
-    return 1;
+    return;
   }
 
   uart_irq_rx_enable(uart1);

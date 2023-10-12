@@ -16,7 +16,7 @@ bool charger_plug_in_while_reboot = false;
 
 void USB_PluggedIn(void)
 {
-  battery_gauge_UpdateData();
+ // battery_gauge_UpdateData();
 
   rfid_power_off();
   RFID_TurnOff();
@@ -117,7 +117,7 @@ void USB_CheckConnectionStatus(void)
     if (System.MillisecSincecharger_connected > (Parameter.usb_plugin_reset_time * 1000))
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Auto reset after the device was connected to the charger (delay: %ld sec)\n", Parameter.usb_plugin_reset_time);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Auto reset after the device was connected to the charger (delay: %d sec)\n", Parameter.usb_plugin_reset_time);
 
       /* Do a hard reboot */
       Device_PushRAMToFlash();
@@ -135,7 +135,7 @@ void USB_CheckConnectionStatus(void)
     if (System.MillisecSinceBoot > (Parameter.usb_auto_reset_time * 1000))
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device is connected for more than %ld sec to the charger. Auto reboot.\n", Parameter.usb_auto_reset_time);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Device is connected for more than %d sec to the charger. Auto reboot.\n", Parameter.usb_auto_reset_time);
 
       /* Do a hard reboot */
       Device_PushRAMToFlash();

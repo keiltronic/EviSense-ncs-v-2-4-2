@@ -1052,7 +1052,7 @@ uint8_t check_allowed_mop_type(void)
       {
         NewEvent0x19(current_room_record.room_id, current_room_to_mop_mapping.current_mop_id);
       }
-      return 0;
+       return 0;     
     }
   }
 }
@@ -1155,12 +1155,10 @@ void epc_process_tags(void)
 {
   static EPC_BINARY_SERACH_RESULT binary_search_result;
 
-  uint32_t i = 0UL;
   uint32_t start_time;
   uint32_t stop_time;
   uint32_t cycles_spent;
   uint32_t nanoseconds_spent;
-  uint8_t rslt = 0;
 
   uint8_t room_changed_flag = false;
   uint8_t room_already_seen_flag = false;

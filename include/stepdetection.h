@@ -15,6 +15,7 @@
 #include <zephyr/sys/printk.h>
 #include "system_mem.h"
 #include "parameter_mem.h"
+#include "rtc.h"
 
 
 #define STEP_SEQUENCE_MIN_STEPS       5
