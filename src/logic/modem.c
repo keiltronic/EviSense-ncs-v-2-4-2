@@ -38,47 +38,47 @@ void modem_init(void)
 
 int16_t network_info_log(void)
 {
-    char sbuf[128];
-    modem_info_string_get(MODEM_INFO_RSRP, sbuf, sizeof(sbuf));
-    printk("Signal strength: %s\r\n", sbuf);
+   char sbuf[128];
+   modem_info_string_get(MODEM_INFO_RSRP, sbuf, sizeof(sbuf));
+   printk("Signal strength: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_CUR_BAND, sbuf, sizeof(sbuf));
-    printk("Current LTE band: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_CUR_BAND, sbuf, sizeof(sbuf));
+   printk("Current LTE band: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_SUP_BAND, sbuf, sizeof(sbuf));
-    printk("Supported LTE bands: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_SUP_BAND, sbuf, sizeof(sbuf));
+   printk("Supported LTE bands: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_AREA_CODE, sbuf, sizeof(sbuf));
-    printk("Tracking area code: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_AREA_CODE, sbuf, sizeof(sbuf));
+   printk("Tracking area code: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_UE_MODE, sbuf, sizeof(sbuf));
-    printk("Current mode: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_UE_MODE, sbuf, sizeof(sbuf));
+   printk("Current mode: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_OPERATOR, sbuf, sizeof(sbuf));
-    printk("Current operator name: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_OPERATOR, sbuf, sizeof(sbuf));
+   printk("Current operator name: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_CELLID, sbuf, sizeof(sbuf));
-    printk("Cell ID of the device: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_CELLID, sbuf, sizeof(sbuf));
+   printk("Cell ID of the device: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_IP_ADDRESS, sbuf, sizeof(sbuf));
-    printk("IP address of the device: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_IP_ADDRESS, sbuf, sizeof(sbuf));
+   printk("IP address of the device: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_FW_VERSION, sbuf, sizeof(sbuf));
-    printk("Modem firmware version: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_FW_VERSION, sbuf, sizeof(sbuf));
+   printk("Modem firmware version: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_LTE_MODE, sbuf, sizeof(sbuf));
-    printk("LTE-M support mode: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_LTE_MODE, sbuf, sizeof(sbuf));
+   printk("LTE-M support mode: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_NBIOT_MODE, sbuf, sizeof(sbuf));
-    printk("NB-IoT support mode: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_NBIOT_MODE, sbuf, sizeof(sbuf));
+   printk("NB-IoT support mode: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_GPS_MODE, sbuf, sizeof(sbuf));
-    printk("GPS support mode: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_GPS_MODE, sbuf, sizeof(sbuf));
+   printk("GPS support mode: %s\r\n", sbuf);
 
-    modem_info_string_get(MODEM_INFO_DATE_TIME, sbuf, sizeof(sbuf));
-    printk("Mobile network time and date: %s\r\n", sbuf);
+   modem_info_string_get(MODEM_INFO_DATE_TIME, sbuf, sizeof(sbuf));
+   printk("Mobile network time and date: %s\r\n", sbuf);
 
-    return 0;
+   return 0;
 }
 
 void modem_initial_setup(void)
@@ -99,14 +99,7 @@ void modem_initial_setup(void)
    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Starting initializing modem parameter, this takes a couple of seconds...\n");
 
    /* Set modem to flight mode */
- //   lte_lc_offline();
-   err = nrf_modem_at_printf("AT+CFUN=4");
-   if (err)
-   {
-      printk("AT+CFUN=4 failed\n");
-      return;
-   }
-   k_msleep(500);
+   lte_lc_offline();
 
    /* Set pcb band filter information (R, L, C) */
    if (Parameter.debug == true || Parameter.modem_verbose == true)
@@ -123,9 +116,11 @@ void modem_initial_setup(void)
       {
          rtc_print_debug_timestamp();
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Changing MAGPIO failed.\n");
-      }else {
-       printk("Changed MAGPIO ok\n");
-   }      
+      }
+      else
+      {
+         printk("Changed MAGPIO ok\n");
+      }
    }
    k_msleep(500);
 
@@ -156,28 +151,12 @@ void modem_initial_setup(void)
    k_msleep(100);
 
    /* Turn modem off to store configuration in its nonvolile memory */
-   // lte_lc_power_off();
-   err = nrf_modem_at_printf("AT+CFUN=0");
-   if (err)
-   {
-      printk("AT+CFUN=0 failed\n");
-      return;
-   } else {
-       printk("AT+CFUN=0 ok\n");
-   }
+   lte_lc_power_off();
+
    k_msleep(500);
 
-   err = nrf_modem_at_printf("AT+CFUN=1");
-   if (err)
-   {
-      printk("AT+CFUN=1 failed\n");
-      return;
-   }else {
-       printk("AT+CFUN=1 ok\n");
-   }
-
    /* Turn modem on - it will automatically search for networks*/
-   //lte_lc_normal();
+   lte_lc_normal();
 }
 
 const char *modem_get_imei(void)
