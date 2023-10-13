@@ -31,8 +31,8 @@ struct k_timer millisec_timer;
 void rtc_update_handler(struct k_work *work)
 {
     unixtime++; // updates system time every second
-   // System.TimeSinceBoot++;
-    // Device.OpertingTime++;
+         //        System.TimeSinceBoot++;
+     Device.OpertingTime++;
     millisec = 0;
 }
 K_WORK_DEFINE(my_work, rtc_update_handler);
@@ -197,38 +197,40 @@ void rtc_print_unixtime_ms(uint64_t unixtime, uint16_t millisec)
  */
 bool rtc_fetch_date_time(void)
 {
-    //   int8_t err = 0;
+    int8_t err = 0;
 
-    //   /* Get the current date from network provider or NTP sever */
-    //   err = date_time_now(&unixtime_ms);
+    /* Get the current date from network provider or NTP sever */
+    err = date_time_now(&unixtime_ms);
 
-    //   if (err == 0)
-    //   {
-    //     unixtime = unixtime_ms / 1000ULL;
-    //     millisec = unixtime_ms % 1000;
+    if (err == 0)
+    {
+        unixtime = unixtime_ms / 1000ULL;
+        millisec = unixtime_ms % 1000;
 
-    //     if ((initial_time_update == false) && (modem.connection_stat == true))
-    //     {
-    //       if (datalog_ReadOutisActive == false)
-    //       {
-    //         /* Debug message */
-    //         if (pcb_test_is_running == false)
-    //         {
-    //           rtc_print_debug_timestamp();
-    //           shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Initial time and date update successful\n");
-    //         }
+        if ((initial_time_update == false) && (modem.connection_stat == true))
+        {
+            if (datalog_ReadOutisActive == false)
+            {
+                /* Debug message */
+                if (pcb_test_is_running == false)
+                {
+                    rtc_print_debug_timestamp();
+                    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Initial time and date update successful\n");
+                }
 
-    //         /* After the real time is known update all previous created time stamps with correct time */
-    //         Event_BackwardsTimeStampUpdate(unixtime_ms, System.MillisecSinceBoot);
+                /* After the real time is known update all previous created time stamps with correct time */
+                Event_BackwardsTimeStampUpdate(unixtime_ms, System.MillisecSinceBoot);
 
-    //         initial_time_update = true;
-    //       }
-    //     }
+                initial_time_update = true;
+            }
+        }
 
-    //     return 0;
-    //   } else {
-    //     return 1;
-    //   }
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 /*!

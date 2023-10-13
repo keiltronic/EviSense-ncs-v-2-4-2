@@ -106,7 +106,7 @@ void ValidateParameterInExernalFlash(void)
 	modem_init();
 
 	/* Fetch modem version */
-	 modem_update_information();
+	modem_update_information();
 
 	/* Print firmware version */
 	if (pcb_test_is_running == false)
@@ -115,12 +115,12 @@ void ValidateParameterInExernalFlash(void)
 		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: %d.%d.%d, Build time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
 
 		/* Print modem firmware version */
-			rtc_print_debug_timestamp();
-			shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
 
 		/* Print hardware information */
-				rtc_print_debug_timestamp();
-				shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
 	}
 
 	/* Read stored firmware version from flash */

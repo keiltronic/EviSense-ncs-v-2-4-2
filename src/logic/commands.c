@@ -4307,6 +4307,8 @@ static int cmd_test2(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
+  network_info_log();
+
   return 0;
 }
 

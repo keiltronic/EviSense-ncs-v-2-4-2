@@ -16,10 +16,10 @@
 #include <string.h>
 #include <zephyr/random/rand32.h>
 #include <modem/nrf_modem_lib.h>
-//#include <net/mqtt.h>
-//#include <net/socket.h>
+#include <modem/modem_info.h>
+#include <zephyr/net/mqtt.h>
+#include <zephyr/net/socket.h>
 #include <modem/lte_lc.h>
-//#include <modem/at_cmd.h>
 #include <nrf_modem_at.h>
 #include <modem/at_cmd_parser.h>
 #include "events.h"
@@ -57,7 +57,7 @@ extern void modem_print_settings(void);
 extern const char *modem_get_imei(void);
 extern void modem_update_registration_status(void);
 extern const char *modem_get_iccid(void);
-
+extern int16_t network_info_log(void);
 extern char modem_at_recv_buf[500];
 extern int8_t get_signal_quality(void);
 extern int16_t get_signal_strength(void);

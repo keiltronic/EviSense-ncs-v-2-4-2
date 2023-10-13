@@ -28,6 +28,57 @@ void modem_init(void)
       printk("Modem library init failed, err: %d", err);
       return err;
    }
+
+   err = modem_info_init();
+   if (err)
+   {
+      printk("Failed to initialize modem info: %d", err);
+   }
+}
+
+int16_t network_info_log(void)
+{
+    char sbuf[128];
+    modem_info_string_get(MODEM_INFO_RSRP, sbuf, sizeof(sbuf));
+    printk("Signal strength: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_CUR_BAND, sbuf, sizeof(sbuf));
+    printk("Current LTE band: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_SUP_BAND, sbuf, sizeof(sbuf));
+    printk("Supported LTE bands: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_AREA_CODE, sbuf, sizeof(sbuf));
+    printk("Tracking area code: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_UE_MODE, sbuf, sizeof(sbuf));
+    printk("Current mode: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_OPERATOR, sbuf, sizeof(sbuf));
+    printk("Current operator name: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_CELLID, sbuf, sizeof(sbuf));
+    printk("Cell ID of the device: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_IP_ADDRESS, sbuf, sizeof(sbuf));
+    printk("IP address of the device: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_FW_VERSION, sbuf, sizeof(sbuf));
+    printk("Modem firmware version: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_LTE_MODE, sbuf, sizeof(sbuf));
+    printk("LTE-M support mode: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_NBIOT_MODE, sbuf, sizeof(sbuf));
+    printk("NB-IoT support mode: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_GPS_MODE, sbuf, sizeof(sbuf));
+    printk("GPS support mode: %s\r\n", sbuf);
+
+    modem_info_string_get(MODEM_INFO_DATE_TIME, sbuf, sizeof(sbuf));
+    printk("Mobile network time and date: %s\r\n", sbuf);
+
+    return 0;
 }
 
 void modem_initial_setup(void)
@@ -48,7 +99,7 @@ void modem_initial_setup(void)
    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Starting initializing modem parameter, this takes a couple of seconds...\n");
 
    /* Set modem to flight mode */
-   // lte_lc_offline();
+ //   lte_lc_offline();
    err = nrf_modem_at_printf("AT+CFUN=4");
    if (err)
    {
@@ -72,15 +123,16 @@ void modem_initial_setup(void)
       {
          rtc_print_debug_timestamp();
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Changing MAGPIO failed.\n");
-      }
-      return;
+      }else {
+       printk("Changed MAGPIO ok\n");
+   }      
    }
    k_msleep(500);
 
    /* Configure modem to use either LTE-M or NB-IoT */
    if (Parameter.network_connection_type == NB_IOT)
    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_AUTO);
 
       rtc_print_debug_timestamp();
       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
@@ -93,7 +145,7 @@ void modem_initial_setup(void)
    }
    else
    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_AUTO);
 
       if (err)
       {
@@ -110,6 +162,8 @@ void modem_initial_setup(void)
    {
       printk("AT+CFUN=0 failed\n");
       return;
+   } else {
+       printk("AT+CFUN=0 ok\n");
    }
    k_msleep(500);
 
@@ -118,10 +172,12 @@ void modem_initial_setup(void)
    {
       printk("AT+CFUN=1 failed\n");
       return;
+   }else {
+       printk("AT+CFUN=1 ok\n");
    }
 
    /* Turn modem on - it will automatically search for networks*/
-   // lte_lc_normal();
+   //lte_lc_normal();
 }
 
 const char *modem_get_imei(void)
