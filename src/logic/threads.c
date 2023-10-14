@@ -400,18 +400,18 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
     if (datalog_ReadOutisActive == false)
     {
       USB_CheckConnectionStatus();
-      //   battery_gauge_UpdateData();
+        battery_gauge_UpdateData();
 
-      //   if (battery_charge_status_delay == 0)
-      //   {
-      //     battery_gauge_CheckChargeStatus();
-      //     battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
-      //   }
-      //   else
-      //   {
-      //     battery_charge_status_delay--;
-      //   }
-      //   battery_gauge_CheckLowBat();
+        if (battery_charge_status_delay == 0)
+        {
+          battery_gauge_CheckChargeStatus();
+          battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
+        }
+        else
+        {
+          battery_charge_status_delay--;
+        }
+        battery_gauge_CheckLowBat();
     }
     k_msleep(100);
   }
@@ -419,87 +419,86 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  ARG_UNUSED(dummy1);
-  ARG_UNUSED(dummy2);
-  ARG_UNUSED(dummy3);
+  // ARG_UNUSED(dummy1);
+  // ARG_UNUSED(dummy2);
+  // ARG_UNUSED(dummy3);
 
-  bool time_update_done = 1; // not done yet
+  // bool time_update_done = 1; // not done yet
 
-  while (1)
-  {
-    if (datalog_ReadOutisActive == false)
-    {
-      /* Read date and time */
-      if (modem.connection_stat == true)
-      {
-        if (time_update_done == 1)
-        {
-          time_update_done = rtc_fetch_date_time();
-        }
-      }
-    }
-    k_msleep(1000);
-  }
+  // while (1)
+  // {
+  //   if (datalog_ReadOutisActive == false)
+  //   {
+  //     /* Read date and time */
+  //     if (modem.connection_stat == true)
+  //     {
+  //       if (time_update_done == 1)
+  //       {
+  //         time_update_done = rtc_fetch_date_time();
+  //       }
+  //     }
+  //   }
+  //   k_msleep(1000);
+  // }
 }
 
 void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  ARG_UNUSED(dummy1);
-  ARG_UNUSED(dummy2);
-  ARG_UNUSED(dummy3);
+  // ARG_UNUSED(dummy1);
+  // ARG_UNUSED(dummy2);
+  // ARG_UNUSED(dummy3);
 
-  int16_t err = 0;
+  // int16_t err = 0;
 
-  /* Turn modem off */
-  lte_lc_power_off();
-  k_msleep(500);
+  // /* Turn modem off */
+  // lte_lc_power_off();
+  // k_msleep(500);
 
-  if (Parameter.modem_disable == false)
-  {
-    /* Configure modem to use either LTE-M or NB-IoT */
-    if (Parameter.network_connection_type == NB_IOT)
-    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
+  // if (Parameter.modem_disable == false)
+  // {
+  //   /* Configure modem to use either LTE-M or NB-IoT */
+  //   if (Parameter.network_connection_type == NB_IOT)
+  //   {
+  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
 
-      rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
+  //     rtc_print_debug_timestamp();
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
 
-      if (err)
-      {
-        rtc_print_debug_timestamp();
-        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
-      }
-    }
-    else
-    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
+  //     if (err)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
 
-      if (err)
-      {
-        rtc_print_debug_timestamp();
-        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
-      }
-    }
-    k_msleep(100);
+  //     if (err)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+  //     }
+  //   }
+  //   k_msleep(100);
 
-    /* Turn modem on - it will automatically search for networks*/
-       lte_lc_normal();
+  //   /* Turn modem on - it will automatically search for networks*/
+  //   lte_lc_normal();
 
-    // printk("Connecting to network\n");
-    // err = nrf_modem_at_printf("AT+CFUN=1");
-    // if (err)
-    // {
-    //   printk("AT+CFUN failed\n");
-    //   return 0;
-    // }
-  }
+  //   // printk("Connecting to network\n");
+  //   // err = nrf_modem_at_printf("AT+CFUN=1");
+  //   // if (err)
+  //   // {
+  //   //   printk("AT+CFUN failed\n");
+  //   //   return 0;
+  // }
 
   while (1)
   {
     /* Update registration status */
     if (Parameter.modem_disable == false)
     {
-      modem_update_registration_status(); // This function needs 1sec to execute
+      //  modem_update_registration_status(); // This function needs 1sec to execute
 
       /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
@@ -555,9 +554,10 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
       // {
       //   fota_connection_timer = FOTA_CONNECTION_DURATION;
       // }
+    }
+    k_msleep(1);
+    //}
   }
-  k_msleep(1);
-}
 }
 
 void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)

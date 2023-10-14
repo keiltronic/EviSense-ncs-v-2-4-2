@@ -17,8 +17,8 @@
 #include "notification.h"
 
 /* Device address */
-#define MAX1720X_ADDR_LO 0x36 // 7-bit address -> in 8-bit: 0x6C, address range 0x000 - 0x0FF
-#define MAX1720X_ADDR_HI 0x0B // 7-bit address -> in 8-bit: 0x16, address range 0x180 - 0x1FF
+//#define MAX1720X_ADDR_LO 0x36 // 7-bit address -> in 8-bit: 0x6C, address range 0x000 - 0x0FF
+//#define MAX1720X_ADDR_HI 0x0B // 7-bit address -> in 8-bit: 0x16, address range 0x180 - 0x1FF
 
 #define MAX1720X_ADDR 0x36
 #define MAX1720X_STATUS_ADDR 0x00     // Contains alert status and chip status
@@ -50,7 +50,8 @@
 #define MAX1720X_AIN1_ADDR  0x134 
 
 //#define MAX1720X_CONFIG2_ADDR           0x1b4   // Hibernate register
-#define BATTERY_NODE DT_ALIAS(batterygauge)
+#define BATTERY_NODE_LO DT_ALIAS(batterygaugelo)
+#define BATTERY_NODE_HI DT_ALIAS(batterygaugehi)
 
 /* Resolutions */
 #define MAX1720X_CAPACITY_RES 0.005          // Vh with 10mOhm shunt

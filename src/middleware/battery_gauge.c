@@ -22,119 +22,128 @@ uint8_t battery_avoid_multiple_notifications = false; // If the device is charge
 uint16_t battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
 uint16_t battery_gauge_temperature_progress_delay = BATTERY_GAUGE_TEMPERATURE_PROGRESS_DELAY;
 
-struct i2c_dt_spec battery_i2c = I2C_DT_SPEC_GET(BATTERY_NODE);
+struct i2c_dt_spec battery_lo_i2c = I2C_DT_SPEC_GET(BATTERY_NODE_LO);
+struct i2c_dt_spec battery_hi_i2c = I2C_DT_SPEC_GET(BATTERY_NODE_HI);
 
 void battery_gauge_init(void)
 {
-  if (!device_is_ready(battery_i2c.bus))
+  if (!device_is_ready(battery_lo_i2c.bus))
   {
-    printk("I2C bus %s is not ready!\n\r", battery_i2c.bus->name);
+    printk("I2C bus %s is not ready!\n\r", battery_lo_i2c.bus->name);
     return;
   }
 
   k_msleep(100);
 
-  // /* This initialzation data comes from MAXIMs MAX172xx m5 Fuel Gauge PC software configuration wizard */
-  // // Device = MAX17201
-  // // Title = EVKIT Configurator Profile Generated on 2022 / 08 / 19 12 : 42 : 47_CheckSum_0x3 battery_gauge_write(0x180, 0X0000); // nXTable0 Register
-  // battery_gauge_write(0x180, 0X0000); // nXTable0 Register
-  // battery_gauge_write(0x181, 0X0000); // nXTable1 Register
-  // battery_gauge_write(0x182, 0X0000); // nXTable2 Register
-  // battery_gauge_write(0x183, 0X0000); // nXTable3 Register
-  // battery_gauge_write(0x184, 0X0000); // nXTable4 Register
-  // battery_gauge_write(0x185, 0X0000); // nXTable5 Register
-  // battery_gauge_write(0x186, 0X0000); // nXTable6 Register
-  // battery_gauge_write(0x187, 0X0000); // nXTable7 Register
-  // battery_gauge_write(0x188, 0X0000); // nXTable8 Register
-  // battery_gauge_write(0x189, 0X0000); // nXTable9 Register
-  // battery_gauge_write(0x18A, 0X0000); // nXTable10 Register
-  // battery_gauge_write(0x18B, 0X0000); // nXTable11 Register
-  // battery_gauge_write(0x18C, 0X0000); // nUser18C Register
-  // battery_gauge_write(0x18D, 0X0000); // nUser18D Register
-  // battery_gauge_write(0x18E, 0X0000); // nODSCTh Register
-  // battery_gauge_write(0x18F, 0X0000); // nODSCCfg Register
-  // battery_gauge_write(0x190, 0X0000); // nOCVTable0 Register
-  // battery_gauge_write(0x191, 0X0000); // nOCVTable1 Register
-  // battery_gauge_write(0x192, 0X0000); // nOCVTable2 Register
-  // battery_gauge_write(0x193, 0X0000); // nOCVTable3 Register
-  // battery_gauge_write(0x194, 0X0000); // nOCVTable4 Register
-  // battery_gauge_write(0x195, 0X0000); // nOCVTable5 Register
-  // battery_gauge_write(0x196, 0X0000); // nOCVTable6 Register
-  // battery_gauge_write(0x197, 0X0000); // nOCVTable7 Register
-  // battery_gauge_write(0x198, 0X0000); // nOCVTable8 Register
-  // battery_gauge_write(0x199, 0X0000); // nOCVTable9 Register
-  // battery_gauge_write(0x19A, 0X0000); // nOCVTable10 Register
-  // battery_gauge_write(0x19B, 0X0000); // nOCVTable11 Register
-  // battery_gauge_write(0x19C, 0X0000); // nIChgTerm Register
-  // battery_gauge_write(0x19D, 0X0000); // nFilterCfg Register
-  // battery_gauge_write(0x19E, 0X0000); // nVEmpty Register
-  // battery_gauge_write(0x19F, 0X2602); // nLearnCfg Register
-  // battery_gauge_write(0x1A0, 0X3C00); // nQRTable00 Register
-  // battery_gauge_write(0x1A1, 0X1B80); // nQRTable10 Register
-  // battery_gauge_write(0x1A2, 0X0B04); // nQRTable20 Register
-  // battery_gauge_write(0x1A3, 0X0885); // nQRTable30 Register
-  // battery_gauge_write(0x1A4, 0X0000); // nCycles Register
-  // battery_gauge_write(0x1A5, 0X15C4); // nFullCapNom Register
-  // battery_gauge_write(0x1A6, 0X1070); // nRComp0 Register
-  // battery_gauge_write(0x1A7, 0X263D); // nTempCo Register
-  // battery_gauge_write(0x1A8, 0XED40); // nIAvgEmpty Register
-  // battery_gauge_write(0x1A9, 0X12C0); // nFullCapRep Register
-  // battery_gauge_write(0x1AA, 0X0000); // nVoltTemp Register
-  // battery_gauge_write(0x1AB, 0X807F); // nMaxMinCurr Register
-  // battery_gauge_write(0x1AC, 0X00FF); // nMaxMinVolt Register
-  // battery_gauge_write(0x1AD, 0X807F); // nMaxMinTemp Register
-  // battery_gauge_write(0x1AE, 0X0000); // nSOC Register
-  // battery_gauge_write(0x1AF, 0X0000); // nTimerH Register
-  // battery_gauge_write(0x1B0, 0X0000); // nConfig Register
-  // battery_gauge_write(0x1B1, 0X0204); // nRippleCfg Register
-  // battery_gauge_write(0x1B2, 0X3070); // nMiscCfg Register
-  // battery_gauge_write(0x1B3, 0X12C0); // nDesignCap Register
-  // battery_gauge_write(0x1B4, 0X0000); // nHibCfg Register
-  // battery_gauge_write(0x1B5, 0X9C01); // nPackCfg Register
-  // battery_gauge_write(0x1B6, 0X0000); // nRelaxCfg Register
-  // battery_gauge_write(0x1B7, 0X2241); // nConvgCfg Register
-  // battery_gauge_write(0x1B8, 0X0100); // nNVCfg0 Register
-  // battery_gauge_write(0x1B9, 0X0006); // nNVCfg1 Register
-  // battery_gauge_write(0x1BA, 0XFF0A); // nNVCfg2 Register
-  // battery_gauge_write(0x1BB, 0X0002); // nSBSCfg Register
-  // battery_gauge_write(0x1BC, 0X0000); // nROMID0 Register
-  // battery_gauge_write(0x1BD, 0X0000); // nROMID1 Register
-  // battery_gauge_write(0x1BE, 0X0000); // nROMID2 Register
-  // battery_gauge_write(0x1BF, 0X0000); // nROMID3 Register
-  // battery_gauge_write(0x1C0, 0X0000); // nVAlrtTh Register
-  // battery_gauge_write(0x1C1, 0X0000); // nTAlrtTh Register
-  // battery_gauge_write(0x1C2, 0X0000); // nSAlrtTh Register
-  // battery_gauge_write(0x1C3, 0X0000); // nIAlrtTh Register
-  // battery_gauge_write(0x1C4, 0X0000); // nUser1C4 Register
-  // battery_gauge_write(0x1C5, 0X0000); // nUser1C5 Register
-  // battery_gauge_write(0x1C6, 0X0000); // nFullSOCThr Register
-  // battery_gauge_write(0x1C7, 0X0000); // nTTFCfg Register
-  // battery_gauge_write(0x1C8, 0X0000); // nCGain Register
-  // battery_gauge_write(0x1C9, 0X0025); // nTCurve Register
-  // battery_gauge_write(0x1CA, 0X0000); // nTGain Register
-  // battery_gauge_write(0x1CB, 0X0000); // nTOff Register
-  // battery_gauge_write(0x1CC, 0X0000); // nManfctrName0 Register
-  // battery_gauge_write(0x1CD, 0X0000); // nManfctrName1 Register
-  // battery_gauge_write(0x1CE, 0X0000); // nManfctrName2 Register
-  // battery_gauge_write(0x1CF, 0X03E8); // nRSense Register
-  // battery_gauge_write(0x1D0, 0X0000); // nUser1D0 Register
-  // battery_gauge_write(0x1D1, 0X0000); // nUser1D1 Register
-  // battery_gauge_write(0x1D2, 0XD5E3); // nAgeFcCfg Register
-  // battery_gauge_write(0x1D3, 0X0000); // nDesignVoltage Register
-  // battery_gauge_write(0x1D4, 0X0000); // nUser1D4 Register
-  // battery_gauge_write(0x1D5, 0X0000); // nRFastVShdn Register
-  // battery_gauge_write(0x1D6, 0X0000); // nManfctrDate Register
-  // battery_gauge_write(0x1D7, 0X0000); // nFirstUsed Register
-  // battery_gauge_write(0x1D8, 0X0000); // nSerialNumber0 Register
-  // battery_gauge_write(0x1D9, 0X0000); // nSerialNumber1 Register
-  // battery_gauge_write(0x1DA, 0X0000); // nSerialNumber2 Register
-  // battery_gauge_write(0x1DB, 0X0000); // nDeviceName0 Register
-  // battery_gauge_write(0x1DC, 0X0000); // nDeviceName1 Register
-  // battery_gauge_write(0x1DD, 0X0000); // nDeviceName2 Register
-  // battery_gauge_write(0x1DE, 0X0000); // nDeviceName3 Register
-  // battery_gauge_write(0x1DF, 0X0000); // nDeviceName4 Register
+  if (!device_is_ready(battery_hi_i2c.bus))
+  {
+    printk("I2C bus %s is not ready!\n\r", battery_hi_i2c.bus->name);
+    return;
+  }
 
-  // battery_gauge_soft_reset();
+  k_msleep(100);
+
+  /* This initialzation data comes from MAXIMs MAX172xx m5 Fuel Gauge PC software configuration wizard */
+  // Device = MAX17201
+  // Title = EVKIT Configurator Profile Generated on 2022 / 08 / 19 12 : 42 : 47_CheckSum_0x3 battery_gauge_write(0x180, 0X0000); // nXTable0 Register
+  battery_gauge_write(0x180, 0X0000); // nXTable0 Register
+  battery_gauge_write(0x181, 0X0000); // nXTable1 Register
+  battery_gauge_write(0x182, 0X0000); // nXTable2 Register
+  battery_gauge_write(0x183, 0X0000); // nXTable3 Register
+  battery_gauge_write(0x184, 0X0000); // nXTable4 Register
+  battery_gauge_write(0x185, 0X0000); // nXTable5 Register
+  battery_gauge_write(0x186, 0X0000); // nXTable6 Register
+  battery_gauge_write(0x187, 0X0000); // nXTable7 Register
+  battery_gauge_write(0x188, 0X0000); // nXTable8 Register
+  battery_gauge_write(0x189, 0X0000); // nXTable9 Register
+  battery_gauge_write(0x18A, 0X0000); // nXTable10 Register
+  battery_gauge_write(0x18B, 0X0000); // nXTable11 Register
+  battery_gauge_write(0x18C, 0X0000); // nUser18C Register
+  battery_gauge_write(0x18D, 0X0000); // nUser18D Register
+  battery_gauge_write(0x18E, 0X0000); // nODSCTh Register
+  battery_gauge_write(0x18F, 0X0000); // nODSCCfg Register
+  battery_gauge_write(0x190, 0X0000); // nOCVTable0 Register
+  battery_gauge_write(0x191, 0X0000); // nOCVTable1 Register
+  battery_gauge_write(0x192, 0X0000); // nOCVTable2 Register
+  battery_gauge_write(0x193, 0X0000); // nOCVTable3 Register
+  battery_gauge_write(0x194, 0X0000); // nOCVTable4 Register
+  battery_gauge_write(0x195, 0X0000); // nOCVTable5 Register
+  battery_gauge_write(0x196, 0X0000); // nOCVTable6 Register
+  battery_gauge_write(0x197, 0X0000); // nOCVTable7 Register
+  battery_gauge_write(0x198, 0X0000); // nOCVTable8 Register
+  battery_gauge_write(0x199, 0X0000); // nOCVTable9 Register
+  battery_gauge_write(0x19A, 0X0000); // nOCVTable10 Register
+  battery_gauge_write(0x19B, 0X0000); // nOCVTable11 Register
+  battery_gauge_write(0x19C, 0X0000); // nIChgTerm Register
+  battery_gauge_write(0x19D, 0X0000); // nFilterCfg Register
+  battery_gauge_write(0x19E, 0X0000); // nVEmpty Register
+  battery_gauge_write(0x19F, 0X2602); // nLearnCfg Register
+  battery_gauge_write(0x1A0, 0X3C00); // nQRTable00 Register
+  battery_gauge_write(0x1A1, 0X1B80); // nQRTable10 Register
+  battery_gauge_write(0x1A2, 0X0B04); // nQRTable20 Register
+  battery_gauge_write(0x1A3, 0X0885); // nQRTable30 Register
+  battery_gauge_write(0x1A4, 0X0000); // nCycles Register
+  battery_gauge_write(0x1A5, 0X15C4); // nFullCapNom Register
+  battery_gauge_write(0x1A6, 0X1070); // nRComp0 Register
+  battery_gauge_write(0x1A7, 0X263D); // nTempCo Register
+  battery_gauge_write(0x1A8, 0XED40); // nIAvgEmpty Register
+  battery_gauge_write(0x1A9, 0X12C0); // nFullCapRep Register
+  battery_gauge_write(0x1AA, 0X0000); // nVoltTemp Register
+  battery_gauge_write(0x1AB, 0X807F); // nMaxMinCurr Register
+  battery_gauge_write(0x1AC, 0X00FF); // nMaxMinVolt Register
+  battery_gauge_write(0x1AD, 0X807F); // nMaxMinTemp Register
+  battery_gauge_write(0x1AE, 0X0000); // nSOC Register
+  battery_gauge_write(0x1AF, 0X0000); // nTimerH Register
+  battery_gauge_write(0x1B0, 0X0000); // nConfig Register
+  battery_gauge_write(0x1B1, 0X0204); // nRippleCfg Register
+  battery_gauge_write(0x1B2, 0X3070); // nMiscCfg Register
+  battery_gauge_write(0x1B3, 0X12C0); // nDesignCap Register
+  battery_gauge_write(0x1B4, 0X0000); // nHibCfg Register
+  battery_gauge_write(0x1B5, 0X9C01); // nPackCfg Register
+  battery_gauge_write(0x1B6, 0X0000); // nRelaxCfg Register
+  battery_gauge_write(0x1B7, 0X2241); // nConvgCfg Register
+  battery_gauge_write(0x1B8, 0X0100); // nNVCfg0 Register
+  battery_gauge_write(0x1B9, 0X0006); // nNVCfg1 Register
+  battery_gauge_write(0x1BA, 0XFF0A); // nNVCfg2 Register
+  battery_gauge_write(0x1BB, 0X0002); // nSBSCfg Register
+  battery_gauge_write(0x1BC, 0X0000); // nROMID0 Register
+  battery_gauge_write(0x1BD, 0X0000); // nROMID1 Register
+  battery_gauge_write(0x1BE, 0X0000); // nROMID2 Register
+  battery_gauge_write(0x1BF, 0X0000); // nROMID3 Register
+  battery_gauge_write(0x1C0, 0X0000); // nVAlrtTh Register
+  battery_gauge_write(0x1C1, 0X0000); // nTAlrtTh Register
+  battery_gauge_write(0x1C2, 0X0000); // nSAlrtTh Register
+  battery_gauge_write(0x1C3, 0X0000); // nIAlrtTh Register
+  battery_gauge_write(0x1C4, 0X0000); // nUser1C4 Register
+  battery_gauge_write(0x1C5, 0X0000); // nUser1C5 Register
+  battery_gauge_write(0x1C6, 0X0000); // nFullSOCThr Register
+  battery_gauge_write(0x1C7, 0X0000); // nTTFCfg Register
+  battery_gauge_write(0x1C8, 0X0000); // nCGain Register
+  battery_gauge_write(0x1C9, 0X0025); // nTCurve Register
+  battery_gauge_write(0x1CA, 0X0000); // nTGain Register
+  battery_gauge_write(0x1CB, 0X0000); // nTOff Register
+  battery_gauge_write(0x1CC, 0X0000); // nManfctrName0 Register
+  battery_gauge_write(0x1CD, 0X0000); // nManfctrName1 Register
+  battery_gauge_write(0x1CE, 0X0000); // nManfctrName2 Register
+  battery_gauge_write(0x1CF, 0X03E8); // nRSense Register
+  battery_gauge_write(0x1D0, 0X0000); // nUser1D0 Register
+  battery_gauge_write(0x1D1, 0X0000); // nUser1D1 Register
+  battery_gauge_write(0x1D2, 0XD5E3); // nAgeFcCfg Register
+  battery_gauge_write(0x1D3, 0X0000); // nDesignVoltage Register
+  battery_gauge_write(0x1D4, 0X0000); // nUser1D4 Register
+  battery_gauge_write(0x1D5, 0X0000); // nRFastVShdn Register
+  battery_gauge_write(0x1D6, 0X0000); // nManfctrDate Register
+  battery_gauge_write(0x1D7, 0X0000); // nFirstUsed Register
+  battery_gauge_write(0x1D8, 0X0000); // nSerialNumber0 Register
+  battery_gauge_write(0x1D9, 0X0000); // nSerialNumber1 Register
+  battery_gauge_write(0x1DA, 0X0000); // nSerialNumber2 Register
+  battery_gauge_write(0x1DB, 0X0000); // nDeviceName0 Register
+  battery_gauge_write(0x1DC, 0X0000); // nDeviceName1 Register
+  battery_gauge_write(0x1DD, 0X0000); // nDeviceName2 Register
+  battery_gauge_write(0x1DE, 0X0000); // nDeviceName3 Register
+  battery_gauge_write(0x1DF, 0X0000); // nDeviceName4 Register
+
+  battery_gauge_soft_reset();
 }
 
 void battery_gauge_CheckChargeStatus(void)
@@ -217,7 +226,7 @@ void battery_gauge_CheckLowBat(void)
       }
 
       /* Power on IMU and rfid module */
-      RFID_PowerOn();
+      rfid_power_on();
       imu_init();
 
       /* Reset cellular connection flags */
@@ -288,17 +297,17 @@ int8_t battery_remaining_non_volatile_updates(void)
   k_msleep(tRECALL);
 
   // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, 0x1ED, &readout, 2);
-  ret = i2c_burst_read_dt(&battery_i2c, 0x1ED, &readout, sizeof(readout));
+  ret = i2c_burst_read_dt(&battery_lo_i2c, 0x1ED, &readout, sizeof(readout));
   if (ret != 0)
   {
-    printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, 0x1ED, ret);
+    printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, 0x1ED, ret);
     return;
   }
 
   if (Parameter.battery_gauge_sniff_i2c == true)
   {
     rtc_print_debug_timestamp();
-    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", MAX1720X_ADDR_LO, 0x1ED, readout[0], readout[1]);
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_lo_i2c.addr, 0x1ED, readout[0], readout[1]);
   }
   val = readout[1] | readout[0];
 
@@ -493,17 +502,17 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[2] = (uint8_t)(val >> 8);
     // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_HI);
 
-    ret = i2c_write_dt(&battery_i2c, data, sizeof(data));
+    ret = i2c_write_dt(&battery_hi_i2c, data, sizeof(data));
     if (ret != 0)
     {
-      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, data[0], ret);
+      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_hi_i2c.addr, data[0], ret);
       return;
     }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Write to address 0x%X, register 0x%X the value 0x%X 0x%X\n", MAX1720X_ADDR_HI, data[0], data[1], data[2]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Write to address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_hi_i2c.addr, data[0], data[1], data[2]);
     }
   }
   else
@@ -513,17 +522,17 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[2] = (uint8_t)(val >> 8);
     // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_LO);
 
-    ret = i2c_write_dt(&battery_i2c, data, sizeof(data));
+    ret = i2c_write_dt(&battery_lo_i2c, data, sizeof(data));
     if (ret != 0)
     {
-      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, data[0], ret);
+      printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, data[0], ret);
       return;
     }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Write to address 0x%X, register 0x%X the value 0x%X 0x%X\n", MAX1720X_ADDR_LO, data[0], data[1], data[2]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Write to address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_lo_i2c.addr, data[0], data[1], data[2]);
     }
   }
 }
@@ -536,32 +545,32 @@ uint16_t battery_gauge_read(uint16_t reg)
   if (reg >= 0x100)
   {
     // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
-    ret = i2c_burst_read_dt(&battery_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
     if (ret != 0)
     {
-      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, (reg & 0xFF), ret);
-      return;
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_hi_i2c.addr, (reg & 0xFF), ret);
+      return 0;
     }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", MAX1720X_ADDR_HI, reg, readout[0], readout[1]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_hi_i2c.addr, reg, readout[0], readout[1]);
     }
   }
   else
   {
     // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, reg, &readout, 2);
-    ret = i2c_burst_read_dt(&battery_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    ret = i2c_burst_read_dt(&battery_lo_i2c, (reg & 0xFF), &readout, sizeof(readout));
     {
-      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_i2c.addr, (reg & 0xFF), ret);
-      return;
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, (reg & 0xFF), ret);
+      return 0;
     }
 
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", MAX1720X_ADDR_LO, reg, readout[0], readout[1]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_lo_i2c.addr, reg, readout[0], readout[1]);
     }
   }
 
