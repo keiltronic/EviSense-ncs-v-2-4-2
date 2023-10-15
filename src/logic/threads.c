@@ -444,61 +444,54 @@ void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // int16_t err = 0;
+  int16_t err = 0;
 
-  // /* Turn modem off */
-  // lte_lc_power_off();
-  // k_msleep(500);
+  /* Turn modem off */
+  lte_lc_power_off();
+  k_msleep(500);
 
-  // if (Parameter.modem_disable == false)
-  // {
-  //   /* Configure modem to use either LTE-M or NB-IoT */
-  //   if (Parameter.network_connection_type == NB_IOT)
-  //   {
-  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
+  if (Parameter.modem_disable == false)
+  {
+    /* Configure modem to use either LTE-M or NB-IoT */
+    if (Parameter.network_connection_type == NB_IOT)
+    {
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
 
-  //     rtc_print_debug_timestamp();
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
 
-  //     if (err)
-  //     {
-  //       rtc_print_debug_timestamp();
-  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
-  //     }
-  //   }
-  //   else
-  //   {
-  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
+      if (err)
+      {
+        rtc_print_debug_timestamp();
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
+      }
+    }
+    else
+    {
+      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
 
-  //     if (err)
-  //     {
-  //       rtc_print_debug_timestamp();
-  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
-  //     }
-  //   }
-  //   k_msleep(100);
+      if (err)
+      {
+        rtc_print_debug_timestamp();
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+      }
+    }
+    k_msleep(100);
 
-  //   /* Turn modem on - it will automatically search for networks*/
-  //   lte_lc_normal();
-
-  //   // printk("Connecting to network\n");
-  //   // err = nrf_modem_at_printf("AT+CFUN=1");
-  //   // if (err)
-  //   // {
-  //   //   printk("AT+CFUN failed\n");
-  //   //   return 0;
-  // }
+    /* Turn modem on - it will automatically search for networks*/
+    lte_lc_normal();
+  }
 
   while (1)
   {
     /* Update registration status */
     if (Parameter.modem_disable == false)
     {
-      //  modem_update_registration_status(); // This function needs 1sec to execute
+        modem_update_registration_status(); // This function needs 1sec to execute
 
       /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 

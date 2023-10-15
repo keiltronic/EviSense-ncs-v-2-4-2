@@ -2124,71 +2124,71 @@ static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_connection_type(const struct shell *shell, size_t argc, char **argv)
 {
-  // if (argc == 1)
-  // {
-  //   switch (Parameter.network_connection_type)
-  //   {
-  //   case LTE_M:
-  //     shell_print(shell, "Network connection type: LTE-M");
-  //     break;
+  if (argc == 1)
+  {
+    switch (Parameter.network_connection_type)
+    {
+    case LTE_M:
+      shell_print(shell, "Network connection type: LTE-M");
+      break;
 
-  //   case NB_IOT:
-  //     shell_print(shell, "Network connection type: NB_IoT");
-  //     break;
+    case NB_IOT:
+      shell_print(shell, "Network connection type: NB_IoT");
+      break;
 
-  //   default:
-  //     shell_print(shell, "Invalid type set.");
-  //     break;
-  //   }
-  // }
-  // else
-  // {
-  //   switch (atoi(argv[1]))
-  //   {
+    default:
+      shell_print(shell, "Invalid type set.");
+      break;
+    }
+  }
+  else
+  {
+    switch (atoi(argv[1]))
+    {
 
-  //   case LTE_M:
+    case LTE_M:
 
-  //     Parameter.network_connection_type = LTE_M;
+      Parameter.network_connection_type = LTE_M;
 
-  //     /* Turn modem off */
-  //     lte_lc_power_off();
-  //     k_msleep(500);
+      /* Turn modem off */
+      lte_lc_power_off();
+      k_msleep(500);
 
-  //     /* Set modem to use LTE-M*/
-  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
-  //     k_msleep(500);
+      /* Set modem to use LTE-M*/
+      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+      k_msleep(500);
 
-  //     /* Turn modem on - it will automatically search for networks*/
-  //     lte_lc_normal();
+      /* Turn modem on - it will automatically search for networks*/
+      lte_lc_normal();
 
-  //     shell_print(shell, "Set network connection type to LTE-M");
-  //     break;
+      shell_print(shell, "Set network connection type to LTE-M");
+      break;
 
-  //   case NB_IOT:
+    case NB_IOT:
 
-  //     Parameter.network_connection_type = NB_IOT;
-  //     /* Turn modem off */
-  //     lte_lc_power_off();
-  //     k_msleep(500);
+      Parameter.network_connection_type = NB_IOT;
+      /* Turn modem off */
+      lte_lc_power_off();
+      k_msleep(500);
 
-  //     /* Set modem to use LTE-M*/
-  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
-  //     k_msleep(500);
+      /* Set modem to use LTE-M*/
+      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+      k_msleep(500);
 
-  //     /* Turn modem on - it will automatically search for networks*/
-  //     lte_lc_normal();
+      /* Turn modem on - it will automatically search for networks*/
+      lte_lc_normal();
 
-  //     shell_print(shell, "Set network connection type to NB_IoT");
-  //     break;
+      shell_print(shell, "Set network connection type to NB_IoT");
+      break;
 
-  //   default:
-  //     shell_print(shell, "Invalid type.");
-  //     break;
-  //   }
+    default:
+      shell_print(shell, "Invalid type.");
+      break;
+    }
 
-  //   shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
-  //   Parameter_PushRAMToFlash();
-  // }
+    shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
+    Parameter_PushRAMToFlash();
+  }
    return 0;
 }
 

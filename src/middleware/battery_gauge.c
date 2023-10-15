@@ -543,7 +543,8 @@ uint16_t battery_gauge_read(uint16_t reg)
   if (reg >= 0x100)
   {
     // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
-     ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
+  //   ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
+     
 
     if (ret != 0)
     {

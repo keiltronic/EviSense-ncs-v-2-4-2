@@ -201,166 +201,166 @@ void modem_update_registration_status(void)
    int16_t err = 0;
 
    /* Update modem and connection paramters*/
-   modem_update_information();
+  // modem_update_information();
 
-   /* Check registrations tatus: offline, searching, roaming */
-   err = lte_lc_nw_reg_status_get(&modem.registration_status[0]);
+   // /* Check registrations tatus: offline, searching, roaming */
+   // err = lte_lc_nw_reg_status_get(&modem.registration_status[0]);
 
-   if (!err)
-   {
-      /* Print a meessage if there was a change in registration status*/
-      if (modem.registration_status[0] != modem.registration_status[1])
-      {
-         rtc_print_debug_timestamp();
-         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
+   // if (!err)
+   // {
+   //    /* Print a meessage if there was a change in registration status*/
+   //    if (modem.registration_status[0] != modem.registration_status[1])
+   //    {
+   //       rtc_print_debug_timestamp();
+   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
 
-         switch (modem.AcT)
-         {
-         case 7:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
-            break;
+   //       switch (modem.AcT)
+   //       {
+   //       case 7:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
+   //          break;
 
-         case 9:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
-            break;
+   //       case 9:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
+   //          break;
 
-         default:
-            break;
-         }
+   //       default:
+   //          break;
+   //       }
 
-         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
+   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
 
-         switch (modem.registration_status[0])
-         {
-         case LTE_LC_NW_REG_NOT_REGISTERED:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "0 - Not registered\n");
+   //       switch (modem.registration_status[0])
+   //       {
+   //       case LTE_LC_NW_REG_NOT_REGISTERED:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "0 - Not registered\n");
 
-            modem.connection_stat = false;
-            break;
+   //          modem.connection_stat = false;
+   //          break;
 
-         case LTE_LC_NW_REG_REGISTERED_HOME:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "1 - Registered, home network\n");
+   //       case LTE_LC_NW_REG_REGISTERED_HOME:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "1 - Registered, home network\n");
 
-            modem.connection_stat = true;
+   //          modem.connection_stat = true;
 
-            /* Connect also to keiltronic AWS cloud */
-            if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-            {
-               aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-            }
+   //          /* Connect also to keiltronic AWS cloud */
+   //          if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+   //          {
+   //             aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+   //          }
 
-            /* Add event in event array which is send to cloud in next sync interval */
-            NewEvent0x0B(); // Connection up event
-            break;
+   //          /* Add event in event array which is send to cloud in next sync interval */
+   //          NewEvent0x0B(); // Connection up event
+   //          break;
 
-         case LTE_LC_NW_REG_SEARCHING:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
+   //       case LTE_LC_NW_REG_SEARCHING:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
 
-            modem.connection_stat = false;
-            break;
+   //          modem.connection_stat = false;
+   //          break;
 
-         case LTE_LC_NW_REG_REGISTRATION_DENIED:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
+   //       case LTE_LC_NW_REG_REGISTRATION_DENIED:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
 
-            modem.connection_stat = false;
-            break;
+   //          modem.connection_stat = false;
+   //          break;
 
-         case LTE_LC_NW_REG_UNKNOWN:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
+   //       case LTE_LC_NW_REG_UNKNOWN:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
 
-            modem.connection_stat = false;
+   //          modem.connection_stat = false;
 
-            /* Add event in event array which is send to cloud in next sync interval */
-            NewEvent0x0C(); // Connection down event
-            break;
+   //          /* Add event in event array which is send to cloud in next sync interval */
+   //          NewEvent0x0C(); // Connection down event
+   //          break;
 
-         case LTE_LC_NW_REG_REGISTERED_ROAMING:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "5 - Registered, roaming\n");
+   //       case LTE_LC_NW_REG_REGISTERED_ROAMING:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "5 - Registered, roaming\n");
 
-            modem.connection_stat = true;
+   //          modem.connection_stat = true;
 
-            /* Connect also to keiltronic AWS cloud */
-            if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-            {
-               aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-            }
+   //          /* Connect also to keiltronic AWS cloud */
+   //          if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+   //          {
+   //             aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+   //          }
 
-            /* Add event in event array which is send to cloud in next sync interval */
-            NewEvent0x0B(); // Connection up event
-            break;
+   //          /* Add event in event array which is send to cloud in next sync interval */
+   //          NewEvent0x0B(); // Connection up event
+   //          break;
 
-            // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-            //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
+   //          // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+   //          //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
 
-            //   modem.connection_stat = true;
+   //          //   modem.connection_stat = true;
 
-            //   /* Connect also to keiltronic AWS cloud */
-            //   if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-            //   {
-            //  //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-            //   }
+   //          //   /* Connect also to keiltronic AWS cloud */
+   //          //   if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+   //          //   {
+   //          //  //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+   //          //   }
 
-            //   /* Add event in event array which is send to cloud in next sync interval */
-            //   NewEvent0x0B(); // Connection up event
-            //   break;
+   //          //   /* Add event in event array which is send to cloud in next sync interval */
+   //          //   NewEvent0x0B(); // Connection up event
+   //          //   break;
 
-         case LTE_LC_NW_REG_UICC_FAIL:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");
+   //       case LTE_LC_NW_REG_UICC_FAIL:
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");
 
-            modem.connection_stat = false;
+   //          modem.connection_stat = false;
 
-            /* Add event in event array which is send to cloud in next sync interval */
-            NewEvent0x0C(); // Connection down event
-            break;
+   //          /* Add event in event array which is send to cloud in next sync interval */
+   //          NewEvent0x0C(); // Connection down event
+   //          break;
 
-         default:
-            break;
-         }
+   //       default:
+   //          break;
+   //       }
 
-         if (modem.connection_stat == true)
-         {
-            /* Network operator MNC */
-            rtc_print_debug_timestamp();
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Cellular connection successfully established. Operator: ");
+   //       if (modem.connection_stat == true)
+   //       {
+   //          /* Network operator MNC */
+   //          rtc_print_debug_timestamp();
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Cellular connection successfully established. Operator: ");
 
-            if (!strncmp(modem.oper + 3, "01", 2))
-            {
-               shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Deutsche Telekom");
-            }
-            else if (!strncmp(modem.oper + 3, "02", 2))
-            {
-               shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Vodafone");
-            }
-            else if (!strncmp(modem.oper + 3, "03", 2))
-            {
-               shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Telefonica");
-            }
-            else
-            {
-               shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "unkown");
-            }
+   //          if (!strncmp(modem.oper + 3, "01", 2))
+   //          {
+   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Deutsche Telekom");
+   //          }
+   //          else if (!strncmp(modem.oper + 3, "02", 2))
+   //          {
+   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Vodafone");
+   //          }
+   //          else if (!strncmp(modem.oper + 3, "03", 2))
+   //          {
+   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Telefonica");
+   //          }
+   //          else
+   //          {
+   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "unkown");
+   //          }
 
-            /* RSSI */
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", rssi: %ddBm", modem.RSSI);
+   //          /* RSSI */
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", rssi: %ddBm", modem.RSSI);
 
-            /* SIM IMEI number */
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
+   //          /* SIM IMEI number */
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
 
-            /* Connection details */
-            memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-            err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
-            rtc_print_debug_timestamp();
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
-         }
-      }
+   //          /* Connection details */
+   //          memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+   //          err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
+   //          rtc_print_debug_timestamp();
+   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
+   //       }
+   //    }
 
-      /* Save curretn registration status*/
-      modem.registration_status[1] = modem.registration_status[0];
-   }
-   else
-   {
-      printk("err\r\n");
-   }
+   //    /* Save curretn registration status*/
+   //    modem.registration_status[1] = modem.registration_status[0];
+   // }
+   // else
+   // {
+   //    printk("err\r\n");
+   // }
 }
 
 void modem_update_information(void)
