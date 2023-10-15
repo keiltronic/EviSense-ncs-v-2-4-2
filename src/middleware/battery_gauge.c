@@ -22,8 +22,8 @@ uint8_t battery_avoid_multiple_notifications = false; // If the device is charge
 uint16_t battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
 uint16_t battery_gauge_temperature_progress_delay = BATTERY_GAUGE_TEMPERATURE_PROGRESS_DELAY;
 
-struct i2c_dt_spec battery_lo_i2c = I2C_DT_SPEC_GET(BATTERY_NODE_LO);
-struct i2c_dt_spec battery_hi_i2c = I2C_DT_SPEC_GET(BATTERY_NODE_HI);
+struct i2c_dt_spec battery_lo_i2c = I2C_DT_SPEC_GET(DT_ALIAS(batterygaugelo));
+struct i2c_dt_spec battery_hi_i2c = I2C_DT_SPEC_GET(DT_ALIAS(batterygaugehi));
 
 void battery_gauge_init(void)
 {
@@ -500,7 +500,6 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[0] = (reg & 0xFF);
     data[1] = (uint8_t)val;
     data[2] = (uint8_t)(val >> 8);
-    // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_HI);
 
     ret = i2c_write_dt(&battery_hi_i2c, data, sizeof(data));
     if (ret != 0)
@@ -520,7 +519,6 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[0] = reg;
     data[1] = (uint8_t)val;
     data[2] = (uint8_t)(val >> 8);
-    // i2c_write(i2c_dev, data, 3, (uint16_t)MAX1720X_ADDR_LO);
 
     ret = i2c_write_dt(&battery_lo_i2c, data, sizeof(data));
     if (ret != 0)
@@ -545,7 +543,8 @@ uint16_t battery_gauge_read(uint16_t reg)
   if (reg >= 0x100)
   {
     // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
-    ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
+     ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
+
     if (ret != 0)
     {
       printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_hi_i2c.addr, (reg & 0xFF), ret);
@@ -555,13 +554,13 @@ uint16_t battery_gauge_read(uint16_t reg)
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_hi_i2c.addr, reg, readout[0], readout[1]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X (old 0x%X), register 0x%X the value 0x%X 0x%X\n", battery_hi_i2c.addr, MAX1720X_ADDR_HI, reg, readout[0], readout[1]);
     }
   }
   else
   {
-    // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_LO, reg, &readout, 2);
     ret = i2c_burst_read_dt(&battery_lo_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    if (ret != 0)
     {
       printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, (reg & 0xFF), ret);
       return 0;
@@ -570,7 +569,7 @@ uint16_t battery_gauge_read(uint16_t reg)
     if (Parameter.battery_gauge_sniff_i2c == true)
     {
       rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X, register 0x%X the value 0x%X 0x%X\n", battery_lo_i2c.addr, reg, readout[0], readout[1]);
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Read from address 0x%X (old 0x%X), register 0x%X the value 0x%X 0x%X\n", battery_lo_i2c.addr, MAX1720X_ADDR_LO, reg, readout[0], readout[1]);
     }
   }
 
