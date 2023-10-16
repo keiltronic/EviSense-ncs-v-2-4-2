@@ -76,7 +76,7 @@ static int cmd_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
-   nrf_modem_lib_shutdown();
+  nrf_modem_lib_shutdown();
   sys_reboot(0);
   return 0;
 }
@@ -90,311 +90,327 @@ static int cmd_hard_reboot(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   Device_PushRAMToFlash();
-    lte_lc_power_off();
+  lte_lc_power_off();
   gpio_pin_set_dt(&reset_switch, 1);
 
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_flash_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+ */
+static int cmd_flash_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.flash_verbose == false)
-//   {
-//     Parameter.flash_verbose = true;
-//     shell_print(shell, "Flash memory verbose mode on");
-//   }
-//   else
-//   {
-//     Parameter.flash_verbose = false;
-//     shell_print(shell, "Flash memory verbose mode off");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.flash_verbose == false)
+  {
+    Parameter.flash_verbose = true;
+    shell_print(shell, "Flash memory verbose mode on");
+  }
+  else
+  {
+    Parameter.flash_verbose = false;
+    shell_print(shell, "Flash memory verbose mode off");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+ */
+static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint8_t id[4];
-//   uint16_t err;
+  uint8_t id[4];
+  uint16_t err;
 
-//   //! #
-//   // gpio_pin_set_raw(gpio_dev, 27, 0);
-//   // err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
-//   // gpio_pin_set_raw(gpio_dev, 27, 1);
+  // gpio_pin_set_raw(gpio_dev, 27, 0);
+  gpio_pin_set_dt(atoi(argv[1]), 0);
+  err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  //  gpio_pin_set_raw(gpio_dev, 27, 1);
+  gpio_pin_set_dt(atoi(argv[1]), 1);
 
-//   if (err)
-//   {
-//     return -EIO;
-//   }
+  if (err)
+  {
+    return -EIO;
+  }
 
-//   shell_print(shell, "First 4 ID bytes: 0x%02X 0x%02X 0x%02X 0x%02X", id[0], id[1], id[2], id[3]);
+  shell_print(shell, "First 4 ID bytes: 0x%02X 0x%02X 0x%02X 0x%02X", id[0], id[1], id[2], id[3]);
 
-//   if (id[0] != 0x20)
-//   { // Manufacturer ID - 0x20 = Micron
-//     return -EIO;
-//   }
+  if (id[0] != 0x20)
+  { // Manufacturer ID - 0x20 = Micron
+    return -EIO;
+  }
 
-//   if (id[1] != 0xBA)
-//   { //  1. byte Device ID - 0xBA = 3V version
-//     return -EIO;
-//   }
+  if (id[1] != 0xBA)
+  { //  1. byte Device ID - 0xBA = 3V version
+    return -EIO;
+  }
 
-//   if (id[2] != 0x21)
-//   { //  2. byte Device ID - 0x21 = 1GBit verion
-//     return -EIO;
-//   }
+  if (id[2] != 0x21)
+  { //  2. byte Device ID - 0x21 = 1GBit verion
+    return -EIO;
+  }
 
-//   if (id[3] != 0x10)
-//   { //  3. byte Device ID - 0x10 = number of remaining ID bytes (16 bytes left)
-//     return -EIO;
-//   }
+  if (id[3] != 0x10)
+  { //  3. byte Device ID - 0x10 = number of remaining ID bytes (16 bytes left)
+    return -EIO;
+  }
 
-//   shell_print(shell, "Found Micron 3V 1Gbit NOR flash memory");
+  shell_print(shell, "Found Micron 3V 1Gbit NOR flash memory");
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_flashtest(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+ */
+static int cmd_flashtest(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 2)
-//   {
-//     if (flash_CommunicationTest(atoi(argv[1])))
-//     {
-//       shell_print(shell, "Test passed");
-//     }
-//     else
-//     {
-//       shell_print(shell, "Test failed");
-//     }
-//   }
-//   return 0;
-// }
+  if (argc == 2)
+  {
+    if (flash_CommunicationTest(atoi(argv[1])))
+    {
+      shell_print(shell, "Test passed");
+    }
+    else
+    {
+      shell_print(shell, "Test failed");
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
-// {
-//   int16_t err;
+ */
+static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
+{
+  int16_t err;
 
-//   if (argc == 2)
-//   {
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RSTEN, NULL, 0);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+  if (argc == 2)
+  {
 
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RST, NULL, 0);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RSTEN, NULL, 0);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//     shell_print(shell, "OK");
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameter list");
-//   }
-//   return 0;
-// }
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RST, NULL, 0);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-// /*!
-//  *  @brief This is the function description
+    shell_print(shell, "OK");
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameter list");
+  }
+  return 0;
+}
 
-//  */
-// static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint8_t status[3];
-//   uint16_t err;
+/*!
+ *  @brief This is the function description
 
-//   if (argc == 2)
-//   {
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR1, &status[0], 1);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+ */
+static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **argv)
+{
+  uint8_t status[3];
+  uint16_t err;
 
-//     if (err)
-//     {
-//       return -EIO;
-//     }
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR2, &status[1], 1);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+  if (argc == 2)
+  {
 
-//     if (err)
-//     {
-//       return -EIO;
-//     }
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR3, &status[2], 1);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR1, &status[0], 1);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//     if (err)
-//     {
-//       return -EIO;
-//     }
+    if (err)
+    {
+      return -EIO;
+    }
 
-//     shell_print(shell, "Status 1: 0x%02X, status 2: 0x%02X, status 3: 0x%02X", status[0], status[1], status[2]);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameter list");
-//   }
-//   return 0;
-// }
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR2, &status[1], 1);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-// /*!
-//  *  @brief This is the function description
+    if (err)
+    {
+      return -EIO;
+    }
 
-//  */
-// static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint8_t status;
-//   uint16_t err;
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR3, &status[2], 1);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//   if (argc == 2)
-//   {
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RFSR, &status, 1);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+    if (err)
+    {
+      return -EIO;
+    }
 
-//     if (err)
-//     {
-//       return -EIO;
-//     }
+    shell_print(shell, "Status 1: 0x%02X, status 2: 0x%02X, status 3: 0x%02X", status[0], status[1], status[2]);
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameter list");
+  }
+  return 0;
+}
 
-//     shell_print(shell, "Flag stat: 0x%02X", status);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameter list");
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
 
-// /*!
-//  *  @brief This is the function description
+ */
+static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, char **argv)
+{
+  uint8_t status;
+  uint16_t err;
 
-//  */
-// static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint16_t err;
+  if (argc == 2)
+  {
 
-//   if (argc == 2)
-//   {
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, FLASH_CLFSR, 0, 0);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RFSR, &status, 1);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//     if (err)
-//     {
-//       shell_print(shell, "Error: %d", -EIO);
-//       return -EIO;
-//     }
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameter list");
-//   }
-//   return 0;
-// }
+    if (err)
+    {
+      return -EIO;
+    }
 
-// /*!
-//  *  @brief This is the function description
+    shell_print(shell, "Flag stat: 0x%02X", status);
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameter list");
+  }
+  return 0;
+}
 
-//  */
-// static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 4)
-//   {
-//     uint32_t start_addr = 0;
+/*!
+ *  @brief This is the function description
 
-//     start_addr = strtol(argv[2], NULL, 16);
-//     flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
-//   }
-//   else
-//   {
-//     shell_print(shell, "Address range not valid");
-//   }
-//   return 0;
-// }
+ */
+static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char **argv)
+{
+  uint16_t err;
 
-// /*!
-//  *  @brief This is the function description
+  if (argc == 2)
+  {
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, FLASH_CLFSR, 0, 0);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//  */
-// static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint8_t rslt;
-//   uint16_t err;
+    if (err)
+    {
+      shell_print(shell, "Error: %d", -EIO);
+      return -EIO;
+    }
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameter list");
+  }
+  return 0;
+}
 
-//   if (argc == 3)
-//   {
-//     //! #
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-//     // err = flash_access_register(spi_dev, &spi_cfg, (uint8_t)atoi(argv[2]), &rslt, 1);
-//     // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+/*!
+ *  @brief This is the function description
 
-//     if (err)
-//     {
-//       return -EIO;
-//     }
+ */
+static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 4)
+  {
+    uint32_t start_addr = 0;
 
-//     shell_print(shell, "Result: 0x%02X", rslt);
-//   }
-//   else
-//   {
-//     shell_print(shell, "error");
-//   }
+    start_addr = strtol(argv[2], NULL, 16);
+    //    flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
+  }
+  else
+  {
+    shell_print(shell, "Address range not valid");
+  }
+  return 0;
+}
 
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
 
-// /*!
-//  *  @brief This is the function description
+ */
+static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
+{
+  uint8_t rslt;
+  uint16_t err;
 
-//  */
-// static int cmd_writereg(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint16_t data = 0;
+  if (argc == 3)
+  {
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    gpio_pin_set_dt(atoi(argv[1]), 0);
+    err = flash_access_register(spi_dev, &spi_cfg, (uint8_t)atoi(argv[2]), &rslt, 1);
+    gpio_pin_set_dt(atoi(argv[1]), 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
-//   if (argc == 5)
-//   {
-//     data = atoi(argv[3]);
-//     flash_write_register((uint8_t)atoi(argv[1]), (uint32_t)atoi(argv[2]), &data, atoi(argv[4])); // <cs-pin>,<reg>,<data>,<len>
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid parameter list");
-//   }
-//   return 0;
-// }
+    if (err)
+    {
+      return -EIO;
+    }
+
+    shell_print(shell, "Result: 0x%02X", rslt);
+  }
+  else
+  {
+    shell_print(shell, "error");
+  }
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+
+ */
+static int cmd_writereg(const struct shell *shell, size_t argc, char **argv)
+{
+  uint16_t data = 0;
+
+  if (argc == 5)
+  {
+    data = atoi(argv[3]);
+    //  flash_write_register((uint8_t)atoi(argv[1]), (uint32_t)atoi(argv[2]), &data, atoi(argv[4])); // <cs-pin>,<reg>,<data>,<len>
+  }
+  else
+  {
+    shell_print(shell, "Invalid parameter list");
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1600,7 +1616,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
 
     RFID_TurnOff();
 
-   // System.RFID_TransparentMode = true;
+    // System.RFID_TransparentMode = true;
     gpio_pin_set_dt(&rfid_trigger_pin, 1);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
   }
@@ -2116,7 +2132,7 @@ static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
   //     shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
   //   }
   // }
-   return 0;
+  return 0;
 }
 
 /*!
@@ -2124,72 +2140,72 @@ static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_connection_type(const struct shell *shell, size_t argc, char **argv)
 {
-  if (argc == 1)
-  {
-    switch (Parameter.network_connection_type)
-    {
-    case LTE_M:
-      shell_print(shell, "Network connection type: LTE-M");
-      break;
+  // if (argc == 1)
+  // {
+  //   switch (Parameter.network_connection_type)
+  //   {
+  //   case LTE_M:
+  //     shell_print(shell, "Network connection type: LTE-M");
+  //     break;
 
-    case NB_IOT:
-      shell_print(shell, "Network connection type: NB_IoT");
-      break;
+  //   case NB_IOT:
+  //     shell_print(shell, "Network connection type: NB_IoT");
+  //     break;
 
-    default:
-      shell_print(shell, "Invalid type set.");
-      break;
-    }
-  }
-  else
-  {
-    switch (atoi(argv[1]))
-    {
+  //   default:
+  //     shell_print(shell, "Invalid type set.");
+  //     break;
+  //   }
+  // }
+  // else
+  // {
+  //   switch (atoi(argv[1]))
+  //   {
 
-    case LTE_M:
+  //   case LTE_M:
 
-      Parameter.network_connection_type = LTE_M;
+  //     Parameter.network_connection_type = LTE_M;
 
-      /* Turn modem off */
-      lte_lc_power_off();
-      k_msleep(500);
+  //     /* Turn modem off */
+  //     lte_lc_power_off();
+  //     k_msleep(500);
 
-      /* Set modem to use LTE-M*/
-      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
-      k_msleep(500);
+  //     /* Set modem to use LTE-M*/
+  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
+  //     k_msleep(500);
 
-      /* Turn modem on - it will automatically search for networks*/
-      lte_lc_normal();
+  //     /* Turn modem on - it will automatically search for networks*/
+  //     lte_lc_normal();
 
-      shell_print(shell, "Set network connection type to LTE-M");
-      break;
+  //     shell_print(shell, "Set network connection type to LTE-M");
+  //     break;
 
-    case NB_IOT:
+  //   case NB_IOT:
 
-      Parameter.network_connection_type = NB_IOT;
-      /* Turn modem off */
-      lte_lc_power_off();
-      k_msleep(500);
+  //     Parameter.network_connection_type = NB_IOT;
+  //     /* Turn modem off */
+  //     lte_lc_power_off();
+  //     k_msleep(500);
 
-      /* Set modem to use LTE-M*/
-      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
-      k_msleep(500);
+  //     /* Set modem to use LTE-M*/
+  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
+  //     k_msleep(500);
 
-      /* Turn modem on - it will automatically search for networks*/
-      lte_lc_normal();
+  //     /* Turn modem on - it will automatically search for networks*/
+  //     lte_lc_normal();
 
-      shell_print(shell, "Set network connection type to NB_IoT");
-      break;
+  //     shell_print(shell, "Set network connection type to NB_IoT");
+  //     break;
 
-    default:
-      shell_print(shell, "Invalid type.");
-      break;
-    }
+  //   default:
+  //     shell_print(shell, "Invalid type.");
+  //     break;
+  //   }
 
-    shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
-    Parameter_PushRAMToFlash();
-  }
-   return 0;
+  //   shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
+  //   Parameter_PushRAMToFlash();
+  // }
+  return 0;
 }
 
 /*!
@@ -2302,7 +2318,7 @@ static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
   // ARG_UNUSED(argc);
   // ARG_UNUSED(argv);
 
-   int16_t err = 0;
+  int16_t err = 0;
   // enum lte_lc_nw_reg_status status;
   // enum lte_lc_func_mode mode;
 
@@ -2330,7 +2346,7 @@ static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
     // }
   }
 
- // err = lte_lc_nw_reg_status_get(&status);
+  // err = lte_lc_nw_reg_status_get(&status);
 
   if (err == 0)
   {
@@ -2525,28 +2541,28 @@ static int cmd_rfid_frequency(const struct shell *shell, size_t argc, char **arg
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   flash_EraseAll(GPIO_PIN_FLASH_CS1);
-//   shell_print(shell, "OK");
-//   return 0;
-// }
+  // flash_EraseAll(GPIO_PIN_FLASH_CS1);
+  shell_print(shell, "OK");
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_erasesector(const struct shell *shell, size_t argc, char **argv)
-// {
-//   flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
-//   shell_print(shell, "OK");
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_erasesector(const struct shell *shell, size_t argc, char **argv)
+{
+  // flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
+  shell_print(shell, "OK");
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -2766,7 +2782,7 @@ static int cmd_print_parameter_flash(const struct shell *shell, size_t argc, cha
 
   PARAMETER readout;
 
-  flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+  // flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
 
   Parameter_PrintValues(&readout);
   return 0;
@@ -4257,22 +4273,169 @@ static int cmd_list_room_and_mop(const struct shell *shell, size_t argc, char **
  */
 static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
-  ARG_UNUSED(argc);
-  ARG_UNUSED(argv);
 
-  shell_print(shell, "Initializing spi device.");
-  flash_init();
+  // /* Set to 1 to test the chip erase functionality. Please be aware that this
+  //  * operation takes quite a while (it depends on the chip size, but can easily
+  //  * take tens of seconds).
+  //  * Note - erasing of the test region or whole chip is performed only when
+  //  *        CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE is not enabled.
+  //  */
+  // #define ERASE_WHOLE_CHIP 0
 
-  // uint16_t i = 0;
+  // #define TEST_REGION_OFFSET 0xFE00
+  // #define TEST_REGION_SIZE 0x400
 
-  // for (i = 0; i < atoi(argv[1]); i++)
-  // {
-  //   NewEvent0x0D();
-  //   k_msleep(10);
-  //   event_simulation_in_progress = true;
-  // }
+  //   static uint8_t write_buf[TEST_REGION_SIZE];
+  //   static uint8_t read_buf[TEST_REGION_SIZE];
 
-  // event_simulation_in_progress = false;
+  //   printk("DataFlash sample on %s\n", CONFIG_BOARD);
+
+  //   int i;
+  //   int err;
+  //   uint8_t data;
+  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
+  //   struct flash_pages_info pages_info;
+  //   size_t page_count, chip_size;
+  // #endif
+
+  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
+  //   page_count = flash_get_page_count(flash1_dev);
+  //   (void)flash_get_page_info_by_idx(flash1_dev, 0, &pages_info);
+  //   chip_size = page_count * pages_info.size;
+  //   printk("Using %s, chip size: %u bytes (page: %u)\n", flash1_dev->name, chip_size, pages_info.size);
+  // #endif
+
+  //   printk("Reading the first byte of the test region ... ");
+  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, &data, 1);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+
+  //   ++data;
+  //   printk("Preparing test content starting with 0x%02X.\n", data);
+  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
+  //   {
+  //     write_buf[i] = (uint8_t)(data + i);
+  //   }
+
+  // #ifndef CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE
+  //   if (ERASE_WHOLE_CHIP)
+  //   {
+  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
+  //     printk("Erasing the whole chip... ");
+  //     err = flash_erase(flash1_dev, 0, chip_size);
+  // #else
+  // #error To full chip erase you need enable flash page layout
+  // #endif
+  //   }
+  //   else
+  //   {
+  //     printk("Erasing the test region... ");
+  //     err = flash_erase(flash1_dev, TEST_REGION_OFFSET, TEST_REGION_SIZE);
+  //   }
+
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+
+  //   printk("Checking if the test region is erased... ");
+  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, read_buf, TEST_REGION_SIZE);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
+  //   {
+  //     if (read_buf[i] != 0xFF)
+  //     {
+  //       printk("\nERROR at read_buf[%d]: "
+  //              "expected 0x%02X, got 0x%02X\n",
+  //              i, 0xFF, read_buf[i]);
+  //       return 0;
+  //     }
+  //   }
+
+  //   printk("OK\n");
+  // #endif /* !CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE */
+
+  //   printk("Writing the first half of the test region... ");
+  //   err = flash_write(flash1_dev, TEST_REGION_OFFSET, write_buf, TEST_REGION_SIZE / 2);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+
+  //   printk("Writing the second half of the test region... ");
+  //   err = flash_write(flash1_dev, TEST_REGION_OFFSET + TEST_REGION_SIZE / 2, &write_buf[TEST_REGION_SIZE / 2], TEST_REGION_SIZE / 2);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+
+  //   printk("Reading the whole test region... ");
+  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, read_buf, TEST_REGION_SIZE);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+
+  //   printk("Checking the read content... ");
+  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
+  //   {
+  //     if (read_buf[i] != write_buf[i])
+  //     {
+  //       printk("\nERROR at read_buf[%d]: "
+  //              "expected 0x%02X, got 0x%02X\n",
+  //              i, write_buf[i], read_buf[i]);
+  //       return 0;
+  //     }
+  //   }
+
+  //   printk("OK\n");
+
+  // #if defined(CONFIG_PM_DEVICE)
+  //   printk("Putting the flash device into suspended state... ");
+  //   err = pm_device_action_run(flash_dev, PM_DEVICE_ACTION_SUSPEND);
+  //   if (err != 0)
+  //   {
+  //     printk("FAILED\n");
+  //     return 0;
+  //   }
+
+  //   printk("OK\n");
+  // #endif
+
+  //   k_sleep(K_FOREVER);
+  //   return 0;
+  //   // uint16_t i = 0;
+
+  //   // for (i = 0; i < atoi(argv[1]); i++)
+  //   // {
+  //   //   NewEvent0x0D();
+  //   //   k_msleep(10);
+  //   //   event_simulation_in_progress = true;
+  //   // }
+
+  //   // event_simulation_in_progress = false;
   return 0;
 }
 
@@ -4405,25 +4568,25 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(battery, &battery, "Command set to control and read out battery data", NULL);
 
-    SHELL_STATIC_SUBCMD_SET_CREATE(modem,
-                                   SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
-                                   SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
-                                   SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
-                                   SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
-                                   SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
-                                   SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
-                                   SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
-                                   SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
-                                   SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
-                                   SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
-                                   SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
-                                   SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
-                                   SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
-                                   SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
-                                   SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
-                                   SHELL_SUBCMD_SET_END /* Array terminated. */
-    );
-    SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(modem,
+                                 SHELL_CMD(initialize, NULL, "Initialize all modem parameters", cmd_modem_initialize),
+                                 SHELL_CMD(mode, NULL, "Change modem mode", cmd_modem_mode),
+                                 SHELL_CMD(connection_type, NULL, "0 = LTE-M, 1 = NB-IoT", cmd_connection_type),
+                                 SHELL_CMD(settings, NULL, "Returns current modem settings", cmd_modem_settings),
+                                 SHELL_CMD(status, NULL, "Returns the network registration status", cmd_modem_status),
+                                 SHELL_CMD(version, NULL, "Returns firmware version of the modem", cmd_modem_version),
+                                 SHELL_CMD(command, NULL, "Send a AT command and prints out the response", cmd_modem_write),
+                                 SHELL_CMD(providers, NULL, "Lists all availible providers which can be used for connection", cmd_modem_providers),
+                                 SHELL_CMD(bands, NULL, "Lists all availible bands which can be used for connection", cmd_modem_bands),
+                                 SHELL_CMD(verbose, NULL, "Displays modem debug information", cmd_modem_verbose),
+                                 SHELL_CMD(rssi, NULL, "Returns the current rssi", cmd_modem_rssi),
+                                 SHELL_CMD(imei, NULL, "Returns the IMEI number of the modem", cmd_modem_imei),
+                                 SHELL_CMD(list_keys, NULL, "List all stored psk keys", cmd_modem_list_keys),
+                                 SHELL_CMD(add_psk, NULL, "List all stored psk keys", cmd_add_psk_key),
+                                 SHELL_CMD(add_psk_identity, NULL, "List all stored psk keys", cmd_add_psk_identity),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
 
   //   SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
   //                                  SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
@@ -4510,22 +4673,22 @@ void command_init(void)
   //   );
   //   SHELL_CMD_REGISTER(i2c, &i2c, "Command set for evaluating I2C bus slaves", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(flash,
-  //                                  SHELL_CMD(verbose, NULL, "Displays flash information", cmd_flash_verbose),
-  //                                  SHELL_CMD(id, NULL, "Returns the device ID", cmd_flash_device_id),
-  //                                  SHELL_CMD(check, NULL, "Start an integrety check.  Parameter: <CS_pin_no>", cmd_flashtest),
-  //                                  SHELL_CMD(erasesector, NULL, "Erase the sector at a specific address.  Parameter: <CS_pin_no>", cmd_erasesector),
-  //                                  SHELL_CMD(eraseall, NULL, "Erase the whole flash.  Parameter: <CS_pin_no>", cmd_eraseall),
-  //                                  SHELL_CMD(read, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <start_adr in hex (e.g. 0x8000)> <length>", cmd_readrange),
-  //                                  SHELL_CMD(read_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg_adr>", cmd_readreg),
-  //                                  SHELL_CMD(write_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg> <data>", cmd_writereg),
-  //                                  SHELL_CMD(status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetstatusreg),
-  //                                  SHELL_CMD(flag_status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetflagstatusreg),
-  //                                  SHELL_CMD(clear_flag_reg, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgclearflagreg),
-  //                                  SHELL_CMD(reset, NULL, "Initialze a soft reset of flash memory.  Parameter: <CS_pin_no>", cmd_flashreset),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(flash, &flash, "Command set to check, erase and readout external flash memory", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(flash,
+                                 SHELL_CMD(verbose, NULL, "Displays flash information", cmd_flash_verbose),
+                                 SHELL_CMD(id, NULL, "Returns the device ID", cmd_flash_device_id),
+                                 SHELL_CMD(check, NULL, "Start an integrety check.  Parameter: <CS_pin_no>", cmd_flashtest),
+                                 SHELL_CMD(erasesector, NULL, "Erase the sector at a specific address.  Parameter: <CS_pin_no>", cmd_erasesector),
+                                 SHELL_CMD(eraseall, NULL, "Erase the whole flash.  Parameter: <CS_pin_no>", cmd_eraseall),
+                                 SHELL_CMD(read, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <start_adr in hex (e.g. 0x8000)> <length>", cmd_readrange),
+                                 SHELL_CMD(read_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg_adr>", cmd_readreg),
+                                 SHELL_CMD(write_reg, NULL, "Reads an address range from flash. Parameter: <CS_pin_no> <reg> <data>", cmd_writereg),
+                                 SHELL_CMD(status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetstatusreg),
+                                 SHELL_CMD(flag_status, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgetflagstatusreg),
+                                 SHELL_CMD(clear_flag_reg, NULL, "Prints out status register values.  Parameter: <CS_pin_no>", cmd_flashgclearflagreg),
+                                 SHELL_CMD(reset, NULL, "Initialze a soft reset of flash memory.  Parameter: <CS_pin_no>", cmd_flashreset),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(flash, &flash, "Command set to check, erase and readout external flash memory", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(led,
                                  SHELL_CMD(color, NULL, "Color for rgb LED. Thre values need: <RED> <GREEN> <BLUE> (range 0-255)", cmd_led_color),

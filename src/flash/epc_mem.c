@@ -263,7 +263,7 @@ void EPC_Memory_Write_RFID_Record(uint8_t cs_pin, RFID_RECORD *record, uint32_t 
   /* Write epc tag data to flash*/
   if (wall_record_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
   {
-    flash_write(cs_pin, wall_record_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
+  //  flash_write(cs_pin, wall_record_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -295,7 +295,7 @@ void EPC_Memory_Write_Room_Record(uint8_t cs_pin, ROOM_RECORD *record, uint32_t 
   /* Write epc tag data to flash*/
   if (room_record_address < (ROOM_RECORD_REGION + ROOM_RECORD_REGION_LENGTH))
   {
-    flash_write(cs_pin, room_record_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
+  //  flash_write(cs_pin, room_record_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -327,7 +327,7 @@ void EPC_Memory_Write_Mop_Record(uint8_t cs_pin, MOP_RECORD *record, uint32_t in
   /* Write epc tag data to flash*/
   if (mop_record_address < (MOP_RECORD_REGION + MOP_RECORD_REGION_LENGTH))
   {
-    flash_write(cs_pin, mop_record_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
+ //   flash_write(cs_pin, mop_record_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -359,7 +359,7 @@ void EPC_Memory_Read_RFID_Record(uint8_t cs_pin, RFID_RECORD *record, uint32_t i
   /* Read epc tag from flash*/
   if (flash_epc_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
   {
-    flash_read(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
+ //   flash_read(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -423,7 +423,7 @@ void EPC_Memory_Read_Room_Record(uint8_t cs_pin, ROOM_RECORD *record, uint32_t i
   /* Read epc tag from flash*/
   if (flash_epc_address < (ROOM_RECORD_REGION + ROOM_RECORD_REGION_LENGTH))
   {
-    flash_read(cs_pin, flash_epc_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
+ //   flash_read(cs_pin, flash_epc_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -454,7 +454,7 @@ void EPC_Memory_Read_Mop_Record(uint8_t cs_pin, MOP_RECORD *record, uint32_t ind
   /* Read epc tag from flash*/
   if (flash_epc_address < (MOP_RECORD_REGION + MOP_RECORD_REGION_LENGTH))
   {
-    flash_read(cs_pin, flash_epc_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
+  //  flash_read(cs_pin, flash_epc_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)

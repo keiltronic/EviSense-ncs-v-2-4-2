@@ -20,4 +20,7 @@ extern void uninit_spi();
 extern struct device *spi_dev;
 extern struct spi_config spi_cfg;
 
+extern struct gpio_dt_spec cs1_pin;
+extern struct gpio_dt_spec cs2_pin;
+
 #endif
