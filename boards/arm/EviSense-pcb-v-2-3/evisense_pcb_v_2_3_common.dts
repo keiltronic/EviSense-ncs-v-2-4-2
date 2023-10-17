@@ -33,8 +33,6 @@
 		imuint2 = &imuint2;
 		boosterenable = &booster_enable;
 		rfidtrigger = &rfid_trigger;
-		cs1 = &cs_1;
-		cs2 = &cs_2;
 		spi3 = &spi3;
 	};
 
@@ -58,16 +56,6 @@
 		rfid_trigger: rfid_trig {
 			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
 			label = "rfid reader trigger signal";
-		};
-
-		cs_1: chip_select_1 {
-			gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;
-			label = "Chip select 1";
-		};
-
-		cs_2: chip_select_2 {
-			gpios = <&gpio0 31 GPIO_ACTIVE_LOW>;
-			label = "Chip select 2";
 		};
 	};
 	
@@ -153,7 +141,7 @@
 &spi3 {
 	compatible = "nordic,nrf-spim";
 	status = "okay";
-	/*cs-gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;/*, <&gpio0 31 GPIO_ACTIVE_LOW>;*/
+	cs-gpios = <&gpio0 27 GPIO_ACTIVE_LOW>, <&gpio0 31 GPIO_ACTIVE_LOW>;
 	pinctrl-0 = <&spi3_default>;
 	pinctrl-1 = <&spi3_sleep>;
 	pinctrl-names = "default", "sleep";
@@ -253,7 +241,6 @@
 };
 
 / {
-
 	reserved-memory {
 		#address-cells = <1>;
 		#size-cells = <1>;

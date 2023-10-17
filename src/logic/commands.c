@@ -129,13 +129,9 @@ static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **ar
   ARG_UNUSED(argv);
 
   uint8_t id[4];
-  uint16_t err;
+    uint16_t err;
 
-  // gpio_pin_set_raw(gpio_dev, 27, 0);
-  gpio_pin_set_dt(atoi(argv[1]), 0);
   err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
-  //  gpio_pin_set_raw(gpio_dev, 27, 1);
-  gpio_pin_set_dt(atoi(argv[1]), 1);
 
   if (err)
   {
@@ -202,18 +198,7 @@ static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 2)
   {
-
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_RSTEN, NULL, 0);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
-
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RST, NULL, 0);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     shell_print(shell, "OK");
   }
@@ -235,34 +220,21 @@ static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **
 
   if (argc == 2)
   {
-
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR1, &status[0], 1);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
       return -EIO;
     }
 
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR2, &status[1], 1);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
       return -EIO;
     }
 
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR3, &status[2], 1);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -289,12 +261,7 @@ static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, cha
 
   if (argc == 2)
   {
-
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_RFSR, &status, 1);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -320,11 +287,7 @@ static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char *
 
   if (argc == 2)
   {
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, FLASH_CLFSR, 0, 0);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -350,7 +313,7 @@ static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
     uint32_t start_addr = 0;
 
     start_addr = strtol(argv[2], NULL, 16);
-    //    flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
+        flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
   }
   else
   {
@@ -370,12 +333,7 @@ static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 3)
   {
-    //! #
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
-    gpio_pin_set_dt(atoi(argv[1]), 0);
     err = flash_access_register(spi_dev, &spi_cfg, (uint8_t)atoi(argv[2]), &rslt, 1);
-    gpio_pin_set_dt(atoi(argv[1]), 1);
-    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -403,7 +361,7 @@ static int cmd_writereg(const struct shell *shell, size_t argc, char **argv)
   if (argc == 5)
   {
     data = atoi(argv[3]);
-    //  flash_write_register((uint8_t)atoi(argv[1]), (uint32_t)atoi(argv[2]), &data, atoi(argv[4])); // <cs-pin>,<reg>,<data>,<len>
+    flash_write_register((uint8_t)atoi(argv[1]), (uint32_t)atoi(argv[2]), &data, atoi(argv[4])); // <cs-pin>,<reg>,<data>,<len>
   }
   else
   {
@@ -412,18 +370,18 @@ static int cmd_writereg(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_i2csan(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+ */
+static int cmd_i2csan(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   i2c_scanner(1);
-//   return 0;
-// }
+ // i2c_scanner(1);
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -478,8 +436,6 @@ static int cmd_battery_charge_cycles(const struct shell *shell, size_t argc, cha
 
 /*!
  *  @brief This is the function description
-
-
  */
 static int cmd_battery_temperature(const struct shell *shell, size_t argc, char **argv)
 {
@@ -645,24 +601,23 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_format(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//  */
-// static int cmd_datalog_format(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+  rtc_print_debug_timestamp();
+  shell_print(shell, "Starting formating datalog memory. This task takes a few seconds to complete");
+  datalog_CleardatalogAll();
+  datalog_MemoryFull = false;
 
-//   rtc_print_debug_timestamp();
-//   shell_print(shell, "Starting formating datalog memory. This task takes a few seconds to complete");
-//   datalog_CleardatalogAll();
-//   datalog_MemoryFull = false;
-
-//   rtc_print_debug_timestamp();
-//   shell_print(shell, "Formatting done");
-//   return 0;
-// }
+  rtc_print_debug_timestamp();
+  shell_print(shell, "Formatting done");
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -901,7 +856,6 @@ static int cmd_search_rfid_record(const struct shell *shell, size_t argc, char *
 
     /* compute how long the work took (assumes no counter rollover) */
     cycles_spent = stop_time - start_time;
-    // nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
     nanoseconds_spent = k_cyc_to_ns_floor64(cycles_spent);
   }
   else
@@ -1604,7 +1558,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
       k_msleep(100);
     }
 
-    gpio_pin_set_dt(&rfid_trigger_pin, 0);
+    //gpio_pin_set_dt(&rfid_trigger_pin, 0);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode activated.\n");
   }
   else
@@ -1617,7 +1571,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
     RFID_TurnOff();
 
     // System.RFID_TransparentMode = true;
-    gpio_pin_set_dt(&rfid_trigger_pin, 1);
+    //gpio_pin_set_dt(&rfid_trigger_pin, 1);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
   }
 
@@ -1672,7 +1626,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      gpio_pin_set_dt(&dev_led, 1);
+      //gpio_pin_set_dt(&dev_led, 1);
     }
   }
   else
@@ -1686,7 +1640,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      gpio_pin_set_dt(&dev_led, 1);
+      //gpio_pin_set_dt(&dev_led, 1);
     }
   }
   Parameter_PushRAMToFlash();
@@ -2549,7 +2503,7 @@ static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-  // flash_EraseAll(GPIO_PIN_FLASH_CS1);
+   flash_EraseAll(GPIO_PIN_FLASH_CS1);
   shell_print(shell, "OK");
   return 0;
 }
@@ -2559,7 +2513,7 @@ static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_erasesector(const struct shell *shell, size_t argc, char **argv)
 {
-  // flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
+   flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
   shell_print(shell, "OK");
   return 0;
 }
@@ -2782,7 +2736,7 @@ static int cmd_print_parameter_flash(const struct shell *shell, size_t argc, cha
 
   PARAMETER readout;
 
-  // flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
 
   Parameter_PrintValues(&readout);
   return 0;
@@ -2870,81 +2824,81 @@ static int cmd_buzzer_duty_cycle(const struct shell *shell, size_t argc, char **
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_timestamp(const struct shell *shell, size_t argc, char **argv)
-// {
-//   rtc_print_timestamp();
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_timestamp(const struct shell *shell, size_t argc, char **argv)
+{
+  rtc_print_timestamp();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_time(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     rtc_print_time();
-//     shell_print(shell, " ");
-//   }
-//   else
-//   {
-//     if ((strlen(argv[1]) >= 5) && (strlen(argv[1]) <= 8))
-//     { // Valid langth:   h:m:s and hh:mm:ss
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_time(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    rtc_print_time();
+    shell_print(shell, " ");
+  }
+  else
+  {
+    if ((strlen(argv[1]) >= 5) && (strlen(argv[1]) <= 8))
+    { // Valid langth:   h:m:s and hh:mm:ss
 
-//       char delimiter[] = ":"; // This character in string gets replaced by \0
-//       char *ptr = NULL;       // Pointer to string section
+      char delimiter[] = ":"; // This character in string gets replaced by \0
+      char *ptr = NULL;       // Pointer to string section
 
-//       volatile uint8_t hour = 0;
-//       volatile uint8_t min = 0;
-//       volatile uint8_t sec = 0;
+      volatile uint8_t hour = 0;
+      volatile uint8_t min = 0;
+      volatile uint8_t sec = 0;
 
-//       /* Find first segment in string */
-//       ptr = strtok(argv[1], delimiter); // strtok cuts the string into pieces sperated by delimiter characters
-//       if (ptr != NULL)
-//       {
-//         hour = atoi(ptr);
-//       }
+      /* Find first segment in string */
+      ptr = strtok(argv[1], delimiter); // strtok cuts the string into pieces sperated by delimiter characters
+      if (ptr != NULL)
+      {
+        hour = atoi(ptr);
+      }
 
-//       /* Find second segment in string */
-//       ptr = strtok(NULL, delimiter);
-//       if (ptr != NULL)
-//       {
-//         min = atoi(ptr);
-//       }
+      /* Find second segment in string */
+      ptr = strtok(NULL, delimiter);
+      if (ptr != NULL)
+      {
+        min = atoi(ptr);
+      }
 
-//       /* Find third segment in string */
-//       ptr = strtok(NULL, delimiter);
-//       if (ptr != NULL)
-//       {
-//         sec = atoi(ptr);
-//       }
+      /* Find third segment in string */
+      ptr = strtok(NULL, delimiter);
+      if (ptr != NULL)
+      {
+        sec = atoi(ptr);
+      }
 
-//       /* Validate user input and if correct set new system time*/
-//       if (((hour >= 0) && (hour <= 24)) &&
-//           ((min >= 0) && (min <= 60)) &&
-//           ((sec >= 0) && (sec <= 60)))
-//       {
-//         ptm->tm_hour = hour;
-//         ptm->tm_min = min;
-//         ptm->tm_sec = sec;
+      /* Validate user input and if correct set new system time*/
+      if (((hour >= 0) && (hour <= 24)) &&
+          ((min >= 0) && (min <= 60)) &&
+          ((sec >= 0) && (sec <= 60)))
+      {
+        ptm->tm_hour = hour;
+        ptm->tm_min = min;
+        ptm->tm_sec = sec;
 
-//         /* convert local time to unix */
-//         unixtime = gmtime(&ptm);
+        /* convert local time to unix */
+        unixtime = gmtime(&ptm);
 
-//         /* Print new settings on console */
-//         rtc_print_time();
-//       }
-//       else
-//       {
-//         shell_error(shell, "Incorrect time format");
-//       }
-//     }
-//   }
-//   return 0;
-// }
+        /* Print new settings on console */
+        rtc_print_time();
+      }
+      else
+      {
+        shell_error(shell, "Incorrect time format");
+      }
+    }
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -4237,206 +4191,52 @@ static int cmd_list_room_and_mop(const struct shell *shell, size_t argc, char **
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_test_notification(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_test_notification(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.notification_test == false)
-//   {
-//     notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_LOWEST);
-//     Parameter.notification_test = true;
-//     Parameter.notifications_while_usb_connected = true;
-//     Parameter.notification_verbose = true;
+  if (Parameter.notification_test == false)
+  {
+    notification_set_priority(NOTIFICATION_PRIORITY_LEVEL_LOWEST);
+    Parameter.notification_test = true;
+    Parameter.notifications_while_usb_connected = true;
+    Parameter.notification_verbose = true;
 
-//     shell_print(shell, "Enabled notification test.");
-//   }
-//   else
-//   {
-//     Parameter.notification_test = false;
-//     Parameter.notifications_while_usb_connected = false;
-//     Parameter.notification_verbose = false;
-//     Notification.next_state = NOTIFICATION_CLEAR;
+    shell_print(shell, "Enabled notification test.");
+  }
+  else
+  {
+    Parameter.notification_test = false;
+    Parameter.notifications_while_usb_connected = false;
+    Parameter.notification_verbose = false;
+    Notification.next_state = NOTIFICATION_CLEAR;
 
-//     shell_print(shell, "Disabled notification test.");
-//   }
+    shell_print(shell, "Disabled notification test.");
+  }
 
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
  */
 static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
+    uint16_t i = 0;
 
-  // /* Set to 1 to test the chip erase functionality. Please be aware that this
-  //  * operation takes quite a while (it depends on the chip size, but can easily
-  //  * take tens of seconds).
-  //  * Note - erasing of the test region or whole chip is performed only when
-  //  *        CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE is not enabled.
-  //  */
-  // #define ERASE_WHOLE_CHIP 0
+    for (i = 0; i < atoi(argv[1]); i++)
+    {
+      NewEvent0x0D();
+      k_msleep(10);
+      event_simulation_in_progress = true;
+    }
 
-  // #define TEST_REGION_OFFSET 0xFE00
-  // #define TEST_REGION_SIZE 0x400
-
-  //   static uint8_t write_buf[TEST_REGION_SIZE];
-  //   static uint8_t read_buf[TEST_REGION_SIZE];
-
-  //   printk("DataFlash sample on %s\n", CONFIG_BOARD);
-
-  //   int i;
-  //   int err;
-  //   uint8_t data;
-  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
-  //   struct flash_pages_info pages_info;
-  //   size_t page_count, chip_size;
-  // #endif
-
-  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
-  //   page_count = flash_get_page_count(flash1_dev);
-  //   (void)flash_get_page_info_by_idx(flash1_dev, 0, &pages_info);
-  //   chip_size = page_count * pages_info.size;
-  //   printk("Using %s, chip size: %u bytes (page: %u)\n", flash1_dev->name, chip_size, pages_info.size);
-  // #endif
-
-  //   printk("Reading the first byte of the test region ... ");
-  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, &data, 1);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-
-  //   ++data;
-  //   printk("Preparing test content starting with 0x%02X.\n", data);
-  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
-  //   {
-  //     write_buf[i] = (uint8_t)(data + i);
-  //   }
-
-  // #ifndef CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE
-  //   if (ERASE_WHOLE_CHIP)
-  //   {
-  // #ifdef CONFIG_FLASH_PAGE_LAYOUT
-  //     printk("Erasing the whole chip... ");
-  //     err = flash_erase(flash1_dev, 0, chip_size);
-  // #else
-  // #error To full chip erase you need enable flash page layout
-  // #endif
-  //   }
-  //   else
-  //   {
-  //     printk("Erasing the test region... ");
-  //     err = flash_erase(flash1_dev, TEST_REGION_OFFSET, TEST_REGION_SIZE);
-  //   }
-
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-
-  //   printk("Checking if the test region is erased... ");
-  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, read_buf, TEST_REGION_SIZE);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
-  //   {
-  //     if (read_buf[i] != 0xFF)
-  //     {
-  //       printk("\nERROR at read_buf[%d]: "
-  //              "expected 0x%02X, got 0x%02X\n",
-  //              i, 0xFF, read_buf[i]);
-  //       return 0;
-  //     }
-  //   }
-
-  //   printk("OK\n");
-  // #endif /* !CONFIG_SPI_FLASH_AT45_USE_READ_MODIFY_WRITE */
-
-  //   printk("Writing the first half of the test region... ");
-  //   err = flash_write(flash1_dev, TEST_REGION_OFFSET, write_buf, TEST_REGION_SIZE / 2);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-
-  //   printk("Writing the second half of the test region... ");
-  //   err = flash_write(flash1_dev, TEST_REGION_OFFSET + TEST_REGION_SIZE / 2, &write_buf[TEST_REGION_SIZE / 2], TEST_REGION_SIZE / 2);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-
-  //   printk("Reading the whole test region... ");
-  //   err = flash_read(flash1_dev, TEST_REGION_OFFSET, read_buf, TEST_REGION_SIZE);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-
-  //   printk("Checking the read content... ");
-  //   for (i = 0; i < TEST_REGION_SIZE; ++i)
-  //   {
-  //     if (read_buf[i] != write_buf[i])
-  //     {
-  //       printk("\nERROR at read_buf[%d]: "
-  //              "expected 0x%02X, got 0x%02X\n",
-  //              i, write_buf[i], read_buf[i]);
-  //       return 0;
-  //     }
-  //   }
-
-  //   printk("OK\n");
-
-  // #if defined(CONFIG_PM_DEVICE)
-  //   printk("Putting the flash device into suspended state... ");
-  //   err = pm_device_action_run(flash_dev, PM_DEVICE_ACTION_SUSPEND);
-  //   if (err != 0)
-  //   {
-  //     printk("FAILED\n");
-  //     return 0;
-  //   }
-
-  //   printk("OK\n");
-  // #endif
-
-  //   k_sleep(K_FOREVER);
-  //   return 0;
-  //   // uint16_t i = 0;
-
-  //   // for (i = 0; i < atoi(argv[1]); i++)
-  //   // {
-  //   //   NewEvent0x0D();
-  //   //   k_msleep(10);
-  //   //   event_simulation_in_progress = true;
-  //   // }
-
-  //   // event_simulation_in_progress = false;
-  return 0;
+ return 0;
 }
 
 /*!

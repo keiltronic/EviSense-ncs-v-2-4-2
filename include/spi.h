@@ -1,9 +1,9 @@
 /**
  * @file spi.h
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 17 Oct 2023
  * @brief This file contains functions headers to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 #ifndef SPI_H
@@ -14,13 +14,11 @@
 #include <zephyr/drivers/spi.h>
 #include "parameter_mem.h"
 
-extern void init_spi(void);
+extern void spi_init(void);
 extern void uninit_spi();
 
 extern struct device *spi_dev;
-extern struct spi_config spi_cfg;
-
-extern struct gpio_dt_spec cs1_pin;
-extern struct gpio_dt_spec cs2_pin;
+extern struct spi_config spi_cfg1;
+extern struct spi_config spi_cfg2;
 
 #endif

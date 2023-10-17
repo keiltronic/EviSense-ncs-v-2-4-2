@@ -72,19 +72,19 @@
 #include "i2c.h"
 #include "led.h"
 #include "modem.h"
-// #include "notification.h"
+#include "notification.h"
 #include "parameter_mem.h"
 // #include "pwm.h"
-// #include "rfid.h"
+ #include "rfid.h"
 #include "rtc.h"
 #include "spi.h"
 #include "system_mem.h"
 #include "threads.h"
 #include "uart.h"
 #include "rfid.h"
-// #include "usb.h"
+#include "usb.h"
 // #include "aws_fota.h"
-// #include "test.h"
+#include "test.h"
 #include "hard_reset.h"
 
 /*!
@@ -106,7 +106,7 @@ void ValidateParameterInExernalFlash(void)
 	modem_init();
 
 	/* Fetch modem version */
-	modem_update_information();
+	//modem_update_information();
 
 	/* Print firmware version */
 	if (pcb_test_is_running == false)
@@ -356,7 +356,8 @@ void main(void)
 	wdt_init();
 	wdt_reset();
 	adc_init();
-	init_spi();
+	//init_spi();
+	spi_init();
 	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	// init_pwm();
 	// flash_init();

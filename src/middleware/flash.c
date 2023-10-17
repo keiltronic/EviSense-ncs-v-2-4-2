@@ -30,11 +30,11 @@ void flash_cs(uint8_t cs_pin, uint8_t state)
 {
   if (cs_pin == GPIO_PIN_FLASH_CS1)
   {
-    gpio_pin_set_dt(&cs1_pin, state);
+ //   gpio_pin_set_dt(&cs1_pin, state);
   }
   else if (cs_pin == GPIO_PIN_FLASH_CS2)
   {
-    gpio_pin_set_dt(&cs2_pin, state);
+ //   gpio_pin_set_dt(&cs2_pin, state);
   }
 }
 
