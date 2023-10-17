@@ -129,9 +129,16 @@ static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **ar
   ARG_UNUSED(argv);
 
   uint8_t id[4];
-    uint16_t err;
+  uint16_t err;
 
-  err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  if ((uint8_t)atoi(argv[1]) == FLASH1)
+  {
+    err = flash_access_register(spi_dev, &spi_cfg1, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  }
+  else if ((uint8_t)atoi(argv[1]) == FLASH2)
+  {
+    err = flash_access_register(spi_dev, &spi_cfg2, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  }
 
   if (err)
   {
@@ -198,7 +205,14 @@ static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 2)
   {
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RSTEN, NULL, 0);
+    if ((uint8_t)atoi(argv[2]) == FLASH1)
+    {
+      //err = //flash_access__register(spi_dev, &spi_cfg1, FLASH_RSTEN, NULL, 0);
+    }
+    else if ((uint8_t)atoi(argv[2]) == FLASH2)
+    {
+      //err = //flash_access__register(spi_dev, &spi_cfg2, FLASH_RSTEN, NULL, 0);
+    }
 
     shell_print(shell, "OK");
   }
@@ -220,21 +234,43 @@ static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **
 
   if (argc == 2)
   {
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR1, &status[0], 1);
+
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR1, &status[0], 1);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR1, &status[0], 1);
+    }
 
     if (err)
     {
       return -EIO;
     }
 
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR2, &status[1], 1);
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR2, &status[1], 1);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR2, &status[1], 1);
+    }
 
     if (err)
     {
       return -EIO;
     }
 
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR3, &status[2], 1);
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR3, &status[2], 1);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR3, &status[2], 1);
+    }
 
     if (err)
     {
@@ -261,7 +297,14 @@ static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, cha
 
   if (argc == 2)
   {
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_RFSR, &status, 1);
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RFSR, &status, 1);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RFSR, &status, 1);
+    }
 
     if (err)
     {
@@ -287,7 +330,14 @@ static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char *
 
   if (argc == 2)
   {
-    err = flash_access_register(spi_dev, &spi_cfg, FLASH_CLFSR, 0, 0);
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_CLFSR, 0, 0);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_CLFSR, 0, 0);
+    }
 
     if (err)
     {
@@ -313,7 +363,7 @@ static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
     uint32_t start_addr = 0;
 
     start_addr = strtol(argv[2], NULL, 16);
-        flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
+    flash_MemoryViewer(atol(argv[1]), start_addr, atol(argv[3]));
   }
   else
   {
@@ -324,7 +374,6 @@ static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
 
 /*!
  *  @brief This is the function description
-
  */
 static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
 {
@@ -333,7 +382,14 @@ static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 3)
   {
-    err = flash_access_register(spi_dev, &spi_cfg, (uint8_t)atoi(argv[2]), &rslt, 1);
+    if ((uint8_t)atoi(argv[1]) == FLASH1)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg1, (uint8_t)atoi(argv[2]), &rslt, 1);
+    }
+    else if ((uint8_t)atoi(argv[1]) == FLASH2)
+    {
+      err = flash_access_register(spi_dev, &spi_cfg2, (uint8_t)atoi(argv[2]), &rslt, 1);
+    }
 
     if (err)
     {
@@ -379,7 +435,7 @@ static int cmd_i2csan(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
- // i2c_scanner(1);
+  // i2c_scanner(1);
   return 0;
 }
 
@@ -1558,7 +1614,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
       k_msleep(100);
     }
 
-    //gpio_pin_set_dt(&rfid_trigger_pin, 0);
+    // gpio_pin_set_dt(&rfid_trigger_pin, 0);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode activated.\n");
   }
   else
@@ -1571,7 +1627,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
     RFID_TurnOff();
 
     // System.RFID_TransparentMode = true;
-    //gpio_pin_set_dt(&rfid_trigger_pin, 1);
+    // gpio_pin_set_dt(&rfid_trigger_pin, 1);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
   }
 
@@ -1626,7 +1682,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      //gpio_pin_set_dt(&dev_led, 1);
+      // gpio_pin_set_dt(&dev_led, 1);
     }
   }
   else
@@ -1640,7 +1696,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      //gpio_pin_set_dt(&dev_led, 1);
+      // gpio_pin_set_dt(&dev_led, 1);
     }
   }
   Parameter_PushRAMToFlash();
@@ -2503,7 +2559,7 @@ static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-   flash_EraseAll(GPIO_PIN_FLASH_CS1);
+  flash_EraseAll(GPIO_PIN_FLASH_CS1);
   shell_print(shell, "OK");
   return 0;
 }
@@ -2513,7 +2569,7 @@ static int cmd_eraseall(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_erasesector(const struct shell *shell, size_t argc, char **argv)
 {
-   flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
+  flash_EraseSector_4kB(GPIO_PIN_FLASH_CS1, atol(argv[1]));
   shell_print(shell, "OK");
   return 0;
 }
@@ -2736,7 +2792,7 @@ static int cmd_print_parameter_flash(const struct shell *shell, size_t argc, cha
 
   PARAMETER readout;
 
-   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+  flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &readout.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
 
   Parameter_PrintValues(&readout);
   return 0;
@@ -4227,16 +4283,16 @@ static int cmd_test_notification(const struct shell *shell, size_t argc, char **
  */
 static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
-    uint16_t i = 0;
+  uint16_t i = 0;
 
-    for (i = 0; i < atoi(argv[1]); i++)
-    {
-      NewEvent0x0D();
-      k_msleep(10);
-      event_simulation_in_progress = true;
-    }
+  for (i = 0; i < atoi(argv[1]); i++)
+  {
+    NewEvent0x0D();
+    k_msleep(10);
+    event_simulation_in_progress = true;
+  }
 
- return 0;
+  return 0;
 }
 
 /*!

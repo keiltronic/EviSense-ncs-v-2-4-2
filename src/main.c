@@ -356,11 +356,9 @@ void main(void)
 	wdt_init();
 	wdt_reset();
 	adc_init();
-	//init_spi();
 	spi_init();
 	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	// init_pwm();
-	// flash_init();
 
 	/* Check if charger is pluged into the device while it is booting */
 	uint16_t vusb_digit = 0;

@@ -30,6 +30,9 @@
 
 #define SPI_MAX_BLOCK_LENGTH      1 // byte
 
+#define FLASH1                    1
+#define FLASH2                    2
+
 /* Register definition */
 #define FLASH_RDID                0x9E
 #define FLASH_MANUFACTURER_ID_CMD 0x9F
@@ -96,29 +99,29 @@
 #define FLASH_SRWD_BIT_MASK       0x08
 #define FLASH_JEDEC               0x9F
 
-extern void init_flash(uint8_t cs_pin);
+extern void init_flash(uint8_t flash_no);
 extern uint8_t flash_access(const struct device *spi, struct spi_config *spi_cfg, uint8_t cmd, uint32_t addr, uint8_t *data,uint32_t len);
 extern uint8_t flash_access_register(const struct device *spi, struct spi_config *spi_cfg, uint8_t reg, uint8_t *data,uint32_t len);
-extern void flash_write(uint8_t cs_pin, uint32_t addr, uint8_t *data,uint32_t len);
-extern void flash_read(uint8_t cs_pin, uint32_t addr, uint8_t *data,uint32_t len);
-extern void flash_read_fast(uint8_t cs_pin, uint32_t addr, uint8_t *data,uint32_t len);
-extern void flash_write_register(uint8_t cs_pin, uint32_t reg, uint8_t *data,uint32_t len);
-extern void flash_read_register(uint8_t cs_pin, uint32_t reg, uint8_t *data,uint32_t len);
-extern uint8_t flash_TestAndClearBlock(const uint8_t cs_pin, const uint32_t addr, const uint32_t cmp_value);
-extern uint8_t acces_write_reg(const uint8_t cs_pin, const struct device *spi, struct spi_config *spi_cfg, uint8_t reg, uint32_t addr);
-extern void flash_WriteRegister(uint8_t cs_pin, uint8_t reg, uint8_t data);
-extern void flash_WaitWhileBusy(uint8_t cs_pin);
-extern void flash_WriteEnable(uint8_t cs_pin);
-extern void flash_EraseAll(const uint8_t cs_pin);
-extern void flash_EraseSector_4kB(const uint8_t cs_pin, const uint32_t addr);
-extern void flash_EraseSector_32kB(const uint8_t cs_pin, const uint32_t addr); 
-extern void flash_EraseSector_64kB(const uint8_t cs_pin, const uint32_t addr) ;
-extern void flash_ClearBlock_4kB(const uint8_t cs_pin, const uint32_t memory, const uint32_t length);
-extern void flash_ClearBlock_64kB(const uint8_t cs_pin, const uint32_t memory, const uint32_t length);
-extern void flash_ClearMemAll(uint8_t cs_pin, uint32_t memory, uint32_t length);
-extern uint32_t flash_GetLastFrameNumber(const uint8_t cs_pin, const uint32_t sub_sector_size, const uint32_t start_address, const uint32_t memory_length, const uint32_t frame_length);
-extern void flash_MemoryViewer(uint8_t cs_pin, uint32_t start_address, uint32_t length);
-extern uint8_t flash_CommunicationTest(uint8_t cs_pin);
-extern uint8_t flash_ValidateDataInMemory(uint8_t cs_pin, uint32_t offset, uint32_t addr, uint16_t accumulation_length, uint8_t clear_value);
+extern void flash_write(uint8_t flash_no, uint32_t addr, uint8_t *data,uint32_t len);
+extern void flash_read(uint8_t flash_no, uint32_t addr, uint8_t *data,uint32_t len);
+extern void flash_read_fast(uint8_t flash_no, uint32_t addr, uint8_t *data,uint32_t len);
+extern void flash_write_register(uint8_t flash_no, uint32_t reg, uint8_t *data,uint32_t len);
+extern void flash_read_register(uint8_t flash_no, uint32_t reg, uint8_t *data,uint32_t len);
+extern uint8_t flash_TestAndClearBlock(const uint8_t flash_no, const uint32_t addr, const uint32_t cmp_value);
+extern uint8_t acces_write_reg(const uint8_t flash_no, const struct device *spi, struct spi_config *spi_cfg, uint8_t reg, uint32_t addr);
+extern void flash_WriteRegister(uint8_t flash_no, uint8_t reg, uint8_t data);
+extern void flash_WaitWhileBusy(uint8_t flash_no);
+extern void flash_WriteEnable(uint8_t flash_no);
+extern void flash_EraseAll(const uint8_t flash_no);
+extern void flash_EraseSector_4kB(const uint8_t flash_no, const uint32_t addr);
+extern void flash_EraseSector_32kB(const uint8_t flash_no, const uint32_t addr); 
+extern void flash_EraseSector_64kB(const uint8_t flash_no, const uint32_t addr) ;
+extern void flash_ClearBlock_4kB(const uint8_t flash_no, const uint32_t memory, const uint32_t length);
+extern void flash_ClearBlock_64kB(const uint8_t flash_no, const uint32_t memory, const uint32_t length);
+extern void flash_ClearMemAll(uint8_t flash_no, uint32_t memory, uint32_t length);
+extern uint32_t flash_GetLastFrameNumber(const uint8_t flash_no, const uint32_t sub_sector_size, const uint32_t start_address, const uint32_t memory_length, const uint32_t frame_length);
+extern void flash_MemoryViewer(uint8_t flash_no, uint32_t start_address, uint32_t length);
+extern uint8_t flash_CommunicationTest(uint8_t flash_no);
+extern uint8_t flash_ValidateDataInMemory(uint8_t flash_no, uint32_t offset, uint32_t addr, uint16_t accumulation_length, uint8_t clear_value);
 
 #endif
