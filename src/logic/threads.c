@@ -256,7 +256,7 @@ void epc_thread(void *dummy1, void *dummy2, void *dummy3)
     /* Check new tags if the are listed in epc database and check if it is a mop, tag or room tag */
     if ((event_clearing_in_progress == false) && ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true)))
     {
-      epc_process_tags();
+ //     epc_process_tags();
     }
 
     k_msleep(1);

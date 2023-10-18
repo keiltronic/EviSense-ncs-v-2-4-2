@@ -20,9 +20,7 @@
 		led0 = &led0;
 		btn0 = &button0;
 		btn1 = &button1;
-		flash1 = &mt25ql256_0;
-		flash2 = &mt25ql256_1;
-		mysensor = &bmx160;
+	/* mysensor = &bmx160;*/
 		myleddriver = &lp5009;
 		lp5009enable = &lp5009_enable;
 		batterygaugelo = &max17201g_lo;
@@ -34,6 +32,8 @@
 		boosterenable = &booster_enable;
 		rfidtrigger = &rfid_trigger;
 		spi3 = &spi3;
+		myflash1 = &mt25ql256_0;
+		myflash2 = &mt25ql256_1;
 	};
 
 	leds {
@@ -151,25 +151,15 @@
 		reg = <0>;
 		spi-max-frequency = <8000000>;
 		jedec-id = [ ef 40 21  ];
-
 		size = <268435456>;
-	/*	has-dpd;
-		t-enter-dpd = <3000>;
-		t-exit-dpd = <30000>;
-		sector-size = <65536>;
-		block-size = <2048>;
-		page-size = <256>;*/
 	};
 
 	mt25ql256_1: mt25ql256@1 {
 		compatible = "jedec,spi-nor";
 		reg = <1>;
 		spi-max-frequency = <8000000>;
-		jedec-id = [ ef 40 21 ]; /*[ 20 BA 19  ];*/
+		jedec-id = [ ef 40 21 ]; 
 		size = <268435456>;
-	/*	sector-size = <65536>;
-		block-size = <2048>;
-		page-size = <256>;*/
 	};
 };
 

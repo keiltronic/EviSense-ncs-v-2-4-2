@@ -370,10 +370,10 @@ void main(void)
 	}
 
 	/* Init flash memory and load NVM parameters to RAM */
-	init_flash(GPIO_PIN_FLASH_CS1);
-	init_flash(GPIO_PIN_FLASH_CS2);
+	//init_flash(GPIO_PIN_FLASH_CS1);
+	//init_flash(GPIO_PIN_FLASH_CS2);
 	wdt_reset();
-	ValidateParameterInExernalFlash();
+//	ValidateParameterInExernalFlash();
 
 	/* Init propritary driver  which depents on loaded parameters*/
 	battery_gauge_init();
@@ -451,7 +451,7 @@ void main(void)
 	/* Clean event storage region in external flash */
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
-	Event_ClearCompleteFlash();
+//	Event_ClearCompleteFlash();
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;

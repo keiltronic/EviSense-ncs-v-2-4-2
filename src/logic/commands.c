@@ -207,11 +207,11 @@ static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
   {
     if ((uint8_t)atoi(argv[2]) == FLASH1)
     {
-      //err = //flash_access__register(spi_dev, &spi_cfg1, FLASH_RSTEN, NULL, 0);
+      // err = //flash_access__register(spi_dev, &spi_cfg1, FLASH_RSTEN, NULL, 0);
     }
     else if ((uint8_t)atoi(argv[2]) == FLASH2)
     {
-      //err = //flash_access__register(spi_dev, &spi_cfg2, FLASH_RSTEN, NULL, 0);
+      // err = //flash_access__register(spi_dev, &spi_cfg2, FLASH_RSTEN, NULL, 0);
     }
 
     shell_print(shell, "OK");
@@ -4283,14 +4283,23 @@ static int cmd_test_notification(const struct shell *shell, size_t argc, char **
  */
 static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
-  uint16_t i = 0;
-
-  for (i = 0; i < atoi(argv[1]); i++)
+  if (atoi(argv[1]) == 1)
   {
-    NewEvent0x0D();
-    k_msleep(10);
-    event_simulation_in_progress = true;
+    multi_sector_test(&spi_flash_1);
   }
+  else if (atoi(argv[1]) == 2)
+  {
+    multi_sector_test(&spi_flash_2);
+  }
+
+  // uint16_t i = 0;
+
+  // for (i = 0; i < atoi(argv[1]); i++)
+  // {
+  //   NewEvent0x0D();
+  //   k_msleep(10);
+  //   event_simulation_in_progress = true;
+  // }
 
   return 0;
 }
