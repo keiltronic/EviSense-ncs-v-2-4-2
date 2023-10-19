@@ -210,24 +210,24 @@ void modem_update_registration_status(void)
       /* Print a meessage if there was a change in registration status*/
       if (modem.registration_status[0] != modem.registration_status[1])
       {
-         rtc_print_debug_timestamp();
-         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
+      //   rtc_print_debug_timestamp();
+       //  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
 
          switch (modem.AcT)
          {
          case 7:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
+        //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
             break;
 
          case 9:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
+        //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
             break;
 
          default:
             break;
          }
 
-         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
+   //      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
 
          switch (modem.registration_status[0])
          {
@@ -253,19 +253,19 @@ void modem_update_registration_status(void)
             break;
 
          case LTE_LC_NW_REG_SEARCHING:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
+           // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
 
             modem.connection_stat = false;
             break;
 
          case LTE_LC_NW_REG_REGISTRATION_DENIED:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
+         //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
 
             modem.connection_stat = false;
             break;
 
          case LTE_LC_NW_REG_UNKNOWN:
-            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
+           // shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
 
             modem.connection_stat = false;
 
@@ -288,20 +288,20 @@ void modem_update_registration_status(void)
             NewEvent0x0B(); // Connection up event
             break;
 
-            // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-            //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
+            case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+              shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
 
-            //   modem.connection_stat = true;
+              modem.connection_stat = true;
 
-            //   /* Connect also to keiltronic AWS cloud */
-            //   if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-            //   {
-            //  //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-            //   }
+              /* Connect also to keiltronic AWS cloud */
+              if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+              {
+             //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+              }
 
-            //   /* Add event in event array which is send to cloud in next sync interval */
-            //   NewEvent0x0B(); // Connection up event
-            //   break;
+              /* Add event in event array which is send to cloud in next sync interval */
+              NewEvent0x0B(); // Connection up event
+              break;
 
          case LTE_LC_NW_REG_UICC_FAIL:
             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");

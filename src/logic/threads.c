@@ -307,6 +307,9 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
   {
     wdt_reset(); // blocks watchdog activation
 
+    rtc_print_debug_timestamp();
+     shell_print(shell_backend_uart_get_ptr(), "");
+
     /* Update step detection */
     if (datalog_ReadOutisActive == false)
     {
@@ -491,7 +494,7 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
     /* Update registration status */
     if (Parameter.modem_disable == false)
     {
-      modem_update_registration_status(); // This function needs 1sec to execute
+     // modem_update_registration_status(); // This function needs 1sec to execute
 
       /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
