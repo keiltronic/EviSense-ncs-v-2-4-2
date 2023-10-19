@@ -1,9 +1,9 @@
 /**
  * @file datalog_mem.h
  * @author Thomas Keilbach | keiltronic GmbH
- * @date 27 Oct 2022
+ * @date 19 Oct 2023
  * @brief This file contains functions headers to communicate with the pheripherals
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 #ifndef LOGDATA_MEM_H
@@ -65,6 +65,5 @@ extern uint8_t datalog_MemoryFull;
 extern uint8_t datalog_EraseActive;
 extern uint8_t setaddress_flag;
 extern uint8_t datalog_ReadOutisActive;
-
 
 #endif

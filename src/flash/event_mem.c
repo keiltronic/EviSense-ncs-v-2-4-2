@@ -24,70 +24,70 @@ uint8_t event_clearing_in_progress = false;
  */
 void Event_StorePackedUsageObjectToFlash(void)
 {
-//     uint8_t *payload = NULL;
-//     uint32_t len = 0;
+    uint8_t *payload = NULL;
+    uint32_t len = 0;
 
-//     /* Pack UsageObject inlcuding all events in a protobuf object */
-//     len = protobuf_EncodeUsageUpdateObject(&payload); // payload holds the packed protobuf message
+    /* Pack UsageObject inlcuding all events in a protobuf object */
+    len = protobuf_EncodeUsageUpdateObject(&payload); // payload holds the packed protobuf message
 
-//     /* Write data to flash */
-//     if (len > 0)
-//     {
-//         if (Event_NumberOfOutsourcedMessages < EVENT_MAX_OUTSOURCED_MESSAGES)
-//         {
-//             if (Parameter.events_verbose)
-//             {
-//                 rtc_print_debug_timestamp();             
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Packing (protobuf) and outsourcing local event array in RAM to external flash memory. Length: %d bytes\n", len);         
-//             }
+    /* Write data to flash */
+    if (len > 0)
+    {
+        if (Event_NumberOfOutsourcedMessages < EVENT_MAX_OUTSOURCED_MESSAGES)
+        {
+            if (Parameter.events_verbose)
+            {
+                rtc_print_debug_timestamp();             
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Packing (protobuf) and outsourcing local event array in RAM to external flash memory. Length: %d bytes\n", len);         
+            }
 
-//             if (Event_flash_write_head < (EVENT_MEM + EVENT_MEM_LENGTH))
-//             {
-//                 /* Erase sector if the address points to the first element of the sector */
-//                 if (!(EVENT_MEM + Event_flash_write_head) % FLASH_SUBSUBSECTOR_SIZE)
-//                 {
-//                     flash_EraseSector_64kB(GPIO_PIN_FLASH_CS1, EVENT_MEM + Event_flash_write_head); 
+            if (Event_flash_write_head < (EVENT_MEM + EVENT_MEM_LENGTH))
+            {
+                /* Erase sector if the address points to the first element of the sector */
+                if (!(EVENT_MEM + Event_flash_write_head) % FLASH_SUBSUBSECTOR_SIZE)
+                {
+                    flash_EraseSector_64kB(GPIO_PIN_FLASH_CS1, EVENT_MEM + Event_flash_write_head); 
 
-//                     if (Parameter.events_verbose)
-//                     {
-//                         rtc_print_debug_timestamp();
-//                         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Flash sector erase. Adress: 0x%X\n", Event_flash_write_head);
-//                     }
-//                 }
-//                 flash_write(GPIO_PIN_FLASH_CS1, EVENT_MEM + Event_flash_write_head, payload, len);
-//             }
-//             else
-//             {
-//                 rtc_print_debug_timestamp();
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Event flash memory is full.");
-//             }
+                    if (Parameter.events_verbose)
+                    {
+                        rtc_print_debug_timestamp();
+                        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Flash sector erase. Adress: 0x%X\n", Event_flash_write_head);
+                    }
+                }
+                flash_write(GPIO_PIN_FLASH_CS1, EVENT_MEM + Event_flash_write_head, payload, len);
+            }
+            else
+            {
+                rtc_print_debug_timestamp();
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Event flash memory is full.");
+            }
 
-//             /* Store outsourced message information in list array */
-//             Event_NumberOfOutsourcedMessages++;
-//             Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].start_address = Event_flash_write_head;
-//             Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].length = len;
+            /* Store outsourced message information in list array */
+            Event_NumberOfOutsourcedMessages++;
+            Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].start_address = Event_flash_write_head;
+            Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].length = len;
 
-//             if (Parameter.events_verbose)
-//             {
-//                 rtc_print_debug_timestamp();
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Outsourced messages: %d, start addr: 0x%X, length: %d\n", Event_NumberOfOutsourcedMessages, EVENT_MEM + Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].start_address, Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].length);
-//             }
-//         }
-//         else
-//         {
-//             if (Parameter.events_verbose)
-//             {
-//                 rtc_print_debug_timestamp();
-//                 shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Reached maximum number of %d outsourced messages", EVENT_MAX_OUTSOURCED_MESSAGES);
-//             }
-//         }
+            if (Parameter.events_verbose)
+            {
+                rtc_print_debug_timestamp();
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Outsourced messages: %d, start addr: 0x%X, length: %d\n", Event_NumberOfOutsourcedMessages, EVENT_MEM + Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].start_address, Event_ListOfOutsourcedMessages[Event_NumberOfOutsourcedMessages - 1].length);
+            }
+        }
+        else
+        {
+            if (Parameter.events_verbose)
+            {
+                rtc_print_debug_timestamp();
+                shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Reached maximum number of %d outsourced messages", EVENT_MAX_OUTSOURCED_MESSAGES);
+            }
+        }
 
-//         /* Update address in flash for next write cycle */
-//         Event_flash_write_head += (len + 1);
+        /* Update address in flash for next write cycle */
+        Event_flash_write_head += (len + 1);
 
-//         /* Free the allocated serialized buffer */
-//         free(payload);
-//     }
+        /* Free the allocated serialized buffer */
+        free(payload);
+    }
 }
 
 /*!
@@ -97,20 +97,20 @@ void Event_StorePackedUsageObjectToFlash(void)
  */
 uint8_t Event_ReadFromFlash(uint32_t address, uint32_t length, uint8_t **buf)
 {
-//     uint8_t *memory = NULL;
+    uint8_t *memory = NULL;
 
-//     memory = malloc(length);
+    memory = malloc(length);
 
-//     if (memory != NULL)
-//     {
-//         flash_read(GPIO_PIN_FLASH_CS1, EVENT_MEM + address, memory, length);
-//         *buf = memory;
-//         return true;
-//     }
-//     else
-//     {
-//         return false;
-//     }
+    if (memory != NULL)
+    {
+        flash_read(GPIO_PIN_FLASH_CS1, EVENT_MEM + address, memory, length);
+        *buf = memory;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
  }
 
 /*!
@@ -120,10 +120,10 @@ uint8_t Event_ReadFromFlash(uint32_t address, uint32_t length, uint8_t **buf)
  */
 void Event_ClearCompleteFlash(void)
 {
-//     event_clearing_in_progress = true;
+    event_clearing_in_progress = true;
 
-//     flash_ClearMemAll(GPIO_PIN_FLASH_CS1, EVENT_MEM, EVENT_MEM_LENGTH);
-//     Event_flash_write_head = 0UL;
+    flash_ClearMemAll(GPIO_PIN_FLASH_CS1, EVENT_MEM, EVENT_MEM_LENGTH);
+    Event_flash_write_head = 0UL;
 
-//     event_clearing_in_progress = false;
+    event_clearing_in_progress = false;
  }

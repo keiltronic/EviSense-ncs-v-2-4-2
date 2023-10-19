@@ -72,10 +72,10 @@ void System_CheckStatusFlagChange(void)
       System.StatusErrors != System.StatusErrors_old)
   {
 
-    // if (datalog_EnableFlag == true && datalog_ReadOutisActive == false)
-    // {
-    //   datalog_StoreFrame();
-    // }
+    if (datalog_EnableFlag == true && datalog_ReadOutisActive == false)
+    {
+      datalog_StoreFrame();
+    }
   }
 
   System.StatusInputs_old = System.StatusInputs;

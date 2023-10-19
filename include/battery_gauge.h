@@ -64,7 +64,6 @@
 #define tPOR 10
 #define tBLOCK 8000
 
-
 /* Battery percentage level */
 #define BATTERY_GOOD 60 // 3650
 #define BATTERY_LOW 20  // 3400
@@ -124,5 +123,7 @@ extern uint8_t battery_charge_enable_notification;
 extern uint8_t battery_avoid_multiple_notifications;
 extern uint16_t battery_charge_status_delay;
 extern uint16_t battery_gauge_temperature_progress_delay;
+
+extern struct gpio_dt_spec charge_enable_pin;
 
 #endif

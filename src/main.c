@@ -74,8 +74,8 @@
 #include "modem.h"
 #include "notification.h"
 #include "parameter_mem.h"
-// #include "pwm.h"
- #include "rfid.h"
+#include "pwm.h"
+#include "rfid.h"
 #include "rtc.h"
 #include "spi.h"
 #include "system_mem.h"
@@ -106,7 +106,7 @@ void ValidateParameterInExernalFlash(void)
 	modem_init();
 
 	/* Fetch modem version */
-	//modem_update_information();
+	modem_update_information();
 
 	/* Print firmware version */
 	if (pcb_test_is_running == false)
@@ -252,7 +252,7 @@ void factorysettings(void)
 
 	if (Parameter.rfid_disable == false)
 	{
-		//	config_RFID();
+		config_RFID();
 	}
 
 	if (pcb_test_is_running == false)
@@ -358,7 +358,7 @@ void main(void)
 	adc_init();
 	spi_init();
 	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
-	// init_pwm();
+	pwm_init();
 
 	/* Check if charger is pluged into the device while it is booting */
 	uint16_t vusb_digit = 0;
@@ -370,10 +370,9 @@ void main(void)
 	}
 
 	/* Init flash memory and load NVM parameters to RAM */
-	//init_flash(GPIO_PIN_FLASH_CS1);
-	//init_flash(GPIO_PIN_FLASH_CS2);
+	flash_init();
 	wdt_reset();
-//	ValidateParameterInExernalFlash();
+	ValidateParameterInExernalFlash();
 
 	/* Init propritary driver  which depents on loaded parameters*/
 	battery_gauge_init();
@@ -391,13 +390,13 @@ void main(void)
 	 */
 	// err = boot_write_img_confirmed();
 
-	// if (err < 0)
-	// {
-	// 	rtc_print_debug_timestamp();
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: boot_write_img not confirmed errno %d\n", errno);
-	// 	rtc_print_debug_timestamp();
-	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: boot_write_img not confirmed err %d\n", err);
-	// }
+	if (err < 0)
+	{
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: boot_write_img not confirmed errno %d\n", errno);
+		rtc_print_debug_timestamp();
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: boot_write_img not confirmed err %d\n", err);
+	}
 
 	/* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
 	wdt_reset();
@@ -407,10 +406,10 @@ void main(void)
 
 	/* Allow FOTA connection to server only after reboot and if USB is connected (charging)*/
 	wdt_reset();
-	// if (System.charger_connected == true)
-	// {
-	// 	fota_reboot_while_usb_connected = true;
-	// }
+	if (System.charger_connected == true)
+	{
+		fota_reboot_while_usb_connected = true;
+	}
 
 	if (Parameter.rfid_autoscan == true)
 	{
@@ -451,11 +450,11 @@ void main(void)
 	/* Clean event storage region in external flash */
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
-//	Event_ClearCompleteFlash();
+	Event_ClearCompleteFlash();
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;
 
-	/* Disable blue dev led after boot cocmpleteI*/
+	/* Disable blue dev led after boot cocmplete */
 	gpio_pin_set_dt(&dev_led, 0);
 }

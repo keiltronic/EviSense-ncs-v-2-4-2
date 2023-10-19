@@ -39,15 +39,15 @@ void Device_InitRAM(void)
  * @brief This functions saves the current device structure in RAM to external flash memory.
  */
 void Device_PushRAMToFlash(void) {
- // flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, DEVICE_MEM, DEVICE_MEM_LENGTH);
-  //flash_write(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+  flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, DEVICE_MEM, DEVICE_MEM_LENGTH);
+  flash_write(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 }
 
 /*!
  * @brief This functions reads the the stored device structure from external flash memory to the RAM.
  */
 void Device_PopFlashToRAM(void) {
-//  flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+  flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &Device.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 }
 
 /*!

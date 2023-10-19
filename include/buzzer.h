@@ -14,9 +14,7 @@
 #include "system_mem.h"
 #include "parameter_mem.h"
 
-#define BUZZER_GPIO_PIN   26
 #define BUZZER_RES_FREQ   2700
-#define BUZZER_DUTY_CYCLE 50
 
 #define BUZZER_OFF        0
 #define BUZZER_ON         1

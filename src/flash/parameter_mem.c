@@ -109,7 +109,7 @@ void Parameter_InitRAM(void)
  */
 void Parameter_PopFlashToRAM(void)
 {
-//   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+   flash_read(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
  }
 
 /*!
@@ -117,8 +117,8 @@ void Parameter_PopFlashToRAM(void)
  */
  void Parameter_PushRAMToFlash(void)
  {
-//   flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, PARAMETER_MEM_LENGTH);
-//   flash_write(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
+   flash_ClearBlock_4kB(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, PARAMETER_MEM_LENGTH);
+   flash_write(GPIO_PIN_FLASH_CS2, PARAMETER_MEM, &Parameter.parameter_mem_bytes[0], PARAMETER_MEM_RAM_SIZE);
  }
 
 /**
@@ -128,83 +128,83 @@ void Parameter_PopFlashToRAM(void)
  */
 void Parameter_PrintValues(PARAMETER *para)
 {
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalog_Interval = %d\n", para->datalog_Interval);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "imu_interval = %d\n", para->imu_interval);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_interval = %d\n", para->rfid_interval);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_verbose = %d\n", para->rfid_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_output_power = %d\n", para->rfid_output_power);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_output_power_lifted = %d\n", para->rfid_output_power_lifted); 
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_frequency = %d\n", para->rfid_frequency);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalog_sniffFrame = %d\n", para->datalog_sniffFrame);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "stepdetection_verbose = %d\n", para->stepdetection_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "led_brightness = %d\n", para->led_brightness);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "buzzer_duty_cycle = %d\n", para->buzzer_duty_cycle);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "debug = %d\n", para->debug);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalogEnable = %d\n", para->datalogEnable);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "acc_noise_thr = %.2f\n", para->acc_noise_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_noise_thr = %.2f\n", para->gyr_noise_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_noise_thr = %.2f\n", para->mag_noise_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_spin_thr = %.2f\n", para->gyr_spin_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "frame_handle_angle_thr = %.2f\n", para->frame_handle_angle_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopping_thr_min = %.2f\n", para->floor_handle_angle_mopping_thr_min);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopping_thr_max = %.2f\n", para->floor_handle_angle_mopping_thr_max);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopchange_thr = %.2f\n", para->floor_handle_angle_mopchange_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopchange_duration = %ld\n", (uint32_t)para->min_mopchange_duration);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopframeflip_duration = %ld\n", (uint32_t)para->min_mopframeflip_duration);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "angle_smooth_factor = %.2f\n", para->angle_smooth_factor);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_smooth_factor = %.2f\n", para->gyr_smooth_factor);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopcycle_duration = %.2f\n", para->min_mopcycle_duration);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "max_mopcycle_duration = %.2f\n", para->max_mopcycle_duration);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_width = %.2f\n", para->mop_width);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_overlap = %.2f\n", para->mop_overlap);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mopcycle_sequence_thr = %.2f\n", para->mopcycle_sequence_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "peakfollower_update_delay = %ld\n", (uint32_t)para->peakfollower_update_delay);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_rfid_detection_thr = %ld\n", (uint32_t)para->mop_rfid_detection_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mopping_coverage_per_mop_thr = %.2f\n", para->mopping_coverage_per_mop_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algo_flag_verbose = %d\n", para->algo_flag_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algo_verbose = %d\n", para->algo_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "coap_verbose = %d\n", para->coap_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "events_verbose = %d\n", para->events_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "protobuf_verbose = %d\n", para->protobuf_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "modem_verbose = %d\n", para->modem_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "cloud_sync_interval_idle = %ld\n", para->cloud_sync_interval_idle);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "cloud_sync_interval_moving = %ld\n", para->cloud_sync_interval_moving);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "flash_verbose = %ld\n", para->flash_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "epc_verbose = %ld\n", para->epc_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_autoscan = %ld\n", para->rfid_autoscan);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "last_seen_locations_auto_reset_time = %ld\n", para->last_seen_locations_auto_reset_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "log_unkown_tags = %ld\n", para->log_unkown_tags);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "last_seen_mop_array_auto_reset_time = %ld\n", para->last_seen_mop_array_auto_reset_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "enable_blue_dev_led = %ld\n", para->enable_blue_dev_led);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notification_verbose = %ld\n", para->notification_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notifications_while_usb_connected = %ld\n", para->notifications_while_usb_connected);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "enable_rfid_confirmation_blinking = %ld\n", Parameter.enable_rfid_confirmation_blinking);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "max_sqm_coveraged_per_mop = %.2f\n", Parameter.max_sqm_coveraged_per_mop);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "usb_plugin_reset_time= %ld\n", Parameter.usb_plugin_reset_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "usb_auto_reset_time= %ld\n", Parameter.usb_auto_reset_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "anymotion_duration = %d\n", para->anymotion_duration);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "anymotion_thr= %d\n", Parameter.anymotion_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "motion_reset_time = %d\n", Parameter.motion_reset_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "fota_enable = %d\n", Parameter.fota_enable);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "fully_charged_indicator_time = %d\n", Parameter.fully_charged_indicator_time);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "current_shift_mop_check = %d\n", Parameter.current_shift_mop_check);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_charge_termination_current = %f\n", Parameter.battery_charge_termination_current);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_sniff_i2c = %d\n", Parameter.battery_gauge_sniff_i2c);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_charge_temp_min = %f\n", Parameter.battery_gauge_charge_temp_min);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_charge_temp_max = %f\n", Parameter.battery_gauge_charge_temp_max);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "network_connection_type = %d\n", Parameter.network_connection_type);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_id_refresh_timer = %d\n", Parameter.mop_id_refresh_timer);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "hit_shock_mag_thr = %f\n", Parameter.hit_shock_mag_thr);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algocontrol_bymag_det = %d\n", Parameter.algocontrol_bymag_det);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_det_threshold = %d\n", Parameter.mag_det_threshold);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_det_consecutive_samples = %d\n", Parameter.mag_det_consecutive_samples);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notification_test = %d\n", Parameter.notification_test);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_blink_notification = %d\n", Parameter.rfid_blink_notification);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "modem_disable = %d\n", Parameter.modem_disable);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_disable = %d\n", Parameter.rfid_disable);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "low_bat_threshold = %d\n", Parameter.low_bat_threshold);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "binary_search_verbose = %d\n", Parameter.binary_search_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "epc_raw_verbose = %d\n", Parameter.epc_raw_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_verbose = %d\n", Parameter.mop_verbose);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "event1statistics_interval = %d\n", Parameter.event1statistics_interval);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalog_Interval = %d\n", para->datalog_Interval);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "imu_interval = %d\n", para->imu_interval);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_interval = %d\n", para->rfid_interval);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_verbose = %d\n", para->rfid_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_output_power = %d\n", para->rfid_output_power);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_output_power_lifted = %d\n", para->rfid_output_power_lifted); 
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_frequency = %d\n", para->rfid_frequency);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalog_sniffFrame = %d\n", para->datalog_sniffFrame);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "stepdetection_verbose = %d\n", para->stepdetection_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "led_brightness = %d\n", para->led_brightness);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "buzzer_duty_cycle = %d\n", para->buzzer_duty_cycle);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "debug = %d\n", para->debug);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "datalogEnable = %d\n", para->datalogEnable);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "acc_noise_thr = %.2f\n", para->acc_noise_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_noise_thr = %.2f\n", para->gyr_noise_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_noise_thr = %.2f\n", para->mag_noise_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_spin_thr = %.2f\n", para->gyr_spin_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "frame_handle_angle_thr = %.2f\n", para->frame_handle_angle_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopping_thr_min = %.2f\n", para->floor_handle_angle_mopping_thr_min);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopping_thr_max = %.2f\n", para->floor_handle_angle_mopping_thr_max);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "floor_handle_angle_mopchange_thr = %.2f\n", para->floor_handle_angle_mopchange_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopchange_duration = %ld\n", (uint32_t)para->min_mopchange_duration);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopframeflip_duration = %ld\n", (uint32_t)para->min_mopframeflip_duration);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "angle_smooth_factor = %.2f\n", para->angle_smooth_factor);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "gyr_smooth_factor = %.2f\n", para->gyr_smooth_factor);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "min_mopcycle_duration = %.2f\n", para->min_mopcycle_duration);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "max_mopcycle_duration = %.2f\n", para->max_mopcycle_duration);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_width = %.2f\n", para->mop_width);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_overlap = %.2f\n", para->mop_overlap);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mopcycle_sequence_thr = %.2f\n", para->mopcycle_sequence_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "peakfollower_update_delay = %ld\n", (uint32_t)para->peakfollower_update_delay);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_rfid_detection_thr = %ld\n", (uint32_t)para->mop_rfid_detection_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mopping_coverage_per_mop_thr = %.2f\n", para->mopping_coverage_per_mop_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algo_flag_verbose = %d\n", para->algo_flag_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algo_verbose = %d\n", para->algo_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "coap_verbose = %d\n", para->coap_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "events_verbose = %d\n", para->events_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "protobuf_verbose = %d\n", para->protobuf_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "modem_verbose = %d\n", para->modem_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "cloud_sync_interval_idle = %ld\n", para->cloud_sync_interval_idle);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "cloud_sync_interval_moving = %ld\n", para->cloud_sync_interval_moving);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "flash_verbose = %ld\n", para->flash_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "epc_verbose = %ld\n", para->epc_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_autoscan = %ld\n", para->rfid_autoscan);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "last_seen_locations_auto_reset_time = %ld\n", para->last_seen_locations_auto_reset_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "log_unkown_tags = %ld\n", para->log_unkown_tags);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "last_seen_mop_array_auto_reset_time = %ld\n", para->last_seen_mop_array_auto_reset_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "enable_blue_dev_led = %ld\n", para->enable_blue_dev_led);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notification_verbose = %ld\n", para->notification_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notifications_while_usb_connected = %ld\n", para->notifications_while_usb_connected);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "enable_rfid_confirmation_blinking = %ld\n", Parameter.enable_rfid_confirmation_blinking);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "max_sqm_coveraged_per_mop = %.2f\n", Parameter.max_sqm_coveraged_per_mop);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "usb_plugin_reset_time= %ld\n", Parameter.usb_plugin_reset_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "usb_auto_reset_time= %ld\n", Parameter.usb_auto_reset_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "anymotion_duration = %d\n", para->anymotion_duration);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "anymotion_thr= %d\n", Parameter.anymotion_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "motion_reset_time = %d\n", Parameter.motion_reset_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "fota_enable = %d\n", Parameter.fota_enable);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "fully_charged_indicator_time = %d\n", Parameter.fully_charged_indicator_time);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "current_shift_mop_check = %d\n", Parameter.current_shift_mop_check);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_charge_termination_current = %f\n", Parameter.battery_charge_termination_current);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_sniff_i2c = %d\n", Parameter.battery_gauge_sniff_i2c);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_charge_temp_min = %f\n", Parameter.battery_gauge_charge_temp_min);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "battery_gauge_charge_temp_max = %f\n", Parameter.battery_gauge_charge_temp_max);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "network_connection_type = %d\n", Parameter.network_connection_type);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_id_refresh_timer = %d\n", Parameter.mop_id_refresh_timer);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "hit_shock_mag_thr = %f\n", Parameter.hit_shock_mag_thr);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "algocontrol_bymag_det = %d\n", Parameter.algocontrol_bymag_det);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_det_threshold = %d\n", Parameter.mag_det_threshold);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mag_det_consecutive_samples = %d\n", Parameter.mag_det_consecutive_samples);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "notification_test = %d\n", Parameter.notification_test);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_blink_notification = %d\n", Parameter.rfid_blink_notification);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "modem_disable = %d\n", Parameter.modem_disable);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "rfid_disable = %d\n", Parameter.rfid_disable);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "low_bat_threshold = %d\n", Parameter.low_bat_threshold);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "binary_search_verbose = %d\n", Parameter.binary_search_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "epc_raw_verbose = %d\n", Parameter.epc_raw_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "mop_verbose = %d\n", Parameter.mop_verbose);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "event1statistics_interval = %d\n", Parameter.event1statistics_interval);
 }

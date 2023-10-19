@@ -263,7 +263,7 @@ void EPC_Memory_Write_RFID_Record(uint8_t cs_pin, RFID_RECORD *record, uint32_t 
   /* Write epc tag data to flash*/
   if (wall_record_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
   {
-  //  flash_write(cs_pin, wall_record_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
+    flash_write(cs_pin, wall_record_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -295,7 +295,7 @@ void EPC_Memory_Write_Room_Record(uint8_t cs_pin, ROOM_RECORD *record, uint32_t 
   /* Write epc tag data to flash*/
   if (room_record_address < (ROOM_RECORD_REGION + ROOM_RECORD_REGION_LENGTH))
   {
-  //  flash_write(cs_pin, room_record_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
+    flash_write(cs_pin, room_record_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -327,7 +327,7 @@ void EPC_Memory_Write_Mop_Record(uint8_t cs_pin, MOP_RECORD *record, uint32_t in
   /* Write epc tag data to flash*/
   if (mop_record_address < (MOP_RECORD_REGION + MOP_RECORD_REGION_LENGTH))
   {
- //   flash_write(cs_pin, mop_record_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
+    flash_write(cs_pin, mop_record_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -359,7 +359,7 @@ void EPC_Memory_Read_RFID_Record(uint8_t cs_pin, RFID_RECORD *record, uint32_t i
   /* Read epc tag from flash*/
   if (flash_epc_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
   {
- //   flash_read(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
+    flash_read(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -382,26 +382,26 @@ void EPC_Memory_Read_RFID_Record(uint8_t cs_pin, RFID_RECORD *record, uint32_t i
  */
 void EPC_Memory_Read_RFID_Record_fast(uint8_t cs_pin, RFID_RECORD *record, uint32_t index)
 {
-  // uint32_t flash_epc_address = 0UL;
-  // datalog_EnableFlag = false;
+  uint32_t flash_epc_address = 0UL;
+  datalog_EnableFlag = false;
 
-  // /* Calculate address in flash */
-  // flash_epc_address = RFID_RECORD_REGION + (index * RFID_RECORD_BYTE_LENGTH);
+  /* Calculate address in flash */
+  flash_epc_address = RFID_RECORD_REGION + (index * RFID_RECORD_BYTE_LENGTH);
 
-  // /* Read epc tag from flash*/
-  // if (flash_epc_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
-  // {
-  //   flash_read_fast(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
-  // }
+  /* Read epc tag from flash*/
+  if (flash_epc_address < (RFID_RECORD_REGION + RFID_RECORD_REGION_LENGTH))
+  {
+    flash_read_fast(cs_pin, flash_epc_address, record->rfid_record_bytes, RFID_RECORD_BYTE_LENGTH);
+  }
 
-  // if (Parameter.datalogEnable == true)
-  // {
-  //   datalog_EnableFlag = true;
-  // }
-  // else
-  // {
-  //   datalog_EnableFlag = false;
-  // }
+  if (Parameter.datalogEnable == true)
+  {
+    datalog_EnableFlag = true;
+  }
+  else
+  {
+    datalog_EnableFlag = false;
+  }
 }
 
 /**
@@ -423,7 +423,7 @@ void EPC_Memory_Read_Room_Record(uint8_t cs_pin, ROOM_RECORD *record, uint32_t i
   /* Read epc tag from flash*/
   if (flash_epc_address < (ROOM_RECORD_REGION + ROOM_RECORD_REGION_LENGTH))
   {
- //   flash_read(cs_pin, flash_epc_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
+    flash_read(cs_pin, flash_epc_address, record->room_record_bytes, ROOM_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -454,7 +454,7 @@ void EPC_Memory_Read_Mop_Record(uint8_t cs_pin, MOP_RECORD *record, uint32_t ind
   /* Read epc tag from flash*/
   if (flash_epc_address < (MOP_RECORD_REGION + MOP_RECORD_REGION_LENGTH))
   {
-  //  flash_read(cs_pin, flash_epc_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
+    flash_read(cs_pin, flash_epc_address, record->mop_record_bytes, MOP_RECORD_BYTE_LENGTH);
   }
 
   if (Parameter.datalogEnable == true)
@@ -486,41 +486,41 @@ uint16_t EPC_Memory_GetLastIndex(uint8_t cs_pin, uint32_t memory, uint32_t len, 
   uint32_t i = 0UL;
 
   /* Identify the sector in which the last valid frame number is stored (if it is not valid, it has the NOR flash default id 0) */
-  // for (i = 0UL; i < len; i += FLASH_SUBSUBSECTOR_SIZE)
-  // {
-  //   flash_read(cs_pin, memory + i, &data, sizeof(data));
+  for (i = 0UL; i < len; i += FLASH_SUBSUBSECTOR_SIZE)
+  {
+    flash_read(cs_pin, memory + i, &data, sizeof(data));
 
-  //   /* Read and validate current frame number from flash. The frame number must match to the current sector number (dataframe number must match to current sector number) */
-  //   if (data != 0xFFFF)
-  //   {
-  //     current_sector++;
-  //   }
-  //   else
-  //   {
-  //     if (current_sector > 0UL)
-  //     {
-  //       current_sector--;
-  //     }
-  //     addr = memory + (current_sector * FLASH_SUBSUBSECTOR_SIZE);
-  //     index = current_sector * (FLASH_SUBSUBSECTOR_SIZE / frame_len);
-  //     break;
-  //   }
-  // }
+    /* Read and validate current frame number from flash. The frame number must match to the current sector number (dataframe number must match to current sector number) */
+    if (data != 0xFFFF)
+    {
+      current_sector++;
+    }
+    else
+    {
+      if (current_sector > 0UL)
+      {
+        current_sector--;
+      }
+      addr = memory + (current_sector * FLASH_SUBSUBSECTOR_SIZE);
+      index = current_sector * (FLASH_SUBSUBSECTOR_SIZE / frame_len);
+      break;
+    }
+  }
 
-  // /* Within sector search for the latest frame number which has a valid number (and not the default flash erase state -> 0xFFFFFFFF)*/
-  // for (i = 0UL; i < FLASH_SUBSUBSECTOR_SIZE; i += frame_len)
-  // {
-  //   flash_read(cs_pin, addr + i, &data, sizeof(data));
+  /* Within sector search for the latest frame number which has a valid number (and not the default flash erase state -> 0xFFFFFFFF)*/
+  for (i = 0UL; i < FLASH_SUBSUBSECTOR_SIZE; i += frame_len)
+  {
+    flash_read(cs_pin, addr + i, &data, sizeof(data));
 
-  //   if (data != 0xFFFF)
-  //   {
-  //     index++;
-  //   }
-  //   else
-  //   {
-  //     break;
-  //   }
-  // }
+    if (data != 0xFFFF)
+    {
+      index++;
+    }
+    else
+    {
+      break;
+    }
+  }
   return index;
 }
 

@@ -131,14 +131,10 @@ static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **ar
   uint8_t id[4];
   uint16_t err;
 
-  if ((uint8_t)atoi(argv[1]) == FLASH1)
-  {
-    err = flash_access_register(spi_dev, &spi_cfg1, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
-  }
-  else if ((uint8_t)atoi(argv[1]) == FLASH2)
-  {
-    err = flash_access_register(spi_dev, &spi_cfg2, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
-  }
+  //! #
+  // gpio_pin_set_raw(gpio_dev, 27, 0);
+  // err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  // gpio_pin_set_raw(gpio_dev, 27, 1);
 
   if (err)
   {
@@ -205,14 +201,14 @@ static int cmd_flashreset(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 2)
   {
-    if ((uint8_t)atoi(argv[2]) == FLASH1)
-    {
-      // err = //flash_access__register(spi_dev, &spi_cfg1, FLASH_RSTEN, NULL, 0);
-    }
-    else if ((uint8_t)atoi(argv[2]) == FLASH2)
-    {
-      // err = //flash_access__register(spi_dev, &spi_cfg2, FLASH_RSTEN, NULL, 0);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RSTEN, NULL, 0);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
+
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RST, NULL, 0);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     shell_print(shell, "OK");
   }
@@ -234,43 +230,28 @@ static int cmd_flashgetstatusreg(const struct shell *shell, size_t argc, char **
 
   if (argc == 2)
   {
-
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR1, &status[0], 1);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR1, &status[0], 1);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR1, &status[0], 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
       return -EIO;
     }
-
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR2, &status[1], 1);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR2, &status[1], 1);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR2, &status[1], 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
       return -EIO;
     }
-
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RDSR3, &status[2], 1);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RDSR3, &status[2], 1);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RDSR3, &status[2], 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -297,14 +278,10 @@ static int cmd_flashgetflagstatusreg(const struct shell *shell, size_t argc, cha
 
   if (argc == 2)
   {
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_RFSR, &status, 1);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_RFSR, &status, 1);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_RFSR, &status, 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -330,14 +307,10 @@ static int cmd_flashgclearflagreg(const struct shell *shell, size_t argc, char *
 
   if (argc == 2)
   {
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, FLASH_CLFSR, 0, 0);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, FLASH_CLFSR, 0, 0);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, FLASH_CLFSR, 0, 0);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -374,6 +347,7 @@ static int cmd_readrange(const struct shell *shell, size_t argc, char **argv)
 
 /*!
  *  @brief This is the function description
+
  */
 static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
 {
@@ -382,14 +356,10 @@ static int cmd_readreg(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 3)
   {
-    if ((uint8_t)atoi(argv[1]) == FLASH1)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg1, (uint8_t)atoi(argv[2]), &rslt, 1);
-    }
-    else if ((uint8_t)atoi(argv[1]) == FLASH2)
-    {
-      err = flash_access_register(spi_dev, &spi_cfg2, (uint8_t)atoi(argv[2]), &rslt, 1);
-    }
+    //! #
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 0);
+    // err = flash_access_register(spi_dev, &spi_cfg, (uint8_t)atoi(argv[2]), &rslt, 1);
+    // gpio_pin_set_raw(gpio_dev, atoi(argv[1]), 1);
 
     if (err)
     {
@@ -492,6 +462,8 @@ static int cmd_battery_charge_cycles(const struct shell *shell, size_t argc, cha
 
 /*!
  *  @brief This is the function description
+
+
  */
 static int cmd_battery_temperature(const struct shell *shell, size_t argc, char **argv)
 {
@@ -596,69 +568,70 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
+/*!
+ *  @brief This is the function description
 
-//  */
-// static int cmd_i2cread(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint8_t reg_read[3];
-//   uint8_t reg_write[3];
-//   uint8_t rslt = 0;
+ */
+static int cmd_i2cread(const struct shell *shell, size_t argc, char **argv)
+{
+  uint8_t reg_read[3];
+  uint8_t reg_write[3];
+  uint8_t rslt = 0;
 
-//   if (argc == 3)
-//   {
+  if (argc == 3)
+  {
 
-//     reg_write[0] = atoi(argv[2]);
-//     rslt = i2c_write_read(i2c_dev, atoi(argv[1]), reg_write, 1, reg_read, 1);
+    // reg_write[0] = atoi(argv[2]);
+    // rslt = i2c_write_read(i2c_dev, atoi(argv[1]), reg_write, 1, reg_read, 1);
 
-//     shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, read value: 0x%X", rslt, atoi(argv[1]), reg_write[0], reg_read[0]);
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid I2C read command.");
-//   }
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-//  */
-// static int cmd_i2cwrite(const struct shell *shell, size_t argc, char **argv)
-// {
-//   uint8_t rslt = 0;
-//   uint8_t write_data[2];
-
-//   write_data[0] = atoi(argv[2]);
-//   write_data[1] = atoi(argv[3]);
-
-//   rslt = i2c_write(i2c_dev, write_data, 2UL, (uint16_t)atoi(argv[1]));
-
-//   shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, write value: 0x%X", rslt, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
-//   return 0;
-// }
-
-// /*!
-//  *  @brief This is the function description
-
-//  */
-// static int cmd_datalog_clear(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
-
-//   datalog_CleardatalogAll();
-//   datalog_MemoryFull = false;
-
-//   rtc_print_debug_timestamp();
-//   shell_print(shell, "Formatting done");
-
-//   return 0;
-// }
+    // shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, read value: 0x%X", rslt, atoi(argv[1]), reg_write[0], reg_read[0]);
+  }
+  else
+  {
+    shell_print(shell, "Invalid I2C read command.");
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
+
+ */
+static int cmd_i2cwrite(const struct shell *shell, size_t argc, char **argv)
+{
+  uint8_t rslt = 0;
+  uint8_t write_data[2];
+
+  write_data[0] = atoi(argv[2]);
+  write_data[1] = atoi(argv[3]);
+
+  // rslt = i2c_write(i2c_dev, write_data, 2UL, (uint16_t)atoi(argv[1]));
+
+  // shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, write value: 0x%X", rslt, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+
+ */
+static int cmd_datalog_clear(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+
+  datalog_CleardatalogAll();
+  datalog_MemoryFull = false;
+
+  rtc_print_debug_timestamp();
+  shell_print(shell, "Formatting done");
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+
  */
 static int cmd_datalog_format(const struct shell *shell, size_t argc, char **argv)
 {
@@ -912,6 +885,7 @@ static int cmd_search_rfid_record(const struct shell *shell, size_t argc, char *
 
     /* compute how long the work took (assumes no counter rollover) */
     cycles_spent = stop_time - start_time;
+    // nanoseconds_spent = SYS_CLOCK_HW_CYCLES_TO_NS(cycles_spent);
     nanoseconds_spent = k_cyc_to_ns_floor64(cycles_spent);
   }
   else
@@ -1135,28 +1109,28 @@ static int cmd_rfid_blink_notification(const struct shell *shell, size_t argc, c
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_datalog_sniff_frame(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_sniff_frame(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.datalog_sniffFrame == false)
-//   {
-//     Parameter.datalog_sniffFrame = true;
-//     shell_print(shell, "Enabled datlog frame live view");
-//   }
-//   else
-//   {
-//     Parameter.datalog_sniffFrame = false;
-//     shell_print(shell, "Disabled datlog frame live view");
-//   }
-//   Parameter_PushRAMToFlash();
+  if (Parameter.datalog_sniffFrame == false)
+  {
+    Parameter.datalog_sniffFrame = true;
+    shell_print(shell, "Enabled datlog frame live view");
+  }
+  else
+  {
+    Parameter.datalog_sniffFrame = false;
+    shell_print(shell, "Disabled datlog frame live view");
+  }
+  Parameter_PushRAMToFlash();
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1181,46 +1155,46 @@ static int cmd_notification_verbose(const struct shell *shell, size_t argc, char
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_datalog_get_count(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_get_count(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   uint32_t rslt = 0UL;
+  uint32_t rslt = 0UL;
 
-//   rslt = flash_GetLastFrameNumber(GPIO_PIN_FLASH_CS1, FLASH_SUBSUBSECTOR_SIZE, DATALOG_MEM, DATALOG_MEM_LENGTH, DATALOG_FRAME_LENGTH);
-//   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last frame number: %ld, addr: %ld\n", rslt, DATALOG_MEM + (rslt * DATALOG_FRAME_LENGTH));
+  rslt = flash_GetLastFrameNumber(GPIO_PIN_FLASH_CS1, FLASH_SUBSUBSECTOR_SIZE, DATALOG_MEM, DATALOG_MEM_LENGTH, DATALOG_FRAME_LENGTH);
+  shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last frame number: %ld, addr: %ld\n", rslt, DATALOG_MEM + (rslt * DATALOG_FRAME_LENGTH));
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_datalog_interval(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "interval: %dms", Parameter.datalog_Interval);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) >= 5 || atoi(argv[1]) == 0)
-//     {
-//       Parameter.datalog_Interval = atoi(argv[1]);
-//       Parameter_PushRAMToFlash();
-//       shell_print(shell, "Set interval to %dms", Parameter.datalog_Interval);
-//     }
-//     else
-//     {
-//       shell_error(shell, "Error. Minimum interval is 5 ms or 0 to switch off time based logging.");
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_interval(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "interval: %dms", Parameter.datalog_Interval);
+  }
+  else
+  {
+    if (atoi(argv[1]) >= 5 || atoi(argv[1]) == 0)
+    {
+      Parameter.datalog_Interval = atoi(argv[1]);
+      Parameter_PushRAMToFlash();
+      shell_print(shell, "Set interval to %dms", Parameter.datalog_Interval);
+    }
+    else
+    {
+      shell_error(shell, "Error. Minimum interval is 5 ms or 0 to switch off time based logging.");
+    }
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1240,40 +1214,40 @@ static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t ar
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_datalog_enable(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     if (datalog_EnableFlag == 0)
-//     {
-//       shell_print(shell, "datalog is currently disabled");
-//     }
-//     else
-//     {
-//       shell_print(shell, "datalog is currently enabled");
-//     }
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) > 0)
-//     {
-//       Parameter.datalogEnable = true;
-//       datalog_EnableFlag = true;
-//       shell_print(shell, "datalog enabled");
-//     }
-//     else
-//     {
-//       Parameter.datalogEnable = false;
-//       datalog_EnableFlag = false;
-//       shell_print(shell, "datalog disabled");
-//     }
-//     Parameter_PushRAMToFlash();
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_enable(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    if (datalog_EnableFlag == 0)
+    {
+      shell_print(shell, "datalog is currently disabled");
+    }
+    else
+    {
+      shell_print(shell, "datalog is currently enabled");
+    }
+  }
+  else
+  {
+    if (atoi(argv[1]) > 0)
+    {
+      Parameter.datalogEnable = true;
+      datalog_EnableFlag = true;
+      shell_print(shell, "datalog enabled");
+    }
+    else
+    {
+      Parameter.datalogEnable = false;
+      datalog_EnableFlag = false;
+      shell_print(shell, "datalog disabled");
+    }
+    Parameter_PushRAMToFlash();
+  }
+  return 0;
+}
 
 // /*!
 //  *  @brief This is the function description
@@ -1319,58 +1293,58 @@ static int cmd_fully_charged_indicator_time(const struct shell *shell, size_t ar
 //   return 0;
 // }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_datalog_get_data(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_datalog_get_data(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (argc == 3)
-//   {
-//     if (datalog_ReadOutisActive == false)
-//     {
-//       setaddress_flag = false;
+  if (argc == 3)
+  {
+    if (datalog_ReadOutisActive == false)
+    {
+      setaddress_flag = false;
 
-//       if (atol(argv[1]) >= 0)
-//       {
-//         System.datalog_StartFrame = atol(argv[1]);
-//       }
-//       else
-//       {
-//         System.datalog_StartFrame = 0UL;
-//       }
-//       if (atol(argv[2]) >= 0)
-//       {
-//         System.datalog_EndFrame = atol(argv[2]);
-//       }
-//       else
-//       {
-//         System.datalog_EndFrame = 0UL;
-//       }
-//     }
-//     else
-//     {
-//       if (Parameter.datalogEnable == true)
-//       {
-//         datalog_EnableFlag = true;
-//       }
-//       else
-//       {
-//         datalog_EnableFlag = false;
-//       }
-//     }
+      if (atol(argv[1]) >= 0)
+      {
+        System.datalog_StartFrame = atol(argv[1]);
+      }
+      else
+      {
+        System.datalog_StartFrame = 0UL;
+      }
+      if (atol(argv[2]) >= 0)
+      {
+        System.datalog_EndFrame = atol(argv[2]);
+      }
+      else
+      {
+        System.datalog_EndFrame = 0UL;
+      }
+    }
+    else
+    {
+      if (Parameter.datalogEnable == true)
+      {
+        datalog_EnableFlag = true;
+      }
+      else
+      {
+        datalog_EnableFlag = false;
+      }
+    }
 
-//     datalog_ReadOutisActive = !datalog_ReadOutisActive;
-//   }
-//   else
-//   {
-//     shell_print(shell, "Invalid range. Syntax: <last_line_number> <stop_line_number>");
-//   }
+    datalog_ReadOutisActive = !datalog_ReadOutisActive;
+  }
+  else
+  {
+    shell_print(shell, "Invalid range. Syntax: <last_line_number> <stop_line_number>");
+  }
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -1614,7 +1588,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
       k_msleep(100);
     }
 
-    // gpio_pin_set_dt(&rfid_trigger_pin, 0);
+    gpio_pin_set_dt(&rfid_trigger_pin, 0);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode activated.\n");
   }
   else
@@ -1627,7 +1601,7 @@ static int cmd_rfid_trigger(const struct shell *shell, size_t argc, char **argv)
     RFID_TurnOff();
 
     // System.RFID_TransparentMode = true;
-    // gpio_pin_set_dt(&rfid_trigger_pin, 1);
+    gpio_pin_set_dt(&rfid_trigger_pin, 1);
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "RFID trigger mode deactivated.\n");
   }
 
@@ -1682,7 +1656,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      // gpio_pin_set_dt(&dev_led, 1);
+      gpio_pin_set_dt(&dev_led, 1);
     }
   }
   else
@@ -1696,7 +1670,7 @@ static int cmd_rfid_autoscan(const struct shell *shell, size_t argc, char **argv
     /* For debugging prupose enable blue dev led when motion detected*/
     if (Parameter.enable_blue_dev_led == true)
     {
-      // gpio_pin_set_dt(&dev_led, 1);
+      gpio_pin_set_dt(&dev_led, 1);
     }
   }
   Parameter_PushRAMToFlash();
@@ -1987,25 +1961,26 @@ static int cmd_enable_rfid_confirmation_blinking(const struct shell *shell, size
  */
 static int cmd_modem_version(const struct shell *shell, size_t argc, char **argv)
 {
-  // ARG_UNUSED(argc);
-  // ARG_UNUSED(argv);
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-  // uint8_t err = 0;
+  memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  uint8_t err = 0;
 
   // enum at_cmd_state at_state;
   // err = at_cmd_write("AT+CGMR", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+  err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGMR");
 
-  // if (err)
-  // {
-  //   shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
-  //   return err;
-  // }
-  // else
-  // {
-  //   shell_print(shell, "%s", modem_at_recv_buf);
-  // }
-  // return 0;
+  if (err)
+  {
+    shell_print(shell, "Error when trying to do at_cmd_write: %d", err);
+    return err;
+  }
+  else
+  {
+    shell_print(shell, "%s", modem_at_recv_buf);
+  }
+  return 0;
 }
 
 /*!
@@ -2013,22 +1988,22 @@ static int cmd_modem_version(const struct shell *shell, size_t argc, char **argv
  */
 static int cmd_modem_providers(const struct shell *shell, size_t argc, char **argv)
 {
-  // ARG_UNUSED(argc);
-  // ARG_UNUSED(argv);
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-  // shell_warn(shell, "IMPORTANT: This command will block the device and shell until the modem get the result. This task may take severals minutes!");
+  shell_warn(shell, "IMPORTANT: This command will block the device and shell until the modem get the result. This task may take severals minutes!");
 
-  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-  // uint8_t err = 0;
-  // enum at_cmd_state at_state;
+  memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  uint8_t err = 0;
 
-  // /* Check connection status */
+  /* Check connection status */
+  err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+COPS=?");
   // err = at_cmd_write("AT+COPS=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
 
-  // if (!err)
-  // {
-  //   shell_print(shell, "%s", modem_at_recv_buf);
-  // }
+  if (!err)
+  {
+    shell_print(shell, "%s", modem_at_recv_buf);
+  }
 
   return 0;
 }
@@ -2038,20 +2013,21 @@ static int cmd_modem_providers(const struct shell *shell, size_t argc, char **ar
  */
 static int cmd_modem_bands(const struct shell *shell, size_t argc, char **argv)
 {
-  // ARG_UNUSED(argc);
-  // ARG_UNUSED(argv);
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-  // uint8_t err = 0;
+  memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  uint8_t err = 0;
   // enum at_cmd_state at_state;
 
-  // /* Check connection status */
+  /* Check connection status */
   // err = at_cmd_write("AT%XCBAND=?", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+  err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%XCBAND=?");
 
-  // if (!err)
-  // {
-  //   shell_print(shell, "%s", modem_at_recv_buf);
-  // }
+  if (!err)
+  {
+    shell_print(shell, "%s", modem_at_recv_buf);
+  }
 
   return 0;
 }
@@ -2061,25 +2037,26 @@ static int cmd_modem_bands(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_modem_list_keys(const struct shell *shell, size_t argc, char **argv)
 {
-  // ARG_UNUSED(argc);
-  // ARG_UNUSED(argv);
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-  // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-  // uint8_t err = 0;
+  memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+  uint8_t err = 0;
 
   // enum at_cmd_state at_state;
   // err = at_cmd_write("AT%CMNG=1", modem_at_recv_buf, sizeof(modem_at_recv_buf), &at_state);
+  err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%CMNG=1");
 
-  // if (err)
-  // {
-  //   shell_print(shell, "Error when trying to do at_cmd_write: %d, at_state: %d", err, at_state);
-  //   return err;
-  // }
-  // else
-  // {
-  //   shell_print(shell, "%s", modem_at_recv_buf);
-  // }
-  // return 0;
+  if (err)
+  {
+    shell_print(shell, "Error when trying to do at_cmd_write: %d", err);
+    return err;
+  }
+  else
+  {
+    shell_print(shell, "%s", modem_at_recv_buf);
+  }
+  return 0;
 }
 
 /*!
@@ -2087,61 +2064,61 @@ static int cmd_modem_list_keys(const struct shell *shell, size_t argc, char **ar
  */
 static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
 {
-  // enum lte_lc_func_mode mode;
-  // uint8_t value = 0;
-  // int8_t err = 0;
+  enum lte_lc_func_mode mode;
+  uint8_t value = 0;
+  int8_t err = 0;
 
-  // if (argc == 1)
-  // {
-  //   err = lte_lc_func_mode_get(&mode);
-  //   if (err == 0)
-  //   {
-  //     switch (mode)
-  //     {
-  //     case LTE_LC_FUNC_MODE_POWER_OFF:
-  //       shell_fprintf(shell, 0, "Modem is powered off (AT+CFUN=0)\n");
+  if (argc == 1)
+  {
+    err = lte_lc_func_mode_get(&mode);
+    if (err == 0)
+    {
+      switch (mode)
+      {
+      case LTE_LC_FUNC_MODE_POWER_OFF:
+        shell_fprintf(shell, 0, "Modem is powered off (AT+CFUN=0)\n");
 
-  //       /* Add event in event array which is send to cloud in next sync interval */
-  //       NewEvent0x0C(); // Connection down event
-  //       break;
+        /* Add event in event array which is send to cloud in next sync interval */
+        NewEvent0x0C(); // Connection down event
+        break;
 
-  //     case LTE_LC_FUNC_MODE_NORMAL:
-  //       shell_fprintf(shell, 0, "Modem is in normal mode (AT+CFUN=1)\n");
-  //       break;
+      case LTE_LC_FUNC_MODE_NORMAL:
+        shell_fprintf(shell, 0, "Modem is in normal mode (AT+CFUN=1)\n");
+        break;
 
-  //     case LTE_LC_FUNC_MODE_OFFLINE:
+      case LTE_LC_FUNC_MODE_OFFLINE:
 
-  //       shell_fprintf(shell, 0, "Modem is offline (AT+CFUN=4)\n");
+        shell_fprintf(shell, 0, "Modem is offline (AT+CFUN=4)\n");
 
-  //       /* Add event in event array which is send to cloud in next sync interval */
-  //       NewEvent0x0C(); // Connection down event
-  //       break;
+        /* Add event in event array which is send to cloud in next sync interval */
+        NewEvent0x0C(); // Connection down event
+        break;
 
-  //     default:
-  //       break;
-  //     }
-  //   }
-  // }
-  // else
-  // {
-  //   value = atoi(argv[1]);
+      default:
+        break;
+      }
+    }
+  }
+  else
+  {
+    value = atoi(argv[1]);
 
-  //   if (value == 0)
-  //   {
-  //     lte_lc_power_off();
-  //     shell_fprintf(shell, 0, "Set modem to powered off mode (AT+CFUN=0)\n");
-  //   }
-  //   else if (value == 1)
-  //   {
-  //     lte_lc_normal();
-  //     shell_fprintf(shell, 0, "Set modem to normal mode (AT+CFUN=1)\n");
-  //   }
-  //   else if (value == 4)
-  //   {
-  //     lte_lc_offline();
-  //     shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
-  //   }
-  // }
+    if (value == 0)
+    {
+      lte_lc_power_off();
+      shell_fprintf(shell, 0, "Set modem to powered off mode (AT+CFUN=0)\n");
+    }
+    else if (value == 1)
+    {
+      lte_lc_normal();
+      shell_fprintf(shell, 0, "Set modem to normal mode (AT+CFUN=1)\n");
+    }
+    else if (value == 4)
+    {
+      lte_lc_offline();
+      shell_fprintf(shell, 0, "Set modem to offline mode (AT+CFUN=4)\n");
+    }
+  }
   return 0;
 }
 
@@ -2150,71 +2127,71 @@ static int cmd_modem_mode(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_connection_type(const struct shell *shell, size_t argc, char **argv)
 {
-  // if (argc == 1)
-  // {
-  //   switch (Parameter.network_connection_type)
-  //   {
-  //   case LTE_M:
-  //     shell_print(shell, "Network connection type: LTE-M");
-  //     break;
+  if (argc == 1)
+  {
+    switch (Parameter.network_connection_type)
+    {
+    case LTE_M:
+      shell_print(shell, "Network connection type: LTE-M");
+      break;
 
-  //   case NB_IOT:
-  //     shell_print(shell, "Network connection type: NB_IoT");
-  //     break;
+    case NB_IOT:
+      shell_print(shell, "Network connection type: NB_IoT");
+      break;
 
-  //   default:
-  //     shell_print(shell, "Invalid type set.");
-  //     break;
-  //   }
-  // }
-  // else
-  // {
-  //   switch (atoi(argv[1]))
-  //   {
+    default:
+      shell_print(shell, "Invalid type set.");
+      break;
+    }
+  }
+  else
+  {
+    switch (atoi(argv[1]))
+    {
 
-  //   case LTE_M:
+    case LTE_M:
 
-  //     Parameter.network_connection_type = LTE_M;
+      Parameter.network_connection_type = LTE_M;
 
-  //     /* Turn modem off */
-  //     lte_lc_power_off();
-  //     k_msleep(500);
+      /* Turn modem off */
+      lte_lc_power_off();
+      k_msleep(500);
 
-  //     /* Set modem to use LTE-M*/
-  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM);
-  //     k_msleep(500);
+      /* Set modem to use LTE-M*/
+      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_AUTO);
+      k_msleep(500);
 
-  //     /* Turn modem on - it will automatically search for networks*/
-  //     lte_lc_normal();
+      /* Turn modem on - it will automatically search for networks*/
+      lte_lc_normal();
 
-  //     shell_print(shell, "Set network connection type to LTE-M");
-  //     break;
+      shell_print(shell, "Set network connection type to LTE-M");
+      break;
 
-  //   case NB_IOT:
+    case NB_IOT:
 
-  //     Parameter.network_connection_type = NB_IOT;
-  //     /* Turn modem off */
-  //     lte_lc_power_off();
-  //     k_msleep(500);
+      Parameter.network_connection_type = NB_IOT;
+      /* Turn modem off */
+      lte_lc_power_off();
+      k_msleep(500);
 
-  //     /* Set modem to use LTE-M*/
-  //     lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT);
-  //     k_msleep(500);
+      /* Set modem to use LTE-M*/
+      lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_AUTO);
+      k_msleep(500);
 
-  //     /* Turn modem on - it will automatically search for networks*/
-  //     lte_lc_normal();
+      /* Turn modem on - it will automatically search for networks*/
+      lte_lc_normal();
 
-  //     shell_print(shell, "Set network connection type to NB_IoT");
-  //     break;
+      shell_print(shell, "Set network connection type to NB_IoT");
+      break;
 
-  //   default:
-  //     shell_print(shell, "Invalid type.");
-  //     break;
-  //   }
+    default:
+      shell_print(shell, "Invalid type.");
+      break;
+    }
 
-  //   shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
-  //   Parameter_PushRAMToFlash();
-  // }
+    shell_warn(shell, "Note: It may take several minutes for a new connection to be established successfully");
+    Parameter_PushRAMToFlash();
+  }
   return 0;
 }
 
@@ -2325,79 +2302,79 @@ static int cmd_modem_rssi(const struct shell *shell, size_t argc, char **argv)
  */
 static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
 {
-  // ARG_UNUSED(argc);
-  // ARG_UNUSED(argv);
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
   int16_t err = 0;
-  // enum lte_lc_nw_reg_status status;
-  // enum lte_lc_func_mode mode;
+  enum lte_lc_nw_reg_status status;
+  enum lte_lc_func_mode mode;
 
-  // err = lte_lc_func_mode_get(&mode);
+  err = lte_lc_func_mode_get(&mode);
 
   if (err == 0)
   {
-    // switch (mode)
-    // {
+    switch (mode)
+    {
 
-    // case LTE_LC_FUNC_MODE_POWER_OFF:
-    //   shell_fprintf(shell, 0, "Modem powered off (AT+CFUN=0)\n");
-    //   break;
+    case LTE_LC_FUNC_MODE_POWER_OFF:
+      shell_fprintf(shell, 0, "Modem powered off (AT+CFUN=0)\n");
+      break;
 
-    // case LTE_LC_FUNC_MODE_NORMAL:
-    //   shell_fprintf(shell, 0, "Modem normal mode (AT+CFUN=1)\n");
-    //   break;
+    case LTE_LC_FUNC_MODE_NORMAL:
+      shell_fprintf(shell, 0, "Modem normal mode (AT+CFUN=1)\n");
+      break;
 
-    // case LTE_LC_FUNC_MODE_OFFLINE:
-    //   shell_fprintf(shell, 0, "Modem offline (AT+CFUN=4)\n");
-    //   break;
+    case LTE_LC_FUNC_MODE_OFFLINE:
+      shell_fprintf(shell, 0, "Modem offline (AT+CFUN=4)\n");
+      break;
 
-    // default:
-    //   break;
-    // }
+    default:
+      break;
+    }
   }
 
-  // err = lte_lc_nw_reg_status_get(&status);
+   err = lte_lc_nw_reg_status_get(&status);
 
   if (err == 0)
   {
-    // switch (status)
-    // {
+    switch (status)
+    {
 
-    // case LTE_LC_NW_REG_NOT_REGISTERED:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_NOT_REGISTERED\n");
-    //   break;
+    case LTE_LC_NW_REG_NOT_REGISTERED:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_NOT_REGISTERED\n");
+      break;
 
-    // case LTE_LC_NW_REG_REGISTERED_HOME:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_HOME\n");
-    //   break;
+    case LTE_LC_NW_REG_REGISTERED_HOME:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_HOME\n");
+      break;
 
-    // case LTE_LC_NW_REG_SEARCHING:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_SEARCHING\n");
-    //   break;
+    case LTE_LC_NW_REG_SEARCHING:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_SEARCHING\n");
+      break;
 
-    // case LTE_LC_NW_REG_REGISTRATION_DENIED:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTRATION_DENIED\n");
-    //   break;
+    case LTE_LC_NW_REG_REGISTRATION_DENIED:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTRATION_DENIED\n");
+      break;
 
-    // case LTE_LC_NW_REG_UNKNOWN:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UNKNOWN\n");
-    //   break;
+    case LTE_LC_NW_REG_UNKNOWN:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UNKNOWN\n");
+      break;
 
-    // case LTE_LC_NW_REG_REGISTERED_ROAMING:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
-    //   break;
+    case LTE_LC_NW_REG_REGISTERED_ROAMING:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
+      break;
 
-    // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
-    //   break;
+    case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
+      break;
 
-    // case LTE_LC_NW_REG_UICC_FAIL:
-    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UICC_FAIL\n");
-    //   break;
+    case LTE_LC_NW_REG_UICC_FAIL:
+      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UICC_FAIL\n");
+      break;
 
-    // default:
-    //   break;
-    //  }
+    default:
+      break;
+     }
   }
   else
   {
@@ -2956,101 +2933,101 @@ static int cmd_time(const struct shell *shell, size_t argc, char **argv)
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_date(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     rtc_print_date();
-//     shell_print(shell, " ");
-//   }
-//   else
-//   {
-//     if ((strlen(argv[1]) >= 6) && (strlen(argv[1]) <= 10))
-//     { // Valid langth:   d:m:yy and dd:mm:yyyy
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_date(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    rtc_print_date();
+    shell_print(shell, " ");
+  }
+  else
+  {
+    if ((strlen(argv[1]) >= 6) && (strlen(argv[1]) <= 10))
+    { // Valid langth:   d:m:yy and dd:mm:yyyy
 
-//       char delimiter[] = "."; // This character in string gets replaced by \0
-//       char *ptr = NULL;       // Pointer to string section
+      char delimiter[] = "."; // This character in string gets replaced by \0
+      char *ptr = NULL;       // Pointer to string section
 
-//       uint8_t day = 0;
-//       uint8_t month = 0;
-//       uint16_t year = 0;
+      uint8_t day = 0;
+      uint8_t month = 0;
+      uint16_t year = 0;
 
-//       /* Find first segment in string */
-//       ptr = strtok(argv[1], delimiter); // strtok cuts the string into pieces sperated by delimiter characters
-//       if (ptr != NULL)
-//       {
-//         day = atoi(ptr);
-//       }
+      /* Find first segment in string */
+      ptr = strtok(argv[1], delimiter); // strtok cuts the string into pieces sperated by delimiter characters
+      if (ptr != NULL)
+      {
+        day = atoi(ptr);
+      }
 
-//       /* Find second segment in string */
-//       ptr = strtok(NULL, delimiter);
-//       if (ptr != NULL)
-//       {
-//         month = atoi(ptr);
-//       }
+      /* Find second segment in string */
+      ptr = strtok(NULL, delimiter);
+      if (ptr != NULL)
+      {
+        month = atoi(ptr);
+      }
 
-//       /* Find third segment in string */
-//       ptr = strtok(NULL, delimiter);
-//       if (ptr != NULL)
-//       {
-//         year = atoi(ptr);
-//       }
+      /* Find third segment in string */
+      ptr = strtok(NULL, delimiter);
+      if (ptr != NULL)
+      {
+        year = atoi(ptr);
+      }
 
-//       /* Validate user input and if correct set new system time*/
-//       if ((day >= 1 && day <= 31) &&
-//           (month >= 1 && month <= 12) &&
-//           ((year >= 20 && year <= 99) || (year >= 2020 && year <= 2099)))
-//       {
-//         ptm->tm_mday = day;
-//         ptm->tm_mon = month;
-//         ptm->tm_year = year;
+      /* Validate user input and if correct set new system time*/
+      if ((day >= 1 && day <= 31) &&
+          (month >= 1 && month <= 12) &&
+          ((year >= 20 && year <= 99) || (year >= 2020 && year <= 2099)))
+      {
+        ptm->tm_mday = day;
+        ptm->tm_mon = month;
+        ptm->tm_year = year;
 
-//         /* convert local time to unix */
-//         unixtime = gmtime(&ptm);
+        /* convert local time to unix */
+        unixtime = gmtime(&ptm);
 
-//         /* Print new settings on console */
-//         rtc_print_date();
-//       }
-//       else
-//       {
-//         shell_error(shell, "Incorrect date format");
-//       }
-//     }
-//   }
-//   return 0;
-// }
+        /* Print new settings on console */
+        rtc_print_date();
+      }
+      else
+      {
+        shell_error(shell, "Incorrect date format");
+      }
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_weekday(const struct shell *shell, size_t argc, char **argv)
-// {
-//   rtc_print_weekday();
-//   shell_print(shell, "\r\n");
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_weekday(const struct shell *shell, size_t argc, char **argv)
+{
+  rtc_print_weekday();
+  shell_print(shell, "\r\n");
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_unixtime(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     rtc_print_unixtime(unixtime);
-//     shell_print(shell, "\n");
-//   }
-//   else
-//   {
-//     unixtime = atol(argv[1]);
-//     ptm = localtime(&unixtime);
-//     shell_print(shell, "OK");
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_unixtime(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    rtc_print_unixtime(unixtime);
+    shell_print(shell, "\n");
+  }
+  else
+  {
+    unixtime = atol(argv[1]);
+    ptm = localtime(&unixtime);
+    shell_print(shell, "OK");
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -4283,14 +4260,9 @@ static int cmd_test_notification(const struct shell *shell, size_t argc, char **
  */
 static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
-  if (atoi(argv[1]) == 1)
-  {
-    multi_sector_test(&spi_flash_1);
-  }
-  else if (atoi(argv[1]) == 2)
-  {
-    multi_sector_test(&spi_flash_2);
-  }
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
+  shell_print(shell, "%s", modem_get_imei());
 
   // uint16_t i = 0;
 
@@ -4301,6 +4273,7 @@ static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
   //   event_simulation_in_progress = true;
   // }
 
+  // event_simulation_in_progress = false;
   return 0;
 }
 
@@ -4313,17 +4286,6 @@ static int cmd_test1(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   //  Event_ClearCompleteFlash();
-  rgb_led.blink_on_time = 200;  // ms
-  rgb_led.blink_off_time = 200; // ms
-  rgb_led.pos_slope = 0;        // ms
-  rgb_led.neg_slope = 0;        // ms
-  rgb_led.repeats = 2;
-  rgb_led.red_value = 0;
-  rgb_led.green_value = 0;
-  rgb_led.blue_value = 255;
-  rgb_led.brightness_value = 255;
-  led_next_state = FLASH;
-
   return 0;
 }
 
@@ -4336,8 +4298,6 @@ static int cmd_test2(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   network_info_log();
-
-  return 0;
 }
 
 /*!
@@ -4348,22 +4308,20 @@ static int cmd_test3(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-  modem_initial_setup();
-
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_pcbtest(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_pcbtest(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//  // test_pcb();
-//   return 0;
-// }
+  // test_pcb();
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -4473,15 +4431,15 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(events, &events, "Commands to monitor events", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(datetime,
-  //                                  SHELL_CMD(timestamp, NULL, "Prints out the current timestamp in ISO8601 format", cmd_timestamp),
-  //                                  SHELL_CMD(unixtime, NULL, "Gets or sets unix epoch time. Changes in this value will effect all other time commands", cmd_unixtime),
-  //                                  SHELL_CMD(time, NULL, "Get or set time. <hh>:<mm>:<ss>", cmd_time),
-  //                                  SHELL_CMD(date, NULL, "Get or set date. <dd>:<mm>:<yyyy>", cmd_date),
-  //                                  SHELL_CMD(weekday, NULL, "Get the weekday", cmd_weekday),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(datetime,
+                                 SHELL_CMD(timestamp, NULL, "Prints out the current timestamp in ISO8601 format", cmd_timestamp),
+                                 SHELL_CMD(unixtime, NULL, "Gets or sets unix epoch time. Changes in this value will effect all other time commands", cmd_unixtime),
+                                 SHELL_CMD(time, NULL, "Get or set time. <hh>:<mm>:<ss>", cmd_time),
+                                 SHELL_CMD(date, NULL, "Get or set date. <dd>:<mm>:<yyyy>", cmd_date),
+                                 SHELL_CMD(weekday, NULL, "Get the weekday", cmd_weekday),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(datetime, &datetime, "Command set to control date and time)", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(epc,
                                  SHELL_CMD(add_rfid_record, NULL, "Add a new tag rfid record memory. Syntax: epc add_rfid_record <id> <epc> <type>", cmd_add_rfid_record),
@@ -4518,25 +4476,25 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(epc, &epc, "Command set to control the epc log data", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
-  //                                  SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),
-  //                                  SHELL_CMD(read, NULL, "Prints out the entire log data to console. Parameter: <Start frame number> <End frame number>", cmd_datalog_get_data),
-  //                                  SHELL_CMD(clear, NULL, "Clear only data log area in which data is stored", cmd_datalog_clear),
-  //                                  SHELL_CMD(format, NULL, "Clear the entire data log", cmd_datalog_format),
-  //                                  SHELL_CMD(interval, NULL, "Changes the storing interval of log frames (default 1000ms)", cmd_datalog_interval),
-  //                                  SHELL_CMD(verbose, NULL, "Prints out every new frame which is stored in external flash also at console", cmd_datalog_sniff_frame),
-  //                                  SHELL_CMD(enable, NULL, "Enables or disables data logging (time and event based)", cmd_datalog_enable),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(datalog, &datalog, "Command set to control the log data", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(datalog,
+                                 SHELL_CMD(count, NULL, "Requests the total data log frame count", cmd_datalog_get_count),
+                                 SHELL_CMD(read, NULL, "Prints out the entire log data to console. Parameter: <Start frame number> <End frame number>", cmd_datalog_get_data),
+                                 SHELL_CMD(clear, NULL, "Clear only data log area in which data is stored", cmd_datalog_clear),
+                                 SHELL_CMD(format, NULL, "Clear the entire data log", cmd_datalog_format),
+                                 SHELL_CMD(interval, NULL, "Changes the storing interval of log frames (default 1000ms)", cmd_datalog_interval),
+                                 SHELL_CMD(verbose, NULL, "Prints out every new frame which is stored in external flash also at console", cmd_datalog_sniff_frame),
+                                 SHELL_CMD(enable, NULL, "Enables or disables data logging (time and event based)", cmd_datalog_enable),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(datalog, &datalog, "Command set to control the log data", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(i2c,
-  //                                  SHELL_CMD(scan, NULL, "Scans the I2C bus for slave devices and returns their addresses", cmd_i2csan),
-  //                                  SHELL_CMD(read, NULL, "Read a byte from a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>", cmd_i2cread),
-  //                                  SHELL_CMD(write, NULL, "Write a byte to a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>, <VALUE>", cmd_i2cwrite),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(i2c, &i2c, "Command set for evaluating I2C bus slaves", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(i2c,
+                                 SHELL_CMD(scan, NULL, "Scans the I2C bus for slave devices and returns their addresses", cmd_i2csan),
+                                 SHELL_CMD(read, NULL, "Read a byte from a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>", cmd_i2cread),
+                                 SHELL_CMD(write, NULL, "Write a byte to a specific slave. Parameter <SLAVE_ADDR>, <REG_ADDR>, <VALUE>", cmd_i2cwrite),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(i2c, &i2c, "Command set for evaluating I2C bus slaves", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(flash,
                                  SHELL_CMD(verbose, NULL, "Displays flash information", cmd_flash_verbose),
@@ -4646,8 +4604,8 @@ void command_init(void)
   SHELL_CMD_REGISTER(notification, &notification, "help description", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(test,
-                                 //    SHELL_CMD(notification, NULL, "PCB self test", cmd_test_notification),
-                                 //      SHELL_CMD(pcb, NULL, "PCB self test", cmd_pcbtest),
+                                 SHELL_CMD(notification, NULL, "PCB self test", cmd_test_notification),
+                                 SHELL_CMD(pcb, NULL, "PCB self test", cmd_pcbtest),
                                  SHELL_CMD(0, NULL, "For development only", cmd_test0),
                                  SHELL_CMD(1, NULL, "For development only", cmd_test1),
                                  SHELL_CMD(2, NULL, "For development only", cmd_test2),

@@ -48,97 +48,97 @@ k_tid_t tid;
 
 void safety_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // while (1)
-  // {
-  //   /* Test I2C bus*/
-  //   if ((hibernation_mode == false) && (i2c_test() == false)) // test I2C bus if IMU and led driver gets found
-  //   {
-  //     /* Print error message on terminal*/
-  //     rtc_print_debug_timestamp();
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: I2C bus broken. Trying to recover bus and reboot device.\n");
+  while (1)
+  {
+    //   /* Test I2C bus*/
+    //   if ((hibernation_mode == false) && (i2c_test() == false)) // test I2C bus if IMU and led driver gets found
+    //   {
+    //     /* Print error message on terminal*/
+    //     rtc_print_debug_timestamp();
+    //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: I2C bus broken. Trying to recover bus and reboot device.\n");
 
-  //     /* Try to recover SDA and SCL line */
-  //     nrfx_twi_twim_bus_recover(GPIO_PIN_SCL, GPIO_PIN_SDA);
+    //     /* Try to recover SDA and SCL line */
+    //     nrfx_twi_twim_bus_recover(GPIO_PIN_SCL, GPIO_PIN_SDA);
 
-  //     /* Print error message on terminal*/
-  //     rtc_print_debug_timestamp();
-  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "I2C bus recovery done. Rebooting device.\n");
+    //     /* Print error message on terminal*/
+    //     rtc_print_debug_timestamp();
+    //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "I2C bus recovery done. Rebooting device.\n");
 
-  //     k_msleep(1000);
+    //     k_msleep(1000);
 
-  //     sys_reboot(0);
-  //   }
+    //     sys_reboot(0);
+    //   }
 
-  //   /* Monitor battery temperature
-  //       - read out AIN from battery gauge (battery.temperature holds the value)
-  //       - if battery temperature gets higher than 45°C (VARTA 2P/LPP datasheet) then disable charging
-  //   */
-  //   if (battery_gauge_temperature_progress_delay == 0)
-  //   {
-  //     if (System.charger_connected == true)
-  //     {
-  //       if ((battery.Temperature >= Parameter.battery_gauge_charge_temp_min) && (battery.Temperature < Parameter.battery_gauge_charge_temp_max))
-  //       {
-  //         battery_gauge_temperature_controlled_charge_enable = true;
+    /* Monitor battery temperature
+        - read out AIN from battery gauge (battery.temperature holds the value)
+        - if battery temperature gets higher than 45°C (VARTA 2P/LPP datasheet) then disable charging
+    */
+    if (battery_gauge_temperature_progress_delay == 0)
+    {
+      if (System.charger_connected == true)
+      {
+        if ((battery.Temperature >= Parameter.battery_gauge_charge_temp_min) && (battery.Temperature < Parameter.battery_gauge_charge_temp_max))
+        {
+          battery_gauge_temperature_controlled_charge_enable = true;
 
-  //         if (battery_charge_enable_notification == true)
-  //         {
-  //           /* Enable charge circuit */
-  //           gpio_pin_set_raw(gpio_dev, GPIO_PIN_CHG_EN, 0);
+          if (battery_charge_enable_notification == true)
+          {
+            /* Enable charge circuit */
+            gpio_pin_set_dt(&booster_enable_pin, 0);
 
-  //           battery_charge_enable_notification = false;
+            battery_charge_enable_notification = false;
 
-  //           rtc_print_debug_timestamp();
-  //           shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Enabled charging - battery temperature is valid range: %3.2f°C (0-45°C).\n", battery.Temperature);
-  //         }
-  //       }
-  //       else
-  //       {
-  //         battery_gauge_temperature_controlled_charge_enable = false;
+            rtc_print_debug_timestamp();
+            shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Enabled charging - battery temperature is valid range: %3.2f°C (0-45°C).\n", battery.Temperature);
+          }
+        }
+        else
+        {
+          battery_gauge_temperature_controlled_charge_enable = false;
 
-  //         if (battery_charge_enable_notification == false)
-  //         {
-  //           /* Disable charge circuit */
-  //           gpio_pin_set_raw(gpio_dev, GPIO_PIN_CHG_EN, 1);
+          if (battery_charge_enable_notification == false)
+          {
+            /* Disable charge circuit */
+            gpio_pin_set_dt(&booster_enable_pin, 1);
 
-  //           battery_charge_enable_notification = true;
+            battery_charge_enable_notification = true;
 
-  //           if (System.ChargeStatus == true)
-  //           {
-  //             /* Add event in event array which is send to cloud in next sync interval */
-  //             NewEvent0x12(); // charging stopped
+            if (System.ChargeStatus == true)
+            {
+              /* Add event in event array which is send to cloud in next sync interval */
+              NewEvent0x12(); // charging stopped
 
-  //             rtc_print_debug_timestamp();
-  //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Disabled charging - battery temperature is not valid range: %3.2f°C (0-45°C).\n", battery.Temperature);
-  //           }
-  //           else
-  //           {
-  //             rtc_print_debug_timestamp();
-  //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "battery temperature is not valid range for next charge progress: %3.2f°C (0-45°C).\n", battery.Temperature);
-  //           }
-  //         }
-  //       }
-  //     }
-  //     else
-  //     {
-  //       /* Enable charge circuit */
-  //       gpio_pin_set_raw(gpio_dev, GPIO_PIN_CHG_EN, 0);
+              rtc_print_debug_timestamp();
+              shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Disabled charging - battery temperature is not valid range: %3.2f°C (0-45°C).\n", battery.Temperature);
+            }
+            else
+            {
+              rtc_print_debug_timestamp();
+              shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "battery temperature is not valid range for next charge progress: %3.2f°C (0-45°C).\n", battery.Temperature);
+            }
+          }
+        }
+      }
+      else
+      {
+        /* Enable charge circuit */
+        gpio_pin_set_dt(&booster_enable_pin, 0);
 
-  //       battery_charge_enable_notification = false;
-  //       battery_gauge_temperature_controlled_charge_enable = true;
-  //     }
-  //   }
-  //   else
-  //   {
-  //     battery_gauge_temperature_progress_delay--;
-  //   }
+        battery_charge_enable_notification = false;
+        battery_gauge_temperature_controlled_charge_enable = true;
+      }
+    }
+    else
+    {
+      battery_gauge_temperature_progress_delay--;
+    }
 
-  //   k_msleep(1000);
-  // }
+    k_msleep(1000);
+  }
 }
 
 void button_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -256,7 +256,7 @@ void epc_thread(void *dummy1, void *dummy2, void *dummy3)
     /* Check new tags if the are listed in epc database and check if it is a mop, tag or room tag */
     if ((event_clearing_in_progress == false) && ((System.charger_connected == false) || (Parameter.notifications_while_usb_connected == true)))
     {
- //     epc_process_tags();
+      epc_process_tags();
     }
 
     k_msleep(1);
@@ -400,18 +400,18 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
     if (datalog_ReadOutisActive == false)
     {
       USB_CheckConnectionStatus();
-        battery_gauge_UpdateData();
+      battery_gauge_UpdateData();
 
-        if (battery_charge_status_delay == 0)
-        {
-          battery_gauge_CheckChargeStatus();
-          battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
-        }
-        else
-        {
-          battery_charge_status_delay--;
-        }
-        battery_gauge_CheckLowBat();
+      if (battery_charge_status_delay == 0)
+      {
+        battery_gauge_CheckChargeStatus();
+        battery_charge_status_delay = BATTERY_GAUGE_CHARGE_STATUS_DELAY;
+      }
+      else
+      {
+        battery_charge_status_delay--;
+      }
+      battery_gauge_CheckLowBat();
     }
     k_msleep(100);
   }
@@ -419,27 +419,27 @@ void battery_thread(void *dummy1, void *dummy2, void *dummy3)
 
 void fetch_time_thread(void *dummy1, void *dummy2, void *dummy3)
 {
-  // ARG_UNUSED(dummy1);
-  // ARG_UNUSED(dummy2);
-  // ARG_UNUSED(dummy3);
+  ARG_UNUSED(dummy1);
+  ARG_UNUSED(dummy2);
+  ARG_UNUSED(dummy3);
 
-  // bool time_update_done = 1; // not done yet
+  bool time_update_done = 1; // not done yet
 
-  // while (1)
-  // {
-  //   if (datalog_ReadOutisActive == false)
-  //   {
-  //     /* Read date and time */
-  //     if (modem.connection_stat == true)
-  //     {
-  //       if (time_update_done == 1)
-  //       {
-  //         time_update_done = rtc_fetch_date_time();
-  //       }
-  //     }
-  //   }
-  //   k_msleep(1000);
-  // }
+  while (1)
+  {
+      if (datalog_ReadOutisActive == false)
+      {
+        /* Read date and time */
+        if (modem.connection_stat == true)
+        {
+          if (time_update_done == 1)
+          {
+            time_update_done = rtc_fetch_date_time();
+          }
+        }
+      }
+    k_msleep(1000);
+  }
 }
 
 void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
@@ -491,7 +491,7 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
     /* Update registration status */
     if (Parameter.modem_disable == false)
     {
-        modem_update_registration_status(); // This function needs 1sec to execute
+      modem_update_registration_status(); // This function needs 1sec to execute
 
       /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
@@ -558,13 +558,13 @@ void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
   /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
   /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
 
-  while (1)
-  {
-    /* Update FOTA process state machine*/
-    // aws_fota_statemachine();
+  // while (1)
+  // {
+  // /* Update FOTA process state machine*/
+  // aws_fota_statemachine();
 
-    k_msleep(100);
-  }
+  //  k_msleep(100);
+  //  }
 }
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)

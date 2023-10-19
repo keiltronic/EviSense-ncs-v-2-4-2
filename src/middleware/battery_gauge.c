@@ -25,8 +25,22 @@ uint16_t battery_gauge_temperature_progress_delay = BATTERY_GAUGE_TEMPERATURE_PR
 struct i2c_dt_spec battery_lo_i2c = I2C_DT_SPEC_GET(DT_ALIAS(batterygaugelo));
 struct i2c_dt_spec battery_hi_i2c = I2C_DT_SPEC_GET(DT_ALIAS(batterygaugehi));
 
+struct gpio_dt_spec charge_enable_pin = GPIO_DT_SPEC_GET(DT_ALIAS(chargeenable), gpios);
+
 void battery_gauge_init(void)
 {
+  int16_t ret = 0;
+
+  /* Init enable signal for boost converter */
+  if (!device_is_ready(charge_enable_pin.port))
+    printk("Could not initialize charge enable pin!\n\r");
+
+  ret = gpio_pin_configure_dt(&charge_enable_pin, GPIO_OUTPUT_ACTIVE);
+  if (ret < 0)
+    printk("Could not configure charge enable pin!\n\r");
+
+  /* Init I2C and battery gauge*/
+
   if (!device_is_ready(battery_lo_i2c.bus))
   {
     printk("I2C bus %s is not ready!\n\r", battery_lo_i2c.bus->name);
@@ -543,8 +557,7 @@ uint16_t battery_gauge_read(uint16_t reg)
   if (reg >= 0x100)
   {
     // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
-  //   ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
-     
+    //   ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
 
     if (ret != 0)
     {

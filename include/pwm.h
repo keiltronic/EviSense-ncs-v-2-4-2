@@ -14,7 +14,8 @@
 #include <zephyr/drivers/pwm.h>
 #include "parameter_mem.h"
 
-extern struct device *pwm_dev;
-extern void init_pwm(void);
+//extern const struct pwm_dt_spec sBuzzer;
+extern const struct pwm_dt_spec sBuzzer;
+extern void pwm_init(void);
 
 #endif
