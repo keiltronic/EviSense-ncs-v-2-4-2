@@ -270,12 +270,8 @@ void factorysettings(void)
  */
 void main(void)
 {
-	uint32_t reset_reason = 0;
 	int16_t err = 0;
-
-	/* Init some variables */
-	modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
-	modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
+	uint32_t reset_reason = 0;
 
 	/* Init functions */
 	hard_reset_init();
@@ -353,8 +349,6 @@ void main(void)
 	}
 
 	/* Init peripherals */
-	wdt_init();
-	wdt_reset();
 	adc_init();
 	spi_init();
 	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
@@ -371,7 +365,7 @@ void main(void)
 
 	/* Init flash memory and load NVM parameters to RAM */
 	flash_init();
-	wdt_reset();
+//	wdt_reset();
 	ValidateParameterInExernalFlash();
 
 	/* Init propritary driver  which depents on loaded parameters*/
@@ -380,7 +374,7 @@ void main(void)
 	imu_init();
 	command_init();
 	init_algorithms();
-	wdt_reset();
+//	wdt_reset();
 
 	/* Create power on event*/
 	NewEvent0x13();
@@ -399,13 +393,13 @@ void main(void)
 	}
 
 	/* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
-	wdt_reset();
+//	wdt_reset();
 	init_threads();
 
 	k_msleep(100);
 
 	/* Allow FOTA connection to server only after reboot and if USB is connected (charging)*/
-	wdt_reset();
+//	wdt_reset();
 	if (System.charger_connected == true)
 	{
 		fota_reboot_while_usb_connected = true;
@@ -450,10 +444,12 @@ void main(void)
 	/* Clean event storage region in external flash */
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
-	Event_ClearCompleteFlash();
+//	Event_ClearCompleteFlash();
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;
+
+		wdt_init();
 
 	/* Disable blue dev led after boot cocmplete */
 	gpio_pin_set_dt(&dev_led, 0);

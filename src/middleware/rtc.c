@@ -31,8 +31,7 @@ struct k_timer millisec_timer;
 void rtc_update_handler(struct k_work *work)
 {
     unixtime++; // updates system time every second
-         //        System.TimeSinceBoot++;
-     Device.OpertingTime++;
+    Device.OpertingTime++;
     millisec = 0;
 }
 K_WORK_DEFINE(my_work, rtc_update_handler);
@@ -200,7 +199,7 @@ bool rtc_fetch_date_time(void)
     int8_t err = 0;
 
     /* Get the current date from network provider or NTP sever */
-    err = date_time_now(&unixtime_ms);
+   // err = date_time_now(&unixtime_ms);
 
     if (err == 0)
     {

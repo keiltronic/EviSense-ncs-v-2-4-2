@@ -453,48 +453,48 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 
   int16_t err = 0;
 
-  /* Turn modem off */
-  lte_lc_power_off();
-  k_msleep(500);
+  // /* Turn modem off */
+  // lte_lc_power_off();
+  // k_msleep(500);
 
-  if (Parameter.modem_disable == false)
-  {
-    /* Configure modem to use either LTE-M or NB-IoT */
-    if (Parameter.network_connection_type == NB_IOT)
-    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
+  // if (Parameter.modem_disable == false)
+  // {
+  //   /* Configure modem to use either LTE-M or NB-IoT */
+  //   if (Parameter.network_connection_type == NB_IOT)
+  //   {
+  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_NBIOT, LTE_LC_SYSTEM_MODE_PREFER_NBIOT);
 
-      rtc_print_debug_timestamp();
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
+  //     rtc_print_debug_timestamp();
+  //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Note: Device will use NB-IoT connection. It may take several minutes for a NB-IoT connection to be established successfully\n");
 
-      if (err)
-      {
-        rtc_print_debug_timestamp();
-        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
-      }
-    }
-    else
-    {
-      err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
+  //     if (err)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to NB-IoT failed\n");
+  //     }
+  //   }
+  //   else
+  //   {
+  //     err = lte_lc_system_mode_set(LTE_LC_SYSTEM_MODE_LTEM, LTE_LC_SYSTEM_MODE_PREFER_LTEM);
 
-      if (err)
-      {
-        rtc_print_debug_timestamp();
-        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
-      }
-    }
-    k_msleep(100);
+  //     if (err)
+  //     {
+  //       rtc_print_debug_timestamp();
+  //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+  //     }
+  //   }
+  //   k_msleep(100);
 
-    /* Turn modem on - it will automatically search for networks*/
-    lte_lc_normal();
-  }
+  //   /* Turn modem on - it will automatically search for networks*/
+  //   lte_lc_normal();
+  // }
 
   while (1)
   {
     /* Update registration status */
     if (Parameter.modem_disable == false)
     {
-     // modem_update_registration_status(); // This function needs 1sec to execute
+      modem_update_registration_status(); // This function needs 1sec to execute
 
       /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
@@ -612,37 +612,37 @@ void autosave_thread(void *dummy1, void *dummy2, void *dummy3)
 void init_threads(void)
 {
   tid = k_thread_create(&notification_data, notification_stack_area, STACKSIZE_SMALL, notification_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "notification");
+  k_thread_name_set(tid, "notification-thread");
 
   tid = k_thread_create(&imu_data, imu_stack_area, STACKSIZE_LARGE, imu_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "imu");
+  k_thread_name_set(tid, "imu-thread");
 
   tid = k_thread_create(&rfid_data, rfid_stack_area, STACKSIZE_LARGE, rfid_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "rfid");
+  k_thread_name_set(tid, "rfid-thread");
 
   tid = k_thread_create(&epc_data, epc_stack_area, STACKSIZE_LARGE, epc_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "epc-thread");
+  k_thread_name_set(tid, "epc-thread-thread");
 
   tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "datalog");
+  k_thread_name_set(tid, "datalog-thread");
 
   tid = k_thread_create(&battery_data, battery_area, STACKSIZE_SMALL, battery_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "battery");
+  k_thread_name_set(tid, "battery-thread");
 
   tid = k_thread_create(&lte_and_cloud_data, lte_and_cloud_area, STACKSIZE_LARGE, mobile_connection_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_MSEC(500));
-  k_thread_name_set(tid, "lte-and-cloud");
+   k_thread_name_set(tid, "lte-and-cloud-thread");
 
   tid = k_thread_create(&aws_fota_data, aws_fota_area, STACKSIZE_LARGE, aws_fota_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_MSEC(3000));
-  k_thread_name_set(tid, "aws_fota");
+  k_thread_name_set(tid, "aws-fota-thread");
 
   tid = k_thread_create(&fetch_time_data, fetch_time_area, STACKSIZE_SMALL, fetch_time_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "time-fetch");
+  k_thread_name_set(tid, "time-fetch-thread");
 
   tid = k_thread_create(&datalog_readout_data, datalog_readout_area, STACKSIZE_SMALL, datalog_readout_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
   k_thread_name_set(tid, "datalog-readout");
 
   tid = k_thread_create(&autosave_data, autosave_area, STACKSIZE_SMALL, autosave_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "autosave");
+  k_thread_name_set(tid, "autosave-thread");
 
   tid = k_thread_create(&safety_data, safety_area, STACKSIZE_SMALL, safety_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_MSEC(1000));
   k_thread_name_set(tid, "safty-thread");
@@ -651,8 +651,8 @@ void init_threads(void)
   k_thread_name_set(tid, "magnet-detection-thread");
 
   tid = k_thread_create(&seconds_loop_data, seconds_loop_area, STACKSIZE_LARGE, seconds_loop_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "seconds-loop");
+  k_thread_name_set(tid, "seconds-loop-thread");
 
-  tid = k_thread_create(&button_data, button_area, STACKSIZE_SMALL, button_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "seconds-loop");
+   tid = k_thread_create(&button_data, button_area, STACKSIZE_SMALL, button_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
+   k_thread_name_set(tid, "button-thread");
 }

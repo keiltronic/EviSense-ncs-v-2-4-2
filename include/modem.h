@@ -61,4 +61,8 @@ extern int16_t network_info_log(void);
 extern char modem_at_recv_buf[500];
 extern int8_t get_signal_quality(void);
 extern int16_t get_signal_strength(void);
+
+extern int modem_configure(void);
+
+//extern void lte_handler(const struct lte_lc_evt *const evt);
 #endif

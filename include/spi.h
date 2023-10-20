@@ -17,7 +17,7 @@
 extern void spi_init(void);
 extern void spi_deinit(void);
 
-extern struct device *spi_dev;
+extern const struct device *spi_dev;
 extern struct spi_config spi_cfg;
 
 #endif

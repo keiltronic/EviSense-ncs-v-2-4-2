@@ -75,7 +75,7 @@ void USB_Unplugged(void)
   k_msleep(10);
 
   /* Clear all stored events from previous shift */
-  Event_ClearCompleteFlash(); // clears all stored events in external flash
+ // Event_ClearCompleteFlash(); // clears all stored events in external flash
 
   /* Add event in event array which is send to cloud in next sync interval */
   NewEvent0x10(); // USB plugged off
