@@ -54,24 +54,24 @@ void safety_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-    //   /* Test I2C bus*/
-    //   if ((hibernation_mode == false) && (i2c_test() == false)) // test I2C bus if IMU and led driver gets found
-    //   {
-    //     /* Print error message on terminal*/
-    //     rtc_print_debug_timestamp();
-    //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: I2C bus broken. Trying to recover bus and reboot device.\n");
+    /* Test I2C bus*/
+    if ((hibernation_mode == false) && (i2c_test() == false)) // test I2C bus if IMU and led driver gets found
+    {
+      /* Print error message on terminal*/
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "ERROR: I2C bus broken. Trying to recover bus and reboot device.\n");
 
-    //     /* Try to recover SDA and SCL line */
-    //     nrfx_twi_twim_bus_recover(GPIO_PIN_SCL, GPIO_PIN_SDA);
+      /* Try to recover SDA and SCL line */
+      nrfx_twi_twim_bus_recover(GPIO_PIN_SCL, GPIO_PIN_SDA);
 
-    //     /* Print error message on terminal*/
-    //     rtc_print_debug_timestamp();
-    //     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "I2C bus recovery done. Rebooting device.\n");
+      /* Print error message on terminal*/
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "I2C bus recovery done. Rebooting device.\n");
 
-    //     k_msleep(1000);
+      k_msleep(1000);
 
-    //     sys_reboot(0);
-    //   }
+      sys_reboot(0);
+    }
 
     /* Monitor battery temperature
         - read out AIN from battery gauge (battery.temperature holds the value)
@@ -620,7 +620,7 @@ void init_threads(void)
   tid = k_thread_create(&epc_data, epc_stack_area, STACKSIZE_LARGE, epc_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
   k_thread_name_set(tid, "epc-thread-thread");
 
-    tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
+  tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
   k_thread_name_set(tid, "datalog-thread");
 
   tid = k_thread_create(&battery_data, battery_area, STACKSIZE_SMALL, battery_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_NO_WAIT);
