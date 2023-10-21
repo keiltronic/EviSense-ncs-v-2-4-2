@@ -404,7 +404,7 @@ static int cmd_i2csan(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-  // i2c_scanner(1);
+  i2c_scanner(1);
   return 0;
 }
 
@@ -4261,18 +4261,17 @@ static int cmd_test0(const struct shell *shell, size_t argc, char **argv)
 {
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
-  shell_print(shell, "%s", modem_get_imei());
 
-  // uint16_t i = 0;
+  uint16_t i = 0;
 
-  // for (i = 0; i < atoi(argv[1]); i++)
-  // {
-  //   NewEvent0x0D();
-  //   k_msleep(10);
-  //   event_simulation_in_progress = true;
-  // }
+  for (i = 0; i < atoi(argv[1]); i++)
+  {
+    NewEvent0x0D();
+    k_msleep(10);
+    event_simulation_in_progress = true;
+  }
 
-  // event_simulation_in_progress = false;
+  event_simulation_in_progress = false;
   return 0;
 }
 
@@ -4283,10 +4282,6 @@ static int cmd_test1(const struct shell *shell, size_t argc, char **argv)
 {
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
-
-  //  Event_ClearCompleteFlash();
-
-    gpio_pin_set_dt(&chip_select_1, atoi(argv[1]));
 
   return 0;
 }

@@ -116,7 +116,7 @@ void ValidateParameterInExernalFlash(void)
 
 		/* Print modem firmware version */
 		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem_get_imei());
 
 		/* Print hardware information */
 		rtc_print_debug_timestamp();
@@ -353,6 +353,8 @@ void main(void)
 	spi_init();
 	uart1_init(); // Inits UART 1 for rfid module (UART 0 for shell and temrinal is initialized by Zephyr OS and devicetree)
 	pwm_init();
+	i2c_init();
+	//init_i2c();
 
 	/* Check if charger is pluged into the device while it is booting */
 	uint16_t vusb_digit = 0;

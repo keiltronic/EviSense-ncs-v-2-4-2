@@ -307,9 +307,6 @@ void seconds_loop_thread(void *dummy1, void *dummy2, void *dummy3)
   {
     wdt_reset(); // blocks watchdog activation
 
-    rtc_print_debug_timestamp();
-    shell_print(shell_backend_uart_get_ptr(), "");
-
     /* Update step detection */
     if (datalog_ReadOutisActive == false)
     {
