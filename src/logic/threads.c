@@ -620,11 +620,11 @@ void init_threads(void)
   tid = k_thread_create(&rfid_data, rfid_stack_area, STACKSIZE_LARGE, rfid_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
   k_thread_name_set(tid, "rfid-thread");
 
-  tid = k_thread_create(&epc_data, epc_stack_area, STACKSIZE_LARGE, epc_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "epc-thread-thread");
+   tid = k_thread_create(&epc_data, epc_stack_area, STACKSIZE_LARGE, epc_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
+   k_thread_name_set(tid, "epc-thread-thread");
 
-  tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "datalog-thread");
+ //   tid = k_thread_create(&datalog_data, datalog_stack_area, STACKSIZE_LARGE, datalog_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_NO_WAIT);
+ // k_thread_name_set(tid, "datalog-thread");
 
   tid = k_thread_create(&battery_data, battery_area, STACKSIZE_SMALL, battery_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(2), 0, K_NO_WAIT);
   k_thread_name_set(tid, "battery-thread");
@@ -638,11 +638,11 @@ void init_threads(void)
   tid = k_thread_create(&fetch_time_data, fetch_time_area, STACKSIZE_SMALL, fetch_time_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
   k_thread_name_set(tid, "time-fetch-thread");
 
-  tid = k_thread_create(&datalog_readout_data, datalog_readout_area, STACKSIZE_SMALL, datalog_readout_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "datalog-readout");
+   tid = k_thread_create(&datalog_readout_data, datalog_readout_area, STACKSIZE_SMALL, datalog_readout_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(0), 0, K_NO_WAIT);
+   k_thread_name_set(tid, "datalog-readout");
 
-  tid = k_thread_create(&autosave_data, autosave_area, STACKSIZE_SMALL, autosave_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
-  k_thread_name_set(tid, "autosave-thread");
+    tid = k_thread_create(&autosave_data, autosave_area, STACKSIZE_SMALL, autosave_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(3), 0, K_NO_WAIT);
+    k_thread_name_set(tid, "autosave-thread");
 
   tid = k_thread_create(&safety_data, safety_area, STACKSIZE_SMALL, safety_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(1), 0, K_MSEC(1000));
   k_thread_name_set(tid, "safty-thread");

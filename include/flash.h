@@ -120,4 +120,7 @@ extern void flash_MemoryViewer(uint8_t cs_pin, uint32_t start_address, uint32_t 
 extern uint8_t flash_CommunicationTest(uint8_t cs_pin);
 extern uint8_t flash_ValidateDataInMemory(uint8_t cs_pin, uint32_t offset, uint32_t addr, uint16_t accumulation_length, uint8_t clear_value);
 
- #endif
+extern struct gpio_dt_spec chip_select_1;
+extern struct gpio_dt_spec chip_select_2;
+
+#endif

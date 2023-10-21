@@ -16,7 +16,7 @@ bool charger_plug_in_while_reboot = false;
 
 void USB_PluggedIn(void)
 {
- // battery_gauge_UpdateData();
+  battery_gauge_UpdateData();
 
   rfid_power_off();
   RFID_TurnOff();
@@ -70,7 +70,7 @@ void USB_Unplugged(void)
   //     aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
   //   }
 
-  Device_PushRAMToFlash(); // store operating time
+ Device_PushRAMToFlash(); // store operating time
 
   k_msleep(10);
 

@@ -131,10 +131,9 @@ static int cmd_flash_device_id(const struct shell *shell, size_t argc, char **ar
   uint8_t id[4];
   uint16_t err;
 
-  //! #
-  // gpio_pin_set_raw(gpio_dev, 27, 0);
-  // err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
-  // gpio_pin_set_raw(gpio_dev, 27, 1);
+  flash_cs(atoi(argv[1]), 0);
+  err = flash_access_register(spi_dev, &spi_cfg, FLASH_MANUFACTURER_ID_CMD, &id, sizeof(id));
+  flash_cs(atoi(argv[1]), 1);
 
   if (err)
   {
@@ -2333,7 +2332,7 @@ static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
     }
   }
 
-   err = lte_lc_nw_reg_status_get(&status);
+  err = lte_lc_nw_reg_status_get(&status);
 
   if (err == 0)
   {
@@ -2374,7 +2373,7 @@ static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
 
     default:
       break;
-     }
+    }
   }
   else
   {
@@ -4286,6 +4285,9 @@ static int cmd_test1(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argv);
 
   //  Event_ClearCompleteFlash();
+
+    gpio_pin_set_dt(&chip_select_1, atoi(argv[1]));
+
   return 0;
 }
 

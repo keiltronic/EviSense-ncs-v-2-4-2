@@ -13,37 +13,6 @@
 
 #include "modem.h"
 
-// void lte_handler(const struct lte_lc_evt *const evt)
-// {
-//    switch (evt->type)
-//    {
-//    case LTE_LC_EVT_NW_REG_STATUS:
-//       if ((evt->nw_reg_status != LTE_LC_NW_REG_REGISTERED_HOME) &&
-//           (evt->nw_reg_status != LTE_LC_NW_REG_REGISTERED_ROAMING))
-//       {
-//          break;
-//       }
-
-//       printk("Connected to: %s network\n",
-//              evt->nw_reg_status == LTE_LC_NW_REG_REGISTERED_HOME ? "home" : "roaming");
-//       break;
-//    case LTE_LC_EVT_PSM_UPDATE:
-//    case LTE_LC_EVT_EDRX_UPDATE:
-//    case LTE_LC_EVT_RRC_UPDATE:
-//    case LTE_LC_EVT_CELL_UPDATE:
-//    case LTE_LC_EVT_LTE_MODE_UPDATE:
-//    case LTE_LC_EVT_TAU_PRE_WARNING:
-//    case LTE_LC_EVT_NEIGHBOR_CELL_MEAS:
-//    case LTE_LC_EVT_MODEM_SLEEP_EXIT_PRE_WARNING:
-//    case LTE_LC_EVT_MODEM_SLEEP_EXIT:
-//    case LTE_LC_EVT_MODEM_SLEEP_ENTER:
-//       /* Callback events carrying LTE link data */
-//       break;
-//    default:
-//       break;
-//    }
-// }
-
 MODEM modem;
 int16_t err = 0;
 char modem_at_recv_buf[500];
@@ -69,15 +38,6 @@ void modem_init(void)
    {
       printk("Failed to initialize modem info: %d", err);
    }
-
- //  printk("Connecting to LTE network. This may take a few minutes...\n");
-
-   // err = lte_lc_init_and_connect_async(lte_handler);
-   // if (err)
-   // {
-   //    printk("lte_lc_init_and_connect_async, error: %d\n", err);
-   //    return;
-   // }
 }
 
 int16_t network_info_log(void)

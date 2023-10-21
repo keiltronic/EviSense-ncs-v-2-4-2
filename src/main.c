@@ -105,84 +105,84 @@ void ValidateParameterInExernalFlash(void)
 	/* Init modem */
 	modem_init();
 
-	/* Fetch modem version */
-	modem_update_information();
+	// /* Fetch modem version */
+	// modem_update_information();
 
-	/* Print firmware version */
-	if (pcb_test_is_running == false)
-	{
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: %d.%d.%d, Build time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
+	// /* Print firmware version */
+	// if (pcb_test_is_running == false)
+	// {
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version application: %d.%d.%d, Build time: " __DATE__ ", " __TIME__ "\n", Device.FirmwareMajorVersion, Device.FirmwareMinorVersion, Device.FirmwareInternVersion);
 
-		/* Print modem firmware version */
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
+	// 	/* Print modem firmware version */
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "FW version of modem: \t%s", modem.version);
 
-		/* Print hardware information */
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
-	}
+	// 	/* Print hardware information */
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "PCB version:\t\t%d.%d,\tIMEI: %s", Device.HardwareMajorVersion, Device.HardwareMinorVersion, modem.IMEI);
+	// }
 
-	/* Read stored firmware version from flash */
-	DEVICE device_mem_flash;
-	flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &device_mem_flash.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
+	// /* Read stored firmware version from flash */
+	// DEVICE device_mem_flash;
+	// flash_read(GPIO_PIN_FLASH_CS2, DEVICE_MEM, &device_mem_flash.device_mem_bytes[0], DEVICE_MEM_LENGTH_RAM);
 
-	/* Firmware update recognized, reset parameter setting */
-	if (device_mem_flash.FirmwareMajorVersion != Device.FirmwareMajorVersion || device_mem_flash.FirmwareMinorVersion != Device.FirmwareMinorVersion || device_mem_flash.FirmwareInternVersion != Device.FirmwareInternVersion)
-	{
-		if (pcb_test_is_running == false)
-		{
-			rtc_print_debug_timestamp();
-			shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Stored fw version: %d.%d.%d! Data in external flash is obsolete. Restoring default values, please wait...\n", device_mem_flash.FirmwareMajorVersion, device_mem_flash.FirmwareMinorVersion, device_mem_flash.FirmwareInternVersion);
-		}
-		Device_PopFlashToRAM();
-		factorysettings();
-		modem_initial_setup();
-	}
-	else
-	{
-		if (pcb_test_is_running == false)
-		{
-			rtc_print_debug_timestamp();
-			shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Loading settings from external flash\n");
-		}
-		Parameter_PopFlashToRAM();
-		Device_PopFlashToRAM();
-	}
+	// /* Firmware update recognized, reset parameter setting */
+	// if (device_mem_flash.FirmwareMajorVersion != Device.FirmwareMajorVersion || device_mem_flash.FirmwareMinorVersion != Device.FirmwareMinorVersion || device_mem_flash.FirmwareInternVersion != Device.FirmwareInternVersion)
+	// {
+	// 	if (pcb_test_is_running == false)
+	// 	{
+	// 		rtc_print_debug_timestamp();
+	// 		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Stored fw version: %d.%d.%d! Data in external flash is obsolete. Restoring default values, please wait...\n", device_mem_flash.FirmwareMajorVersion, device_mem_flash.FirmwareMinorVersion, device_mem_flash.FirmwareInternVersion);
+	// 	}
+	// 	Device_PopFlashToRAM();
+	// 	factorysettings();
+	// 	modem_initial_setup();
+	// }
+	// else
+	// {
+	// 	if (pcb_test_is_running == false)
+	// 	{
+	// 		rtc_print_debug_timestamp();
+	// 		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Loading settings from external flash\n");
+	// 	}
+	// 	Parameter_PopFlashToRAM();
+	// 	Device_PopFlashToRAM();
+	// }
 
-	if (pcb_test_is_running == false)
-	{
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Checking last valid frame number in log memory (stored in external flash memory): ");
-	}
+	// if (pcb_test_is_running == false)
+	// {
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Checking last valid frame number in log memory (stored in external flash memory): ");
+	// }
 
-	System.datalogFrameNumber = flash_GetLastFrameNumber(GPIO_PIN_FLASH_CS1, FLASH_SUBSUBSECTOR_SIZE, DATALOG_MEM, DATALOG_MEM_LENGTH, DATALOG_FRAME_LENGTH);
-	if (pcb_test_is_running == false)
-	{
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d\n", System.datalogFrameNumber);
-	}
+	// System.datalogFrameNumber = flash_GetLastFrameNumber(GPIO_PIN_FLASH_CS1, FLASH_SUBSUBSECTOR_SIZE, DATALOG_MEM, DATALOG_MEM_LENGTH, DATALOG_FRAME_LENGTH);
+	// if (pcb_test_is_running == false)
+	// {
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%d\n", System.datalogFrameNumber);
+	// }
 
-	/* Check for EPCs in external flash */
-	EPC_last_rfid_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH, RFID_RECORD_BYTE_LENGTH);
-	if (pcb_test_is_running == false)
-	{
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored rfid records: %d\n", EPC_last_rfid_record_index);
-	}
+	// /* Check for EPCs in external flash */
+	// EPC_last_rfid_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, RFID_RECORD_REGION, RFID_RECORD_REGION_LENGTH, RFID_RECORD_BYTE_LENGTH);
+	// if (pcb_test_is_running == false)
+	// {
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored rfid records: %d\n", EPC_last_rfid_record_index);
+	// }
 
-	EPC_last_room_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH, ROOM_RECORD_BYTE_LENGTH);
-	if (pcb_test_is_running == false)
-	{
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored room records: %d\n", EPC_last_room_record_index);
-	}
+	// EPC_last_room_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, ROOM_RECORD_REGION, ROOM_RECORD_REGION_LENGTH, ROOM_RECORD_BYTE_LENGTH);
+	// if (pcb_test_is_running == false)
+	// {
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored room records: %d\n", EPC_last_room_record_index);
+	// }
 
-	EPC_last_mop_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH, MOP_RECORD_BYTE_LENGTH);
-	if (pcb_test_is_running == false)
-	{
-		rtc_print_debug_timestamp();
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored mop records: %d\n", EPC_last_mop_record_index);
-	}
+	// EPC_last_mop_record_index = EPC_Memory_GetLastIndex(GPIO_PIN_FLASH_CS2, MOP_RECORD_REGION, MOP_RECORD_REGION_LENGTH, MOP_RECORD_BYTE_LENGTH);
+	// if (pcb_test_is_running == false)
+	// {
+	// 	rtc_print_debug_timestamp();
+	// 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Stored mop records: %d\n", EPC_last_mop_record_index);
+	// }
 }
 
 /**
@@ -365,7 +365,6 @@ void main(void)
 
 	/* Init flash memory and load NVM parameters to RAM */
 	flash_init();
-//	wdt_reset();
 	ValidateParameterInExernalFlash();
 
 	/* Init propritary driver  which depents on loaded parameters*/
@@ -374,7 +373,6 @@ void main(void)
 	imu_init();
 	command_init();
 	init_algorithms();
-//	wdt_reset();
 
 	/* Create power on event*/
 	NewEvent0x13();
@@ -393,13 +391,11 @@ void main(void)
 	}
 
 	/* Threads takeover the system handling, main (main thread) is destroyed after the end of this function is reached */
-//	wdt_reset();
 	init_threads();
 
 	k_msleep(100);
 
 	/* Allow FOTA connection to server only after reboot and if USB is connected (charging)*/
-//	wdt_reset();
 	if (System.charger_connected == true)
 	{
 		fota_reboot_while_usb_connected = true;
@@ -444,12 +440,12 @@ void main(void)
 	/* Clean event storage region in external flash */
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Erasing stored events in flash memory\n");
-//	Event_ClearCompleteFlash();
+	//Event_ClearCompleteFlash();
 
 	/* Set flag that boot sequence completed before main thread is terminated */
 	System.boot_complete = true;
 
-		wdt_init();
+	wdt_init();
 
 	/* Disable blue dev led after boot cocmplete */
 	gpio_pin_set_dt(&dev_led, 0);

@@ -1192,7 +1192,7 @@ void epc_process_tags(void)
     start_time = k_cycle_get_32();
 
     /* Search for rfid record in data base*/
-    binary_search_result = EPC_BinarySearch(GPIO_PIN_FLASH_CS2, &epc_ring_buffer[epc_tail_position].string, EPC_last_rfid_record_index);
+  //  binary_search_result = EPC_BinarySearch(GPIO_PIN_FLASH_CS2, &epc_ring_buffer[epc_tail_position].string, EPC_last_rfid_record_index);
 
     /* capture final time stamp */
     stop_time = k_cycle_get_32();
@@ -1204,7 +1204,7 @@ void epc_process_tags(void)
     if (binary_search_result.found == true)
     {
       /* Read rfid record */
-      EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, binary_search_result.epc_index);
+ //     EPC_Memory_Read_RFID_Record(GPIO_PIN_FLASH_CS2, &new_rfid_record, binary_search_result.epc_index);
 
       /* Live view on console */
       if (Parameter.binary_search_verbose == true)
