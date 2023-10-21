@@ -461,8 +461,6 @@ static int cmd_battery_charge_cycles(const struct shell *shell, size_t argc, cha
 
 /*!
  *  @brief This is the function description
-
-
  */
 static int cmd_battery_temperature(const struct shell *shell, size_t argc, char **argv)
 {
@@ -569,7 +567,6 @@ static int cmd_battery_remaining_capacity(const struct shell *shell, size_t argc
 
 /*!
  *  @brief This is the function description
-
  */
 static int cmd_i2cread(const struct shell *shell, size_t argc, char **argv)
 {
@@ -579,11 +576,10 @@ static int cmd_i2cread(const struct shell *shell, size_t argc, char **argv)
 
   if (argc == 3)
   {
+    reg_write[0] = atoi(argv[2]);
+    rslt = i2c_write_read(i2c_dev, atoi(argv[1]), reg_write, 1, reg_read, 1);
 
-    // reg_write[0] = atoi(argv[2]);
-    // rslt = i2c_write_read(i2c_dev, atoi(argv[1]), reg_write, 1, reg_read, 1);
-
-    // shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, read value: 0x%X", rslt, atoi(argv[1]), reg_write[0], reg_read[0]);
+    shell_print(shell, "Result: %d, Device: 0x%X, register: 0x%X, read value: 0x%X", rslt, atoi(argv[1]), reg_write[0], reg_read[0]);
   }
   else
   {

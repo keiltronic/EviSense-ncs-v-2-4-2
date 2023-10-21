@@ -516,6 +516,7 @@ void battery_gauge_write(uint16_t reg, uint16_t val)
     data[2] = (uint8_t)(val >> 8);
 
     ret = i2c_write_dt(&battery_hi_i2c, data, sizeof(data));
+    //i2c_burst_write(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, &data, sizeof(data));
     if (ret != 0)
     {
       printk("Failed to write to I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_hi_i2c.addr, data[0], ret);
@@ -556,12 +557,12 @@ uint16_t battery_gauge_read(uint16_t reg)
 
   if (reg >= 0x100)
   {
-    // i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
-    //   ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
+      i2c_burst_read(i2c_dev, (uint16_t)MAX1720X_ADDR_HI, (reg & 0xFF), &readout, 2);
+       // ret = i2c_burst_read_dt(&battery_hi_i2c.addr, (reg & 0xFF), &readout, sizeof(readout));
 
     if (ret != 0)
     {
-      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_hi_i2c.addr, (reg & 0xFF), ret);
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, (reg & 0xFF), ret);
       return 0;
     }
 
@@ -573,10 +574,10 @@ uint16_t battery_gauge_read(uint16_t reg)
   }
   else
   {
-    ret = i2c_burst_read_dt(&battery_lo_i2c, (reg & 0xFF), &readout, sizeof(readout));
+    ret = i2c_burst_read_dt(&battery_lo_i2c, reg, &readout, sizeof(readout));
     if (ret != 0)
     {
-      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, (reg & 0xFF), ret);
+      printk("Failed to read from I2C device address 0x%x at reg. 0x%x . return value: %d\n", battery_lo_i2c.addr, reg, ret);
       return 0;
     }
 
