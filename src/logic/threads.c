@@ -450,10 +450,6 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
 
   int16_t err = 0;
 
-  // /* Turn modem off */
-  //  lte_lc_power_off();
- // k_msleep(500);
-
   if (Parameter.modem_disable == false)
   {
     /* Configure modem to use either LTE-M or NB-IoT */
@@ -497,36 +493,36 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
       {
       //  modem_update_registration_status(); // This function needs 1sec to execute
 
-        /////////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
+        ///////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
-        // /* Send CoAP messages if cloud connection can be establised and device is in IDLE or MOVING state (while MOPPING no data gets send, credentials gets testet in cloud_init function) */
-        // if (initial_time_update == true && modem.connection_stat == true && event_simulation_in_progress == false)
-        // {
-        //   System.StatusOutputs |= STATUSFLAG_IC;
+        /* Send CoAP messages if cloud connection can be establised and device is in IDLE or MOVING state (while MOPPING no data gets send, credentials gets testet in cloud_init function) */
+        if (initial_time_update == true && modem.connection_stat == true && event_simulation_in_progress == false)
+        {
+          System.StatusOutputs |= STATUSFLAG_IC;
 
-        //   if ((motion_state[0] == MOVING_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_moving))
-        //   {
-        //     cloud_SendUsageUpdateObject();
-        //   }
-        //   else if ((motion_state[0] == IDLE_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_idle))
-        //   {
-        //     cloud_SendUsageUpdateObject();
-        //   }
-        // }
-        // else
-        // {
-        //   System.StatusOutputs &= ~STATUSFLAG_IC;
-        //   coap_last_transmission_timer = 0;
-        // }
+          if ((motion_state[0] == MOVING_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_moving))
+          {
+            cloud_SendUsageUpdateObject();
+          }
+          else if ((motion_state[0] == IDLE_STATE) && (coap_last_transmission_timer >= Parameter.cloud_sync_interval_idle))
+          {
+            cloud_SendUsageUpdateObject();
+          }
+        }
+        else
+        {
+          System.StatusOutputs &= ~STATUSFLAG_IC;
+          coap_last_transmission_timer = 0;
+        }
 
-        // /* Manually send the current protobuf if triggered */
-        // if ((modem.connection_stat == true) && (trigger_tx == true))
-        // {
-        //   cloud_SendUsageUpdateObject();
-        //   trigger_tx = false;
-        // }
+        /* Manually send the current protobuf if triggered */
+        if ((modem.connection_stat == true) && (trigger_tx == true))
+        {
+          cloud_SendUsageUpdateObject();
+          trigger_tx = false;
+        }
 
-        // /* Connection to FOTA server should be only active for time x after the device was reboot while USB plugged in. */
+        /* Connection to FOTA server should be only active for time x after the device was reboot while USB plugged in. */
         // if (fota_is_connected == true)
         // {
         //   if ((fota_connection_timer == 0) && (fota_download_in_progress == false))

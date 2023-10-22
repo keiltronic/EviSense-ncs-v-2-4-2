@@ -62,8 +62,8 @@
 #include <zephyr/shell/shell.h>
 #include "algorithms.h"
 #include "battery_gauge.h"
-// #include "cloud.h"
-// #include "coap.h"
+#include "cloud.h"
+#include "coap.h"
 #include "commands.h"
 #include "datalog_mem.h"
 #include "device_mem.h"

@@ -1244,49 +1244,49 @@ static int cmd_datalog_enable(const struct shell *shell, size_t argc, char **arg
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_cloud_sync_interval_idle(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "Current cloud sync interval in idle mode: %ld sec", Parameter.cloud_sync_interval_idle);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) > 0)
-//     {
-//       Parameter.cloud_sync_interval_idle = atol(argv[1]);
-//       coap_last_transmission_timer = Parameter.cloud_sync_interval_idle;
-//       shell_print(shell, "OK");
-//       Parameter_PushRAMToFlash();
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_cloud_sync_interval_idle(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "Current cloud sync interval in idle mode: %ld sec", Parameter.cloud_sync_interval_idle);
+  }
+  else
+  {
+    if (atoi(argv[1]) > 0)
+    {
+      Parameter.cloud_sync_interval_idle = atol(argv[1]);
+      coap_last_transmission_timer = Parameter.cloud_sync_interval_idle;
+      shell_print(shell, "OK");
+      Parameter_PushRAMToFlash();
+    }
+  }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_cloud_sync_interval_moving(const struct shell *shell, size_t argc, char **argv)
-// {
-//   if (argc == 1)
-//   {
-//     shell_print(shell, "Current cloud sync interval in moving mode: %ld sec", Parameter.cloud_sync_interval_moving);
-//   }
-//   else
-//   {
-//     if (atoi(argv[1]) > 0)
-//     {
-//       Parameter.cloud_sync_interval_moving = atol(argv[1]);
-//       coap_last_transmission_timer = Parameter.cloud_sync_interval_moving;
-//       shell_print(shell, "OK");
-//       Parameter_PushRAMToFlash();
-//     }
-//   }
-//   return 0;
-// }
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_cloud_sync_interval_moving(const struct shell *shell, size_t argc, char **argv)
+{
+  if (argc == 1)
+  {
+    shell_print(shell, "Current cloud sync interval in moving mode: %ld sec", Parameter.cloud_sync_interval_moving);
+  }
+  else
+  {
+    if (atoi(argv[1]) > 0)
+    {
+      Parameter.cloud_sync_interval_moving = atol(argv[1]);
+      coap_last_transmission_timer = Parameter.cloud_sync_interval_moving;
+      shell_print(shell, "OK");
+      Parameter_PushRAMToFlash();
+    }
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -3992,40 +3992,40 @@ static int cmd_trigger_transmit(const struct shell *shell, size_t argc, char **a
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_last_upload(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_last_upload(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (initial_time_update == false)
-//   {
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "No data uploaded yet\n");
-//   }
-//   else
-//   {
-//     uint16_t i = 0;
-//     struct tm *ptm;
-//     char buf[50] = {0};
-//     uint16_t milli = 0;
-//     int64_t timestamp = 0;
+  if (initial_time_update == false)
+  {
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "No data uploaded yet\n");
+  }
+  else
+  {
+    uint16_t i = 0;
+    struct tm *ptm;
+    char buf[50] = {0};
+    uint16_t milli = 0;
+    int64_t timestamp = 0;
 
-//     timestamp = timestamp_last_cloud_transmission;
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last upload %d sec ago, at timestamp: ", coap_last_transmission_timer);
+    timestamp = timestamp_last_cloud_transmission;
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Last upload %d sec ago, at timestamp: ", coap_last_transmission_timer);
 
-//     milli = timestamp % 1000LL; // Get only the millisec from the unix time stamp
-//     timestamp /= 1000LL;        // time.h can only handly timestamp in sec resolution, so cut the millisec
+    milli = timestamp % 1000LL; // Get only the millisec from the unix time stamp
+    timestamp /= 1000LL;        // time.h can only handly timestamp in sec resolution, so cut the millisec
 
-//     /* convert from unix to local time */
-//     ptm = localtime(&timestamp);
-//     strftime(buf, 20, "%F %T", ptm);
+    /* convert from unix to local time */
+    ptm = localtime(&timestamp);
+    strftime(buf, 20, "%F %T", ptm);
 
-//     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s:%03d\n", buf, milli);
-//   }
-//   return 0;
-// }
+    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s:%03d\n", buf, milli);
+  }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -4409,16 +4409,16 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
-  //                                  SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
-  //                                  SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
-  //                                  SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
-  //                                  SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
-  //                                  SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
-  //                                  SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
+    SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
+                                   SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
+                                   SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
+                                   SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
+                                   SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
+                                   SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
+                                   SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
+                                   SHELL_SUBCMD_SET_END /* Array terminated. */
+    );
+    SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(events,
                                  SHELL_CMD(verbose, NULL, "Shows event debug information.", cmd_event_verbose),
