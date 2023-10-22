@@ -64,5 +64,6 @@ extern int16_t get_signal_strength(void);
 
 extern int modem_configure(void);
 
-//extern void lte_handler(const struct lte_lc_evt *const evt);
+extern void lte_handler(const struct lte_lc_evt *const evt);
+
 #endif

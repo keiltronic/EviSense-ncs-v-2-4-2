@@ -17,13 +17,51 @@ MODEM modem;
 int16_t err = 0;
 char modem_at_recv_buf[500];
 
+void lte_handler(const struct lte_lc_evt *const evt)
+{
+   switch (evt->type)
+   {
+   case LTE_LC_EVT_NW_REG_STATUS:
+      // if (evt->nw_reg_status != LTE_LC_NW_REG_REGISTERED_HOME &&
+      //     evt->nw_reg_status != LTE_LC_NW_REG_REGISTERED_ROAMING)
+      // {
+      //    break;
+      // }
+
+      // printk("Connected to: %s network\n",
+      //        evt->nw_reg_status == LTE_LC_NW_REG_REGISTERED_HOME ? "home" : "roaming");
+
+      if (evt->nw_reg_status == LTE_LC_NW_REG_REGISTERED_ROAMING){
+          printk("Connected to cellular network\n");
+      }
+      break;
+
+   case LTE_LC_EVT_PSM_UPDATE:
+   case LTE_LC_EVT_EDRX_UPDATE:
+   case LTE_LC_EVT_RRC_UPDATE:
+   case LTE_LC_EVT_CELL_UPDATE:
+   case LTE_LC_EVT_LTE_MODE_UPDATE:
+   case LTE_LC_EVT_TAU_PRE_WARNING:
+   case LTE_LC_EVT_NEIGHBOR_CELL_MEAS:
+   case LTE_LC_EVT_MODEM_SLEEP_EXIT_PRE_WARNING:
+   case LTE_LC_EVT_MODEM_SLEEP_EXIT:
+   case LTE_LC_EVT_MODEM_SLEEP_ENTER:
+   case LTE_LC_EVT_MODEM_EVENT:
+      /* Handle LTE events */
+      break;
+
+   default:
+      break;
+   }
+}
+
 void modem_init(void)
 {
    int16_t err = 0;
 
-   // /* Init some variables */
-   // modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
-   // modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
+   /* Init some variables */
+   modem.registration_status[0] = LTE_LC_NW_REG_UNKNOWN;
+   modem.registration_status[1] = LTE_LC_NW_REG_UNKNOWN;
 
    err = nrf_modem_lib_init();
 
@@ -201,364 +239,367 @@ const char *modem_get_iccid(void)
 
 void modem_update_registration_status(void)
 {
-   // int16_t err = 0;
+   int16_t err = 0;
 
-   // /* Update modem and connection paramters*/
-   // modem_update_information();
+   /* Update modem and connection paramters*/
+   modem_update_information();
 
-   // /* Check registrations tatus: offline, searching, roaming */
-   // err = lte_lc_nw_reg_status_get(&modem.registration_status[0]);
+   /* Check registrations tatus: offline, searching, roaming */
+ //  err = lte_lc_nw_reg_status_get(&modem.registration_status[0]);
 
-   // if (!err)
-   // {
-   //    /* Print a meessage if there was a change in registration status*/
-   //    if (modem.registration_status[0] != modem.registration_status[1])
-   //    {
-   //       rtc_print_debug_timestamp();
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
+ //  printk("nw status: %d, old: %d\r\n", modem.registration_status[0], modem.registration_status[1]);
 
-   //       switch (modem.AcT)
-   //       {
-   //       case 7:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
-   //          break;
+//  if (!err)
+ //  {
+      /* Print a meessage if there was a change in registration status*/
+   //   if (modem.registration_status[0] != modem.registration_status[1])
+   //   {
+      //   rtc_print_debug_timestamp();
+      //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
 
-   //       case 9:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
-   //          break;
+         //       switch (modem.AcT)
+         //       {
+         //       case 7:
+         //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
+         //          break;
 
-   //       default:
-   //          break;
-   //       }
+         //       case 9:
+         //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
+         //          break;
 
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
+         //       default:
+         //          break;
+         //       }
 
-   //       switch (modem.registration_status[0])
-   //       {
-   //       case LTE_LC_NW_REG_NOT_REGISTERED:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "0 - Not registered\n");
+         //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
 
-   //          modem.connection_stat = false;
-   //          break;
+         // switch (modem.registration_status[0])
+         // {
+         // case LTE_LC_NW_REG_NOT_REGISTERED:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "0 - Not registered\n");
 
-   //       case LTE_LC_NW_REG_REGISTERED_HOME:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "1 - Registered, home network\n");
+         //    modem.connection_stat = false;
+         //    break;
 
-   //          modem.connection_stat = true;
+         // case LTE_LC_NW_REG_REGISTERED_HOME:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "1 - Registered, home network\n");
 
-   //          /* Connect also to keiltronic AWS cloud */
-   //          if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //          {
-   //           //  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //          }
+         //    modem.connection_stat = true;
 
-   //          /* Add event in event array which is send to cloud in next sync interval */
-   //          NewEvent0x0B(); // Connection up event
-   //          break;
+         //    /* Connect also to keiltronic AWS cloud */
+         //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+         //    {
+         //       //  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+         //    }
 
-   //       case LTE_LC_NW_REG_SEARCHING:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
+         //    /* Add event in event array which is send to cloud in next sync interval */
+         //    NewEvent0x0B(); // Connection up event
+         //    break;
 
-   //          modem.connection_stat = false;
-   //          break;
+         // case LTE_LC_NW_REG_SEARCHING:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
 
-   //       case LTE_LC_NW_REG_REGISTRATION_DENIED:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
+         //    modem.connection_stat = false;
+         //    break;
 
-   //          modem.connection_stat = false;
-   //          break;
+         // case LTE_LC_NW_REG_REGISTRATION_DENIED:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
 
-   //       case LTE_LC_NW_REG_UNKNOWN:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
+         //    modem.connection_stat = false;
+         //    break;
 
-   //          modem.connection_stat = false;
+         // case LTE_LC_NW_REG_UNKNOWN:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
 
-   //          /* Add event in event array which is send to cloud in next sync interval */
-   //          NewEvent0x0C(); // Connection down event
-   //          break;
+         //    modem.connection_stat = false;
 
-   //       case LTE_LC_NW_REG_REGISTERED_ROAMING:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "5 - Registered, roaming\n");
+         //    /* Add event in event array which is send to cloud in next sync interval */
+         //    NewEvent0x0C(); // Connection down event
+         //    break;
 
-   //          modem.connection_stat = true;
+         // case LTE_LC_NW_REG_REGISTERED_ROAMING:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "5 - Registered, roaming\n");
 
-   //          /* Connect also to keiltronic AWS cloud */
-   //          if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //          {
-   //             aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //          }
+         //    modem.connection_stat = true;
 
-   //          /* Add event in event array which is send to cloud in next sync interval */
-   //          NewEvent0x0B(); // Connection up event
-   //          break;
+         //    /* Connect also to keiltronic AWS cloud */
+         //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+         //    {
+         //       //    aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+         //    }
 
-   //       case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
+         //    /* Add event in event array which is send to cloud in next sync interval */
+         //    NewEvent0x0B(); // Connection up event
+         //    break;
 
-   //          modem.connection_stat = true;
+         // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
 
-   //          /* Connect also to keiltronic AWS cloud */
-   //          if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //          {
-   //             //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //          }
+         //    modem.connection_stat = true;
 
-   //          /* Add event in event array which is send to cloud in next sync interval */
-   //          NewEvent0x0B(); // Connection up event
-   //          break;
+         //    /* Connect also to keiltronic AWS cloud */
+         //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
+         //    {
+         //       //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+         //    }
 
-   //       case LTE_LC_NW_REG_UICC_FAIL:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");
+         //    /* Add event in event array which is send to cloud in next sync interval */
+         //    NewEvent0x0B(); // Connection up event
+         //    break;
 
-   //          modem.connection_stat = false;
+         // case LTE_LC_NW_REG_UICC_FAIL:
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");
 
-   //          /* Add event in event array which is send to cloud in next sync interval */
-   //          NewEvent0x0C(); // Connection down event
-   //          break;
+         //    modem.connection_stat = false;
 
-   //       default:
-   //          break;
-   //       }
+         //    /* Add event in event array which is send to cloud in next sync interval */
+         //    NewEvent0x0C(); // Connection down event
+         //    break;
 
-   //       if (modem.connection_stat == true)
-   //       {
-   //          /* Network operator MNC */
-   //          rtc_print_debug_timestamp();
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Cellular connection successfully established. Operator: ");
+         // default:
+         //    break;
+         // }
 
-   //          if (!strncmp(modem.oper + 3, "01", 2))
-   //          {
-   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Deutsche Telekom");
-   //          }
-   //          else if (!strncmp(modem.oper + 3, "02", 2))
-   //          {
-   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Vodafone");
-   //          }
-   //          else if (!strncmp(modem.oper + 3, "03", 2))
-   //          {
-   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Telefonica");
-   //          }
-   //          else
-   //          {
-   //             shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "unkown");
-   //          }
+         // if (modem.connection_stat == true)
+         // {
+         //    /* Network operator MNC */
+         //    rtc_print_debug_timestamp();
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Cellular connection successfully established. Operator: ");
 
-   //          /* RSSI */
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", rssi: %ddBm", modem.RSSI);
+         //    if (!strncmp(modem.oper + 3, "01", 2))
+         //    {
+         //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Deutsche Telekom");
+         //    }
+         //    else if (!strncmp(modem.oper + 3, "02", 2))
+         //    {
+         //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Vodafone");
+         //    }
+         //    else if (!strncmp(modem.oper + 3, "03", 2))
+         //    {
+         //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Telefonica");
+         //    }
+         //    else
+         //    {
+         //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "unkown");
+         //    }
 
-   //          /* SIM IMEI number */
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
+         //    /* RSSI */
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", rssi: %ddBm", modem.RSSI);
 
-   //          /* Connection details */
-   //          memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-   //          err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
-   //          rtc_print_debug_timestamp();
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
-   //       }
-   //    }
+         //    /* SIM IMEI number */
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
 
-   //    /* Save curretn registration status*/
-   //    modem.registration_status[1] = modem.registration_status[0];
-   // }
-   // else
-   // {
-   //    printk("err\r\n");
-   // }
+         //    /* Connection details */
+         //    memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+         //    err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
+         //    rtc_print_debug_timestamp();
+         //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
+         // }
+ //     }
+
+      // }
+      // else
+      // {
+      //    printk("err\r\n");
+ //  }
+
+   /* Save curretn registration status*/
+ //  modem.registration_status[1] = modem.registration_status[0];
 }
 
 void modem_update_information(void)
 {
-   // int16_t err = 0;
-   // char *ptr = NULL; // Pointer to string section
-   // char delimiter[10];
+   int16_t err = 0;
+   char *ptr = NULL; // Pointer to string section
+   char delimiter[10];
 
-   // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
 
-   // /* Just send an AT command to emptyx the receive buffer at modem*/
-   // err = nrf_modem_at_printf("AT");
+   /* Just send an AT command to emptyx the receive buffer at modem*/
+   err = nrf_modem_at_printf("AT");
 
-   // if (err == 0)
-   // {
-   //    /* OK, success */
-   // }
-   // else if (err < 0)
-   // {
-   //    /* Failed to send command, err is an nrf_errno */
-   //    printk("nrf_errno\n\r");
-   //    return;
-   // }
-   // else if (err > 0)
-   // {
-   //    /* Command was sent, but response is not "OK" */
-   //    switch (nrf_modem_at_err_type(err))
-   //    {
-   //    case NRF_MODEM_AT_ERROR:
-   //       /* Modem returned "ERROR" */
-   //       printk("error\n\r");
-   //       return;
-   //       break;
-   //    case NRF_MODEM_AT_CME_ERROR:
-   //       /* Modem returned "+CME ERROR" */
-   //       printk("cme error: %d\n\r", nrf_modem_at_err(err));
-   //       return;
-   //       break;
-   //    case NRF_MODEM_AT_CMS_ERROR:
-   //       /* Modem returned "+CMS ERROR" */
-   //       printk("cms error: %d\n\r", nrf_modem_at_err(err));
-   //       return;
-   //       break;
-   //    }
-   // }
+   if (err == 0)
+   {
+      /* OK, success */
+   }
+   else if (err < 0)
+   {
+      /* Failed to send command, err is an nrf_errno */
+      printk("nrf_errno\n\r");
+      return;
+   }
+   else if (err > 0)
+   {
+      /* Command was sent, but response is not "OK" */
+      switch (nrf_modem_at_err_type(err))
+      {
+      case NRF_MODEM_AT_ERROR:
+         /* Modem returned "ERROR" */
+         printk("error\n\r");
+         return;
+         break;
+      case NRF_MODEM_AT_CME_ERROR:
+         /* Modem returned "+CME ERROR" */
+         printk("cme error: %d\n\r", nrf_modem_at_err(err));
+         return;
+         break;
+      case NRF_MODEM_AT_CMS_ERROR:
+         /* Modem returned "+CMS ERROR" */
+         printk("cms error: %d\n\r", nrf_modem_at_err(err));
+         return;
+         break;
+      }
+   }
 
-   // k_msleep(100);
-   // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+   k_msleep(100);
+   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
 
-   // /* Check connection status */
-   // err = nrf_modem_at_printf("AT+CEREG=5");
+   /* Check connection status */
+   err = nrf_modem_at_printf("AT+CEREG=5");
 
-   // if (!err)
-   // {
-   //    err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CEREG?");
+   if (!err)
+   {
+      err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CEREG?");
 
-   //    if (!err)
-   //    {
-   //       strncpy(delimiter, ",", 1);
-   //       ptr = NULL; // Pointer to string section
+      if (!err)
+      {
+         strncpy(delimiter, ",", 1);
+         ptr = NULL; // Pointer to string section
 
-   //       /* Find first segment in string */
-   //       ptr = strtok(modem_at_recv_buf, delimiter); // 1. segment strtok cuts the string into pieces separated by delimiter characters
-   //       ptr = strtok(NULL, delimiter);              // 2. segment
+         /* Find first segment in string */
+         ptr = strtok(modem_at_recv_buf, delimiter); // 1. segment strtok cuts the string into pieces separated by delimiter characters
+         ptr = strtok(NULL, delimiter);              // 2. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          modem.stat = atoi(ptr);
+         if (ptr != NULL)
+         {
+            modem.stat = atoi(ptr);
 
-   //          if (modem.stat == 1 || modem.stat == 5)
-   //          {
-   //             modem.connection_stat = true;
-   //          }
-   //          else
-   //          {
-   //             modem.connection_stat = false;
-   //          }
-   //       }
+            if (modem.stat == 1 || modem.stat == 5)
+            {
+               modem.connection_stat = true;
+            }
+            else
+            {
+               modem.connection_stat = false;
+            }
+         }
 
-   //       ptr = strtok(NULL, delimiter); // 3. segment
+         ptr = strtok(NULL, delimiter); // 3. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          strncpy(modem.tac, ptr + 1, 4);
-   //       }
+         if (ptr != NULL)
+         {
+            strncpy(modem.tac, ptr + 1, 4);
+         }
 
-   //       strncpy(delimiter, ",", 1);
-   //       ptr = strtok(NULL, delimiter); // 5. segment
+         strncpy(delimiter, ",", 1);
+         ptr = strtok(NULL, delimiter); // 5. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          strncpy(modem.cell_id, ptr + 1, 8);
-   //       }
+         if (ptr != NULL)
+         {
+            strncpy(modem.cell_id, ptr + 1, 8);
+         }
 
-   //       ptr = strtok(NULL, delimiter); // 5. segment
+         ptr = strtok(NULL, delimiter); // 5. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          modem.AcT = atoi(ptr);
-   //       }
+         if (ptr != NULL)
+         {
+            modem.AcT = atoi(ptr);
+         }
 
-   //       strncpy(delimiter, "\"", 1);
-   //       ptr = strtok(NULL, delimiter); // 6. segment
-   //       ptr = strtok(NULL, delimiter); // 7. segment
+         strncpy(delimiter, "\"", 1);
+         ptr = strtok(NULL, delimiter); // 6. segment
+         ptr = strtok(NULL, delimiter); // 7. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          strncpy(modem.active_time, ptr, 8);
-   //       }
+         if (ptr != NULL)
+         {
+            strncpy(modem.active_time, ptr, 8);
+         }
 
-   //       ptr = strtok(NULL, delimiter); // 9. segment
-   //       ptr = strtok(NULL, delimiter); // 10. segment
+         ptr = strtok(NULL, delimiter); // 9. segment
+         ptr = strtok(NULL, delimiter); // 10. segment
 
-   //       if (ptr != NULL)
-   //       {
-   //          strncpy(modem.tau, ptr, 8);
-   //       }
-   //    }
-   // }
-   // k_msleep(100);
+         if (ptr != NULL)
+         {
+            strncpy(modem.tau, ptr, 8);
+         }
+      }
+   }
+   k_msleep(100);
 
-   // /* Unique SIM serial number */
-   // memset(modem.UICCID, 0x00, sizeof(modem.UICCID));
-   // strcpy(modem.UICCID, modem_get_iccid());
-   // k_msleep(100);
+   /* Unique SIM serial number */
+   memset(modem.UICCID, 0x00, sizeof(modem.UICCID));
+   strcpy(modem.UICCID, modem_get_iccid());
+   k_msleep(100);
 
-   // /* IMEI number */
-   // memset(modem.IMEI, 0x0D, sizeof(modem.IMEI));
-   // strcpy(modem.IMEI, modem_get_imei());
-   // k_msleep(100);
+   /* IMEI number */
+   memset(modem.IMEI, 0x0D, sizeof(modem.IMEI));
+   strcpy(modem.IMEI, modem_get_imei());
+   k_msleep(100);
 
-   // /* Network operator */
-   // memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-   // err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+COPS?");
+   /* Network operator */
+   memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
+   err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+COPS?");
 
-   // strncpy(delimiter, ",", 1);
-   // ptr = NULL; // Pointer to string section
+   strncpy(delimiter, ",", 1);
+   ptr = NULL; // Pointer to string section
 
-   // /* Find first segment in string */
-   // ptr = strtok(modem_at_recv_buf, delimiter); // strtok cuts the string into pieces separated by delimiter characters
+   /* Find first segment in string */
+   ptr = strtok(modem_at_recv_buf, delimiter); // strtok cuts the string into pieces separated by delimiter characters
 
-   // if (ptr != NULL)
-   // {
-   //    modem.mode = atoi(ptr + 8); // mode: 0  Automatic network selection, 1  Manual network selection
-   // }
-   // k_msleep(100);
+   if (ptr != NULL)
+   {
+      modem.mode = atoi(ptr + 8); // mode: 0  Automatic network selection, 1  Manual network selection
+   }
+   k_msleep(100);
 
-   // /* Find second segment in string */
-   // ptr = strtok(NULL, delimiter);
-   // if (ptr != NULL)
-   // {
-   //    modem.format = atoi(ptr); // 0 Long alphanumeric <oper> format, 1 Short alphanumeric <oper> format, 2 Numeric <oper> format
-   // }
-   // k_msleep(100);
+   /* Find second segment in string */
+   ptr = strtok(NULL, delimiter);
+   if (ptr != NULL)
+   {
+      modem.format = atoi(ptr); // 0 Long alphanumeric <oper> format, 1 Short alphanumeric <oper> format, 2 Numeric <oper> format
+   }
+   k_msleep(100);
 
-   // /* Find third segment in string */
-   // ptr = strtok(NULL, delimiter);
+   /* Find third segment in string */
+   ptr = strtok(NULL, delimiter);
 
-   // memset(modem.oper, 0, sizeof(modem.oper));
+   memset(modem.oper, 0, sizeof(modem.oper));
 
-   // if (ptr != NULL)
-   // {
-   //    strncpy(modem.oper, ptr + 1, 5); // Mobile Country Code (MCC) and Mobile Network Code (MNC) values.
-   // }
-   // k_msleep(100);
+   if (ptr != NULL)
+   {
+      strncpy(modem.oper, ptr + 1, 5); // Mobile Country Code (MCC) and Mobile Network Code (MNC) values.
+   }
+   k_msleep(100);
 
-   // /* band*/
-   // err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%XCBAND");
+   /* band*/
+   err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%XCBAND");
 
-   // if (!err)
-   // {
-   //    modem.band = atoi(modem_at_recv_buf + 9);
-   // }
-   // k_msleep(100);
+   if (!err)
+   {
+      modem.band = atoi(modem_at_recv_buf + 9);
+   }
+   k_msleep(100);
 
-   // /* Temperature */
-   // err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%XTEMP?");
+   /* Temperature */
+   err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT%XTEMP?");
 
-   // if (!err)
-   // {
-   //    modem.temp = atoi(modem_at_recv_buf + 8);
-   // }
-   // k_msleep(100);
+   if (!err)
+   {
+      modem.temp = atoi(modem_at_recv_buf + 8);
+   }
+   k_msleep(100);
 
-   // /* Get RSSI */
-   // modem.RSSI = get_signal_strength();
+   /* Get RSSI */
+   modem.RSSI = get_signal_strength();
 
-   // /* Get modem firmware version */
-   // err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGMR");
+   /* Get modem firmware version */
+   err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGMR");
 
-   // if (!err)
-   // {
-   //    strncpy(modem.version, modem_at_recv_buf, 18);
-   // }
-   // k_msleep(100);
+   if (!err)
+   {
+      strncpy(modem.version, modem_at_recv_buf, 18);
+   }
+   k_msleep(100);
 }
 
 void modem_print_settings(void)

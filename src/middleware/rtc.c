@@ -199,7 +199,7 @@ bool rtc_fetch_date_time(void)
     int8_t err = 0;
 
     /* Get the current date from network provider or NTP sever */
-   // err = date_time_now(&unixtime_ms);
+    err = date_time_now(&unixtime_ms);
 
     if (err == 0)
     {
