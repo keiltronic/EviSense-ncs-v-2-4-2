@@ -40,6 +40,7 @@
 		cs2 = &cs_2;
 		buzzerpwm = &buzzer;
 		i2c2 = &i2c2;
+		/*mcuboot_button0 = &button1;*/
 	};
 
 	leds {
