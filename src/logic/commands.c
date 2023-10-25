@@ -4137,87 +4137,87 @@ static int cmd_list_room_and_mop(const struct shell *shell, size_t argc, char **
   return 0;
 }
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fota_connection_status(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fota_connection_status(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   shell_print(shell, "Device fota connection status: %d\n", fota_is_connected);
+  shell_print(shell, "Device fota connection status: %d\n", fota_is_connected);
 
-//   return 0;
-// }
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fota_enable(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fota_enable(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.fota_enable == false)
-//   {
-//     Parameter.fota_enable = true;
-//     shell_print(shell, "Enabled fota feature");
-//   }
-//   else
-//   {
-//     Parameter.fota_enable = false;
-//     shell_print(shell, "Disabled fota feature");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.fota_enable == false)
+  {
+    Parameter.fota_enable = true;
+    shell_print(shell, "Enabled fota feature");
+  }
+  else
+  {
+    Parameter.fota_enable = false;
+    shell_print(shell, "Disabled fota feature");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fota_verbose(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fota_verbose(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-//   if (Parameter.fota_verbose == false)
-//   {
-//     Parameter.fota_verbose = true;
-//     shell_print(shell, "Enabled fota verbose");
-//   }
-//   else
-//   {
-//     Parameter.fota_verbose = false;
-//     shell_print(shell, "Disabled fota verbose");
-//   }
-//   Parameter_PushRAMToFlash();
-//   return 0;
-// }
+  if (Parameter.fota_verbose == false)
+  {
+    Parameter.fota_verbose = true;
+    shell_print(shell, "Enabled fota verbose");
+  }
+  else
+  {
+    Parameter.fota_verbose = false;
+    shell_print(shell, "Disabled fota verbose");
+  }
+  Parameter_PushRAMToFlash();
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fota_connect(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fota_connect(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-// //  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-//   return 0;
-// }
+//  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+  return 0;
+}
 
-// /*!
-//  *  @brief This is the function description
-//  */
-// static int cmd_fota_disconnect(const struct shell *shell, size_t argc, char **argv)
-// {
-//   ARG_UNUSED(argc);
-//   ARG_UNUSED(argv);
+/*!
+ *  @brief This is the function description
+ */
+static int cmd_fota_disconnect(const struct shell *shell, size_t argc, char **argv)
+{
+  ARG_UNUSED(argc);
+  ARG_UNUSED(argv);
 
-// //  aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
+//  aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
 
-//   return 0;
-// }
+  return 0;
+}
 
 /*!
  *  @brief This is the function description
@@ -4561,15 +4561,15 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(stepdetection, &stepdetection, "Command set to control and trace step detection algorithm", NULL);
 
-  //   SHELL_STATIC_SUBCMD_SET_CREATE(fota,
-  //                                  SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
-  //                                  SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
-  //                                  SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
-  //                                  SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
-  //                                  SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
-  //                                  SHELL_SUBCMD_SET_END /* Array terminated. */
-  //   );
-  //   SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
+    SHELL_STATIC_SUBCMD_SET_CREATE(fota,
+                                   SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
+                                   SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
+                                   SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
+                                   SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
+                                   SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
+                                   SHELL_SUBCMD_SET_END /* Array terminated. */
+    );
+    SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(device,
                                  SHELL_CMD(factory_reset, NULL, "For development pruposes.", cmd_factorysettings),

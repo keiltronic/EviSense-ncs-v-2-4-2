@@ -523,30 +523,30 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
         }
 
         /* Connection to FOTA server should be only active for time x after the device was reboot while USB plugged in. */
-        // if (fota_is_connected == true)
-        // {
-        //   if ((fota_connection_timer == 0) && (fota_download_in_progress == false))
-        //   {
-        //     aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
-        //     fota_connection_timer = FOTA_CONNECTION_DURATION;
-        //     fota_is_connected = false;
-        //     fota_reboot_while_usb_connected = false;
+        if (fota_is_connected == true)
+        {
+          if ((fota_connection_timer == 0) && (fota_download_in_progress == false))
+          {
+            aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
+            fota_connection_timer = FOTA_CONNECTION_DURATION;
+            fota_is_connected = false;
+            fota_reboot_while_usb_connected = false;
 
-        //     if (pcb_test_is_running == false)
-        //     {
-        //       rtc_print_debug_timestamp();
-        //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Automatically disconneced FOTA service from server %d sec after boot\n", FOTA_CONNECTION_DURATION);
-        //     }
-        //   }
-        //   else
-        //   {
-        //     fota_connection_timer--;
-        //   }
-        // }
-        // else
-        // {
-        //   fota_connection_timer = FOTA_CONNECTION_DURATION;
-        // }
+            if (pcb_test_is_running == false)
+            {
+              rtc_print_debug_timestamp();
+              shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_BLUE, "Automatically disconneced FOTA service from server %d sec after boot\n", FOTA_CONNECTION_DURATION);
+            }
+          }
+          else
+          {
+            fota_connection_timer--;
+          }
+        }
+        else
+        {
+          fota_connection_timer = FOTA_CONNECTION_DURATION;
+        }
       }
       k_msleep(1);
     }
@@ -558,13 +558,13 @@ void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
   /****** AWS FOTA MAIN FUNCTION STUFF ***************************************************************/
   /* https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.4.2/nrf/samples/nrf9160/aws_fota/README.html#aws-fota-sample */
 
-  // while (1)
-  // {
-  // /* Update FOTA process state machine*/
-  // aws_fota_statemachine();
+  while (1)
+  {
+  /* Update FOTA process state machine*/
+  aws_fota_statemachine();
 
-  //  k_msleep(100);
-  //  }
+   k_msleep(100);
+   }
 }
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)
