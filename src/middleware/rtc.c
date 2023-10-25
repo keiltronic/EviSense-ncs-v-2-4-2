@@ -33,6 +33,10 @@ void rtc_update_handler(struct k_work *work)
     unixtime++; // updates system time every second
     Device.OpertingTime++;
     millisec = 0;
+
+    /* Synchronize unixtime (sec resolution) with unixtime_ms (millisec resolution) every second */
+    unixtime_ms = unixtime * 1000UL;
+    //printk("unixtime_ms: %lld, unixtime: %lld\r\n", (uint64_t)unixtime_ms,  (uint64_t)unixtime);
 }
 K_WORK_DEFINE(my_work, rtc_update_handler);
 
