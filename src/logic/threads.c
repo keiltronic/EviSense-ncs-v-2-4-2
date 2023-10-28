@@ -491,7 +491,8 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
       /* Update registration status */
       if (Parameter.modem_disable == false)
       {
-      //  modem_update_registration_status(); // This function needs 1sec to execute
+
+        //  modem_update_registration_status(); // This function needs 1sec to execute
 
         ///////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
@@ -560,11 +561,11 @@ void aws_fota_thread(void *dummy1, void *dummy2, void *dummy3)
 
   while (1)
   {
-  /* Update FOTA process state machine*/
-  aws_fota_statemachine();
+    /* Update FOTA process state machine*/
+    aws_fota_statemachine();
 
-   k_msleep(100);
-   }
+    k_msleep(100);
+  }
 }
 
 void datalog_readout_thread(void *dummy1, void *dummy2, void *dummy3)

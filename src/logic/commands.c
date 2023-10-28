@@ -2281,6 +2281,8 @@ static int cmd_modem_rssi(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
+  modem_update_information();
+
   if (modem.connection_stat == true)
   {
     shell_fprintf(shell, 0, "RSSI: %ddBm\n", get_signal_strength());
@@ -4202,7 +4204,7 @@ static int cmd_fota_connect(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-//  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
+  //  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
   return 0;
 }
 
@@ -4214,7 +4216,7 @@ static int cmd_fota_disconnect(const struct shell *shell, size_t argc, char **ar
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-//  aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
+  //  aws_fota_process_state = AWS_FOTA_PROCESS_DISCONNECT;
 
   return 0;
 }
@@ -4301,10 +4303,10 @@ static int cmd_test3(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-	printk("LTE Link Connecting ...\n");
-	err = lte_lc_init_and_connect();
-	__ASSERT(err == 0, "LTE link could not be established.");
-	printk("LTE Link Connected!\n");
+  printk("LTE Link Connecting ...\n");
+  err = lte_lc_init_and_connect();
+  __ASSERT(err == 0, "LTE link could not be established.");
+  printk("LTE Link Connected!\n");
 
   return 0;
 }
@@ -4409,16 +4411,16 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(modem, &modem, "Command set to control the modem and cellular connectivity", NULL);
 
-    SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
-                                   SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
-                                   SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
-                                   SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
-                                   SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
-                                   SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
-                                   SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
-                                   SHELL_SUBCMD_SET_END /* Array terminated. */
-    );
-    SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(cloud,
+                                 SHELL_CMD(sync_interval_idle, NULL, "Cloud sync interval while in idle mode.", cmd_cloud_sync_interval_idle),
+                                 SHELL_CMD(sync_interval_moving, NULL, "Cloud sync interval while in moving mode.", cmd_cloud_sync_interval_moving),
+                                 SHELL_CMD(coap_verbose, NULL, "Shows coap debug information.", cmd_coap_verbose),
+                                 SHELL_CMD(protobuf_verbose, NULL, "Shows protobuf debug information.", cmd_protobuf_verbose),
+                                 SHELL_CMD(trigger_transmit, NULL, "Force device to send data now", cmd_trigger_transmit),
+                                 SHELL_CMD(last_upload, NULL, "Force device to send data now", cmd_last_upload),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(cloud, &cloud, "Command set to cloud connectivity", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(events,
                                  SHELL_CMD(verbose, NULL, "Shows event debug information.", cmd_event_verbose),
@@ -4561,15 +4563,15 @@ void command_init(void)
   );
   SHELL_CMD_REGISTER(stepdetection, &stepdetection, "Command set to control and trace step detection algorithm", NULL);
 
-    SHELL_STATIC_SUBCMD_SET_CREATE(fota,
-                                   SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
-                                   SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
-                                   SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
-                                   SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
-                                   SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
-                                   SHELL_SUBCMD_SET_END /* Array terminated. */
-    );
-    SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
+  SHELL_STATIC_SUBCMD_SET_CREATE(fota,
+                                 SHELL_CMD(enable, NULL, "Enables or disables the fota option", cmd_fota_enable),
+                                 SHELL_CMD(verbose, NULL, "Enables or disables the fota option", cmd_fota_verbose),
+                                 SHELL_CMD(status, NULL, "Reports the connection status to fota server.", cmd_fota_connection_status),
+                                 SHELL_CMD(connect, NULL, "Connects the device to the fota server to be able to receive firmware updates", cmd_fota_connect),
+                                 SHELL_CMD(disconnect, NULL, "Disconnects the device from the fota server", cmd_fota_disconnect),
+                                 SHELL_SUBCMD_SET_END /* Array terminated. */
+  );
+  SHELL_CMD_REGISTER(fota, &fota, "Command set to control firmware-over-the-air updates (FOTA)", NULL);
 
   SHELL_STATIC_SUBCMD_SET_CREATE(device,
                                  SHELL_CMD(factory_reset, NULL, "For development pruposes.", cmd_factorysettings),

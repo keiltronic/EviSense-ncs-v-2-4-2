@@ -19,6 +19,8 @@ char modem_at_recv_buf[500];
 
 void lte_handler(const struct lte_lc_evt *const evt)
 {
+   modem_update_information();
+
    switch (evt->type)
    {
    case LTE_LC_EVT_NW_REG_STATUS:
@@ -42,10 +44,12 @@ void lte_handler(const struct lte_lc_evt *const evt)
 
       switch (evt->nw_reg_status)
       {
+
       case LTE_LC_NW_REG_NOT_REGISTERED:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_NOT_REGISTERED\n");
          modem.connection_stat = false;
          break;
+
       case LTE_LC_NW_REG_REGISTERED_HOME:
 
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTERED_HOME\n");
@@ -59,16 +63,23 @@ void lte_handler(const struct lte_lc_evt *const evt)
          NewEvent0x0B(); // Connection up event
 
          modem.connection_stat = true;
+
+         /* Connection details */
+         err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
+         rtc_print_debug_timestamp();
+         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
          break;
 
       case LTE_LC_NW_REG_SEARCHING:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_SEARCHING\n");
          modem.connection_stat = false;
          break;
+
       case LTE_LC_NW_REG_REGISTRATION_DENIED:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTRATION_DENIED\n");
          modem.connection_stat = false;
          break;
+
       case LTE_LC_NW_REG_UNKNOWN:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_UNKNOWN\n");
 
@@ -76,6 +87,7 @@ void lte_handler(const struct lte_lc_evt *const evt)
          NewEvent0x0C(); // Connection down event
          modem.connection_stat = false;
          break;
+
       case LTE_LC_NW_REG_REGISTERED_ROAMING:
 
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
@@ -90,6 +102,12 @@ void lte_handler(const struct lte_lc_evt *const evt)
          NewEvent0x0B(); // Connection up event
 
          modem.connection_stat = true;
+
+         /* Connection details */
+         err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
+         rtc_print_debug_timestamp();
+         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
+
          break;
       case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
@@ -308,176 +326,6 @@ const char *modem_get_iccid(void)
    return iccid_buf;
 }
 
-void modem_update_registration_status(void)
-{
-   int16_t err = 0;
-
-   /* Update modem and connection paramters*/
-   modem_update_information();
-
-   /* Check registrations tatus: offline, searching, roaming */
-   //  err = lte_lc_nw_reg_status_get(&modem.registration_status[0]);
-
-   //  printk("nw status: %d, old: %d\r\n", modem.registration_status[0], modem.registration_status[1]);
-
-   //  if (!err)
-   //  {
-   /* Print a meessage if there was a change in registration status*/
-   //   if (modem.registration_status[0] != modem.registration_status[1])
-   //   {
-   //   rtc_print_debug_timestamp();
-   //   shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "E-UTRAN: ");
-
-   //       switch (modem.AcT)
-   //       {
-   //       case 7:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "7 - LTE-M, ");
-   //          break;
-
-   //       case 9:
-   //          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "9 - NB-IoT, ");
-   //          break;
-
-   //       default:
-   //          break;
-   //       }
-
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Network registration status: ");
-
-   // switch (modem.registration_status[0])
-   // {
-   // case LTE_LC_NW_REG_NOT_REGISTERED:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "0 - Not registered\n");
-
-   //    modem.connection_stat = false;
-   //    break;
-
-   // case LTE_LC_NW_REG_REGISTERED_HOME:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "1 - Registered, home network\n");
-
-   //    modem.connection_stat = true;
-
-   //    /* Connect also to keiltronic AWS cloud */
-   //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //    {
-   //       //  aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //    }
-
-   //    /* Add event in event array which is send to cloud in next sync interval */
-   //    NewEvent0x0B(); // Connection up event
-   //    break;
-
-   // case LTE_LC_NW_REG_SEARCHING:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "2 - Searching\n");
-
-   //    modem.connection_stat = false;
-   //    break;
-
-   // case LTE_LC_NW_REG_REGISTRATION_DENIED:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "3 - Registration denied\n");
-
-   //    modem.connection_stat = false;
-   //    break;
-
-   // case LTE_LC_NW_REG_UNKNOWN:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "4 - Unkonwn (e.g. out of E-UTRAN coverage)\n");
-
-   //    modem.connection_stat = false;
-
-   //    /* Add event in event array which is send to cloud in next sync interval */
-   //    NewEvent0x0C(); // Connection down event
-   //    break;
-
-   // case LTE_LC_NW_REG_REGISTERED_ROAMING:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_GREEN, "5 - Registered, roaming\n");
-
-   //    modem.connection_stat = true;
-
-   //    /* Connect also to keiltronic AWS cloud */
-   //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //    {
-   //       //    aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //    }
-
-   //    /* Add event in event array which is send to cloud in next sync interval */
-   //    NewEvent0x0B(); // Connection up event
-   //    break;
-
-   // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "8 - Registered, emergency\n");
-
-   //    modem.connection_stat = true;
-
-   //    /* Connect also to keiltronic AWS cloud */
-   //    if ((Parameter.fota_enable == true) && (fota_reboot_while_usb_connected == true))
-   //    {
-   //       //   aws_fota_process_state = AWS_FOTA_PROCESS_CONNECT;
-   //    }
-
-   //    /* Add event in event array which is send to cloud in next sync interval */
-   //    NewEvent0x0B(); // Connection up event
-   //    break;
-
-   // case LTE_LC_NW_REG_UICC_FAIL:
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "90 - Not registered due to UICC failture\n");
-
-   //    modem.connection_stat = false;
-
-   //    /* Add event in event array which is send to cloud in next sync interval */
-   //    NewEvent0x0C(); // Connection down event
-   //    break;
-
-   // default:
-   //    break;
-   // }
-
-   // if (modem.connection_stat == true)
-   // {
-   //    /* Network operator MNC */
-   //    rtc_print_debug_timestamp();
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Cellular connection successfully established. Operator: ");
-
-   //    if (!strncmp(modem.oper + 3, "01", 2))
-   //    {
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Deutsche Telekom");
-   //    }
-   //    else if (!strncmp(modem.oper + 3, "02", 2))
-   //    {
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Vodafone");
-   //    }
-   //    else if (!strncmp(modem.oper + 3, "03", 2))
-   //    {
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "Telefonica");
-   //    }
-   //    else
-   //    {
-   //       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "unkown");
-   //    }
-
-   //    /* RSSI */
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", rssi: %ddBm", modem.RSSI);
-
-   //    /* SIM IMEI number */
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, ", IMEI: %s", modem.IMEI);
-
-   //    /* Connection details */
-   //    memset(modem_at_recv_buf, 0, sizeof(modem_at_recv_buf));
-   //    err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
-   //    rtc_print_debug_timestamp();
-   //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
-   // }
-   //    }
-
-   // }
-   // else
-   // {
-   //    printk("err\r\n");
-   //  }
-
-   /* Save curretn registration status*/
-   //  modem.registration_status[1] = modem.registration_status[0];
-}
-
 void modem_update_information(void)
 {
    int16_t err = 0;
@@ -545,7 +393,7 @@ void modem_update_information(void)
          {
             modem.stat = atoi(ptr);
 
-            if (modem.stat == 1 || modem.stat == 5)
+            if (modem.stat == LTE_LC_NW_REG_REGISTERED_HOME || modem.stat == LTE_LC_NW_REG_REGISTERED_ROAMING)
             {
                modem.connection_stat = true;
             }
@@ -684,7 +532,7 @@ void modem_print_settings(void)
       uint16_t len = 0;
       memset(iccid, 0, sizeof(iccid));
       len = strlen(modem.UICCID);
-      strncpy(iccid, modem.UICCID, (len - 3)); // this removes \r and \n at the end of modem.UICCID
+      strncpy(iccid, modem.UICCID, sizeof(iccid)); //(len - 3)); // this removes \r and \n at the end of modem.UICCID
 
       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "SIM serial number (ICCID): \t%s\n", iccid);
       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Connection status: \t\t%d\n", modem.connection_stat);
@@ -744,11 +592,9 @@ void modem_print_settings(void)
       shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Temp: \t\t\t\t%d°C\n", modem.temp);
 
       /* Connection details */
-      char modem_at_recv_buf[200]; /* Just send an AT command to emptyx the receive buffer at modem*/
       err = nrf_modem_at_cmd(modem_at_recv_buf, sizeof(modem_at_recv_buf), "AT+CGDCONT?");
-
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Connection parameter:\t\t");
-      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "%s", modem_at_recv_buf);
+      rtc_print_debug_timestamp();
+      shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
    }
    else
    {

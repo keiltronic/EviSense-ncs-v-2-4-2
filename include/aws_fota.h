@@ -45,7 +45,7 @@ BUILD_ASSERT(!IS_ENABLED(CONFIG_LTE_AUTO_INIT_AND_CONNECT), "This sample does no
 #define AWS_FOTA_PROCESS_RUNNING 3
 #define AWS_FOTA_PROCESS_DISCONNECT 4
 
-#define FOTA_CONNECTION_DURATION 600 // 10 min
+#define FOTA_CONNECTION_DURATION 600000 // 10 min
 
 extern uint8_t aws_fota_process_state;
 
