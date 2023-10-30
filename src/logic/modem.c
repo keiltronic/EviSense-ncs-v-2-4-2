@@ -604,7 +604,6 @@ void modem_print_settings(void)
 
 int16_t get_signal_strength(void)
 {
-   // enum at_cmd_state at_state;
    static char buf[100];
    int16_t err = 0;
    int16_t signal_power = 0;

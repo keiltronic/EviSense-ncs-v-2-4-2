@@ -3819,6 +3819,55 @@ static int cmd_low_bat_thres(const struct shell *shell, size_t argc, char **argv
 /*!
  *  @brief This is the function description
  */
+static int cmd_last_reset_reason(const struct shell *shell, size_t argc, char **argv)
+{
+  shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "last_reset_reason: ");
+
+	switch (last_reset_reason)
+	{
+	case 0x0:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Power-on reset or a brownout reset\n", last_reset_reason);
+		break;
+
+	case 0x1:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset from pin reset detected\n", last_reset_reason);
+		break;
+
+	case 0x2:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset from global watchdog detected\n", last_reset_reason);
+		break;
+
+	case 0x4:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by DETECT signal from GPIO\n", last_reset_reason);
+		break;
+
+	case 0x10:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by entering debug interface mode\n", last_reset_reason);
+		break;
+
+	case 0x10000:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset from AIRCR.SYSRESETREQ detected\n", last_reset_reason);
+		break;
+
+	case 0x20000:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset from CPU lock-up detected\n", last_reset_reason);
+		break;
+
+	case 0x30000:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Reset triggered through CTRL-AP\n", last_reset_reason);
+		break;
+
+	default:
+		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "0x%X - Unkown reset reason\n", last_reset_reason);
+		break;
+	}
+
+  return 0;
+}
+
+/*!
+ *  @brief This is the function description
+ */
 static int cmd_rfid_disable(const struct shell *shell, size_t argc, char **argv)
 {
   if (argc == 1)
@@ -4591,7 +4640,8 @@ void command_init(void)
                                  SHELL_CMD(usb_auto_reset_time, NULL, "Reset time in sec if the device is continouse conected with the charger", cmd_usb_auto_reset_time),
                                  SHELL_CMD(modem_disable, NULL, "Disables modem (switchs it off permanently)", cmd_modem_disable),
                                  SHELL_CMD(rfid_disable, NULL, "Disables rfid module (switchs it off permanently)", cmd_rfid_disable),
-                                 SHELL_CMD(low_bat_thres, NULL, "mV - Threshold to activate low bat notificatiopn", cmd_low_bat_thres),
+                                 SHELL_CMD(low_bat_thres, NULL, "mV - Threshold to activate low bat notification", cmd_low_bat_thres),
+                                 SHELL_CMD(last_reset_reason, NULL, "Last reset reason", cmd_last_reset_reason),
                                  SHELL_SUBCMD_SET_END /* Array terminated. */
   );
   SHELL_CMD_REGISTER(device, &device, "help description", NULL);

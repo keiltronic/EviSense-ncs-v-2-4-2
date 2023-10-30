@@ -41,6 +41,7 @@
 #include "test.h"
 #include "event_mem.h"
 #include "hard_reset.h"
+#include "system_mem.h"
 
 extern bool trace_acc_switch;
 extern bool trace_flash;

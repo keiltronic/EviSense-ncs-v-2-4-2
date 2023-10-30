@@ -14,6 +14,7 @@
 #include "system_mem.h"
 
 volatile SYSTEM System;
+uint32_t last_reset_reason;
 
 /*!
  * @brief This functions initalize a structure with global variables in RAM.

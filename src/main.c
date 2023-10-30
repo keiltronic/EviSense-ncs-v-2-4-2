@@ -83,7 +83,7 @@
 #include "uart.h"
 #include "rfid.h"
 #include "usb.h"
-// #include "aws_fota.h"
+#include "aws_fota.h"
 #include "test.h"
 #include "hard_reset.h"
 
@@ -271,7 +271,6 @@ void factorysettings(void)
 void main(void)
 {
 	int16_t err = 0;
-	uint32_t reset_reason = 0;
 
 	/* Init functions */
 	hard_reset_init();
@@ -286,10 +285,10 @@ void main(void)
 	k_msleep(50);
 
 	/* Readout and output last reset reason */
-	reset_reason = nrf_power_resetreas_get(NRF_POWER_NS);
+	last_reset_reason = nrf_power_resetreas_get(NRF_POWER_NS);
 
 	/* If device restarts from hibernate mode, do a real hardware reset */
-	if (reset_reason == 0x4)
+	if (last_reset_reason == 0x4)
 	{
 		gpio_pin_set_dt(&reset_switch, 1);
 	}
@@ -304,46 +303,46 @@ void main(void)
 	rtc_print_debug_timestamp();
 	shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "Last reset reason: ");
 
-	switch (reset_reason)
+	switch (last_reset_reason)
 	{
 	case 0x0:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Power-on reset or a brownout reset\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Power-on reset or a brownout reset\n", last_reset_reason);
 		break;
 
 	case 0x1:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from pin reset detected\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from pin reset detected\n", last_reset_reason);
 		break;
 
 	case 0x2:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from global watchdog detected\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from global watchdog detected\n", last_reset_reason);
 		break;
 
 	case 0x4:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by DETECT signal from GPIO\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by DETECT signal from GPIO\n", last_reset_reason);
 		break;
 
 	case 0x10:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by entering debug interface mode\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset due to wakeup from System OFF mode, when wakeup is triggered by entering debug interface mode\n", last_reset_reason);
 		break;
 
 	case 0x10000:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from AIRCR.SYSRESETREQ detected\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from AIRCR.SYSRESETREQ detected\n", last_reset_reason);
 		break;
 
 	case 0x20000:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from CPU lock-up detected\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset from CPU lock-up detected\n", last_reset_reason);
 		break;
 
 	case 0x30000:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset triggered through CTRL-AP\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_CYAN, "0x%X - Reset triggered through CTRL-AP\n", last_reset_reason);
 		break;
 
 	default:
-		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "0x%X - Unkown reset reason\n", reset_reason);
+		shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "0x%X - Unkown reset reason\n", last_reset_reason);
 		break;
 	}
 
-	if (reset_reason & POWER_RESETREAS_OFF_Msk)
+	if (last_reset_reason & POWER_RESETREAS_OFF_Msk)
 	{
 		nrf_power_resetreas_clear(NRF_POWER_NS, 0x70017); // Clear all RESETREAS when waking up from System OFF sleep by GPIO.
 	}

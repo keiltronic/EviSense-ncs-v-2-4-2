@@ -96,4 +96,5 @@ extern volatile SYSTEM System;
 extern void System_InitRAM(void);
 extern void System_CheckStatusFlagChange(void);
 extern uint32_t memcheck_heap_freespace(void);
+extern uint32_t last_reset_reason;
 #endif
