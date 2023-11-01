@@ -271,10 +271,6 @@ int8_t RFID_getOutputPower(void)
 
   System.RFID_TransparentMode = true;
 
-  // if (RFID_IsOn == false) {
-  //   config_RFID();
-  // }
-
   RFID_IsOn = true;
 
   uart1_RFIDResponseTransmissionLength = 0;
