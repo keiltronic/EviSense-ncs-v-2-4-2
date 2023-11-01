@@ -4368,7 +4368,7 @@ static int cmd_pcbtest(const struct shell *shell, size_t argc, char **argv)
   ARG_UNUSED(argc);
   ARG_UNUSED(argv);
 
-  // test_pcb();
+  test_pcb();
   return 0;
 }
 
