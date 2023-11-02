@@ -265,7 +265,6 @@ void RFID_setOutputPower(int8_t tx_dbm)
  */
 int8_t RFID_getOutputPower(void)
 {
-
   volatile int8_t output_power = 0;
   char command[8];
 

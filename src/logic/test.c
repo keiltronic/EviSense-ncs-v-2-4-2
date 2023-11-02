@@ -249,9 +249,11 @@ uint8_t test_pcb(void)
     algorithm_lock = false;
     Parameter_PushRAMToFlash();
 
+    rfid_power_on();
+    k_msleep(300);
     RFID_TurnOn();
-
-    k_msleep(100);
+    config_RFID();
+    k_msleep(300);
 
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Set RFID reader settings. ");
     Parameter.notifications_while_usb_connected = true;

@@ -12,7 +12,6 @@
  * @{*/
 #include "uart.h"
 
-// struct device *uart1;
 struct uart_data_t
 {
   void *fifo_reserved;
