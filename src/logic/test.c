@@ -249,11 +249,11 @@ uint8_t test_pcb(void)
     algorithm_lock = false;
     Parameter_PushRAMToFlash();
 
-    rfid_power_on();
-    k_msleep(300);
-    RFID_TurnOn();
-    config_RFID();
-    k_msleep(300);
+    // rfid_power_on();
+    // k_msleep(300);
+    // RFID_TurnOn();
+    // config_RFID();
+    // k_msleep(300);
 
     shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Set RFID reader settings. ");
     Parameter.notifications_while_usb_connected = true;
@@ -320,22 +320,22 @@ uint8_t test_pcb(void)
     {
         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_DEFAULT, "Output power: %d dBm,  Frequency band: %d [1:US, 5:EU]\n", RFID_getOutputPower(), RFID_getFrequency());
 
-        suppress_rfid_command_charcaters = true;
-        System.RFID_Sniff = true;
-        RFID_autoscan_enabled = true;
+     //   suppress_rfid_command_charcaters = true;
+     //   System.RFID_Sniff = true;
+     //   RFID_autoscan_enabled = true;
 
-        k_msleep(50);
+     //   k_msleep(50);
 
-        RFID_ScanEnable = true;
+     //   RFID_ScanEnable = true;
 
-        k_msleep(5000);
+      //  k_msleep(5000);
 
-        suppress_rfid_command_charcaters = false;
-        System.RFID_Sniff = false;
-        RFID_autoscan_enabled = false;
-        RFID_ScanEnable = false;
+     //   suppress_rfid_command_charcaters = false;
+     //   System.RFID_Sniff = false;
+      //  RFID_autoscan_enabled = false;
+      //  RFID_ScanEnable = false;
 
-        RFID_TurnOff();
+   //     RFID_TurnOff();
 
         Parameter.notifications_while_usb_connected = false;
 

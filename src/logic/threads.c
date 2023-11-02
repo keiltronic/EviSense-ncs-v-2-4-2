@@ -473,7 +473,7 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
       if (err)
       {
         rtc_print_debug_timestamp();
-        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed\n");
+        shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_RED, "Error: Setting modem to LTE-M failed, err no: %d\n", err);
       }
     }
     k_msleep(100);
@@ -491,9 +491,6 @@ void mobile_connection_thread(void *dummy1, void *dummy2, void *dummy3)
       /* Update registration status */
       if (Parameter.modem_disable == false)
       {
-
-        //  modem_update_registration_status(); // This function needs 1sec to execute
-
         ///////////////////// MANAGMENT TO SEND DATA TO CLOUD //////////////////////////////////////////
 
         /* Send CoAP messages if cloud connection can be establised and device is in IDLE or MOVING state (while MOPPING no data gets send, credentials gets testet in cloud_init function) */
