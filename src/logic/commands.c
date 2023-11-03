@@ -2361,9 +2361,9 @@ static int cmd_modem_status(const struct shell *shell, size_t argc, char **argv)
       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_ROAMING\n");
       break;
 
-    case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-      shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
-      break;
+    // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+    //   shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
+    //   break;
 
     case LTE_LC_NW_REG_UICC_FAIL:
       shell_fprintf(shell, 0, "Registration status: LTE_LC_NW_REG_UICC_FAIL\n");

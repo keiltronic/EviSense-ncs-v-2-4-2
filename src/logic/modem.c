@@ -109,10 +109,10 @@ void lte_handler(const struct lte_lc_evt *const evt)
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "%s", modem_at_recv_buf);
 
          break;
-      case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
-         shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
-         modem.connection_stat = false;
-         break;
+      // case LTE_LC_NW_REG_REGISTERED_EMERGENCY:
+      //    shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_REGISTERED_EMERGENCY\n");
+      //    modem.connection_stat = false;
+      //    break;
       case LTE_LC_NW_REG_UICC_FAIL:
          shell_fprintf(shell_backend_uart_get_ptr(), SHELL_VT100_COLOR_YELLOW, "LTE event: LTE_LC_NW_REG_UICC_FAIL\n");
 
